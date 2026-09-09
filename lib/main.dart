@@ -14,6 +14,8 @@
 import 'package:flutter/material.dart';
 
 import 'screens/shell.dart';
+import 'screens/account.dart';
+import 'services/account.dart';
 import 'services/settings.dart';
 import 'services/ephemeris.dart';
 import 'theme/theme.dart';
@@ -27,23 +29,31 @@ Future<void> main() async {
   // Read before the first frame so no screen has to open on a spinner, and so
   // every tab starts from the same answer rather than each asking for itself.
   final settings = await Settings.load();
-  runApp(ShrutiTools(settings: settings));
+  // The token, not the account: reading it is a preferences lookup, and who it
+  // belongs to is fetched afterwards without holding up the first frame. A
+  // phone with no signal still opens on a working app.
+  final account = await Account.load();
+  runApp(ShrutiTools(settings: settings, account: account));
 }
 
 class ShrutiTools extends StatelessWidget {
-  const ShrutiTools({super.key, required this.settings});
+  const ShrutiTools({super.key, required this.settings, required this.account});
 
   final Settings settings;
+  final Account account;
 
   @override
   Widget build(BuildContext context) {
     return SettingsScope(
       notifier: settings,
-      child: MaterialApp(
-        title: "Shruti's Tools",
-        debugShowCheckedModeBanner: false,
-        theme: shrutiTheme(),
-        home: const Shell(),
+      child: AccountScope(
+        notifier: account,
+        child: MaterialApp(
+          title: "Shruti's Tools",
+          debugShowCheckedModeBanner: false,
+          theme: shrutiTheme(),
+          home: const Shell(),
+        ),
       ),
     );
   }

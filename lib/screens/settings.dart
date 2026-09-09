@@ -14,6 +14,7 @@ import '../services/settings.dart';
 import '../services/site.dart';
 import '../services/stations.dart';
 import '../theme/tokens.dart';
+import 'account.dart';
 import '../widgets/eyebrow.dart';
 import 'pick_place.dart';
 
@@ -29,6 +30,56 @@ class SettingsScreen extends StatelessWidget {
         Text('Settings', style: Theme.of(context).textTheme.displaySmall),
         const SizedBox(height: Gap.xl),
 
+        // First, because it is the only thing here that reaches off the phone
+        // — and because somebody looking for "how do I sign in" looks in
+        // settings before anywhere else.
+        const Eyebrow('Your account'),
+        const SizedBox(height: Gap.sm),
+        Builder(
+          builder: (context) {
+            final account = AccountScope.of(context);
+            return _Card(
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) =>
+                      const Scaffold(body: SafeArea(child: AccountScreen())),
+                ),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          account.signedIn
+                              ? (account.reader?.shownName ?? 'Signed in')
+                              : 'Not signed in',
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          account.signedIn
+                              ? 'The same account as shrutivtuber.com'
+                              : 'Sign in, or make one here',
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Icon(Icons.chevron_right, size: 18, color: Tone.faint),
+                ],
+              ),
+            );
+          },
+        ),
+        const SizedBox(height: Gap.sm),
+        _Note(
+          'Nothing else in the app needs one. Every instrument computes on '
+          'this phone and works signed out.',
+        ),
+
+        const SizedBox(height: Gap.xl),
         const Eyebrow('Where you are'),
         const SizedBox(height: Gap.sm),
         _Card(

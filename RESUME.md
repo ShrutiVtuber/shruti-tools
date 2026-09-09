@@ -85,18 +85,41 @@ invisible to a finder, and once you have scrolled down the TEXT FIELD is gone
 from the tree, so a second `enterText` dies with "Bad state: No element". Type
 once, then scroll.
 
+## Done since: accounts
+
+One account, both places. `lib/services/account.dart` holds a bearer token in
+preferences; the site's `current_user` now reads `Authorization: Bearer` as well
+as its cookie, and `signup`/`signin` return the token **only when asked** —
+`bearer: true` in the body, which the website never sends. The httpOnly cookie
+exists to keep that value away from any script on the page, so the browser's
+replies are unchanged.
+
+⚠ **The cookie wins when both are present.** A request carrying a cookie is a
+browser; letting a header override it would let a script that cannot read the
+cookie still choose whose account the request runs as.
+
+⚠ **The consent wording is FETCHED** from `GET /api/account/consents`, never
+copied into Dart. What a person reads must be what gets filed, and there were
+already two copies (Python and TypeScript) held together by
+`scripts/check_consent_wording.py` — which said "run in CI" and which **nothing
+ran**. It runs in the backend suite now.
+
+Sign-in is by password. Somebody whose site account has a magic link and no
+password could otherwise never sign in on a phone, so the screen offers "Email
+me a link to set a password", which goes through the existing reset flow.
+
+Tests: `integration_test/account_test.dart` — six, including one that takes the
+token the app is holding and asks the SITE who it belongs to. That is the half
+that says it is the same account rather than two that agree.
+
 ## Then, in her order
 
-1. **Accounts in the app.** `/api/accounts/{signup,signin,me}` are already
-   JSON; they set a signed session in a cookie, and the app needs that same
-   token returned in the body to hold as a bearer. One account, both places.
-   ⚠ Sign-up must work IN the app, not by sending somebody to the website.
-2. **Practice readings** — submit, read, comment, vote. Account required.
+1. **Practice readings** — submit, read, comment, vote. Account required.
    Series is a first-class thing, not a tag.
-3. **The Discord bridge**, gateway — see the site's PLAN doc. The cheap half
+2. **The Discord bridge**, gateway — see the site's PLAN doc. The cheap half
    (a slash command returning the material to write from) can ship first; the
    bot already answers signed interactions.
-4. **Notifications**, last, deliberately: the features decide what is
+3. **Notifications**, last, deliberately: the features decide what is
    notifiable. Three of the four kinds need no server at all.
 
 ## What is written down elsewhere

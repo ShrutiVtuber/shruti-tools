@@ -16,8 +16,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shruti_tools/models/place.dart';
+import 'package:shruti_tools/screens/account.dart';
 import 'package:shruti_tools/screens/shell.dart';
 import 'package:shruti_tools/services/ephemeris.dart';
+import 'package:shruti_tools/services/account.dart';
 import 'package:shruti_tools/services/settings.dart';
 import 'package:shruti_tools/services/stations.dart';
 import 'package:shruti_tools/theme/theme.dart';
@@ -36,11 +38,18 @@ void main() {
   testWidgets('changing the place reaches every tab', (tester) async {
     SharedPreferences.setMockInitialValues({});
     final settings = await Settings.load();
+    final account = await Account.load();
 
     await tester.pumpWidget(
       SettingsScope(
         notifier: settings,
-        child: MaterialApp(theme: shrutiTheme(), home: const Shell()),
+        // ⚠ The Shell needs BOTH scopes now: Settings shows who is signed in,
+        // and `AccountScope.of` is deliberately not forgiving about being
+        // absent — a missing scope is a wiring mistake, not a state to render.
+        child: AccountScope(
+          notifier: account,
+          child: MaterialApp(theme: shrutiTheme(), home: const Shell()),
+        ),
       ),
     );
     await tester.pumpAndSettle(const Duration(seconds: 2));
@@ -72,10 +81,17 @@ void main() {
     // is the first row of the Stations table. One setting, one answer.
     SharedPreferences.setMockInitialValues({});
     final settings = await Settings.load();
+    final account = await Account.load();
     await tester.pumpWidget(
       SettingsScope(
         notifier: settings,
-        child: MaterialApp(theme: shrutiTheme(), home: const Shell()),
+        // ⚠ The Shell needs BOTH scopes now: Settings shows who is signed in,
+        // and `AccountScope.of` is deliberately not forgiving about being
+        // absent — a missing scope is a wiring mistake, not a state to render.
+        child: AccountScope(
+          notifier: account,
+          child: MaterialApp(theme: shrutiTheme(), home: const Shell()),
+        ),
       ),
     );
     await tester.pumpAndSettle(const Duration(seconds: 2));
