@@ -1,16 +1,21 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 //
-// The chosen place has to survive being closed.
+// The settings are ONE object, and every screen reads it.
 //
-// It is the one setting the app has, and getting it wrong is not a lost
-// preference — it is a table of times for the wrong city, which reads as
-// perfectly normal.
+// Each screen used to load the saved place for itself in initState. That is
+// fine until two are alive at once — which they always are, because the tabs
+// are an IndexedStack and keep their state so a cast chart survives a visit
+// elsewhere. Change the place on Stations and Hours went on answering for the
+// old one, with its name still printed at the top of its card. A station table
+// for the wrong city is indistinguishable from a right one; this was the
+// version where the app disagreed with itself.
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shruti_tools/models/place.dart';
 import 'package:shruti_tools/services/ephemeris.dart';
 import 'package:shruti_tools/services/settings.dart';
+import 'package:shruti_tools/services/stations.dart';
 
 const _athens = Place(
   name: 'Athens, Attica, Greece',
@@ -21,30 +26,60 @@ const _athens = Place(
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+  setUpAll(() async => startEphemeris()); // loads the zone database
 
-  setUpAll(() async {
-    await startEphemeris(); // loads the zone database
+  test('nothing chosen yet says so, so a screen can offer to ask', () async {
     SharedPreferences.setMockInitialValues({});
+    final s = await Settings.load();
+    expect(s.placeChosen, isFalse);
+    expect(s.place.name, Place.london.name);
   });
 
-  test(
-    'nothing chosen yet reads as null, so the app can offer to ask',
-    () async {
-      SharedPreferences.setMockInitialValues({});
-      expect(await savedPlace(), isNull);
-    },
-  );
-
-  test('a saved place comes back whole, zone included', () async {
+  test('a chosen place comes back whole, zone included', () async {
     SharedPreferences.setMockInitialValues({});
-    await savePlace(_athens);
-    final back = await savedPlace();
-    expect(back, isNotNull);
-    expect(back!.name, _athens.name);
-    expect(back.lat, closeTo(_athens.lat, 1e-9));
-    expect(back.lon, closeTo(_athens.lon, 1e-9));
-    // The field that makes the table right, and the one easiest to drop.
-    expect(back.zone, 'Europe/Athens');
+    final s = await Settings.load();
+    await s.setPlace(_athens);
+
+    final reopened = await Settings.load();
+    expect(reopened.placeChosen, isTrue);
+    expect(reopened.place.name, _athens.name);
+    expect(reopened.place.lat, closeTo(_athens.lat, 1e-9));
+    // The field that makes a table right, and the one easiest to drop.
+    expect(reopened.place.zone, 'Europe/Athens');
+  });
+
+  test('changing it tells everyone listening', () async {
+    // The whole point. Four screens are alive at once and none of them may
+    // hold their own answer.
+    SharedPreferences.setMockInitialValues({});
+    final s = await Settings.load();
+    var told = 0;
+    s.addListener(() => told++);
+    await s.setPlace(_athens);
+    expect(told, 1);
+    expect(s.place.zone, 'Europe/Athens');
+  });
+
+  test('setting the same place again says nothing', () async {
+    // A notification per rebuild is a rebuild loop.
+    SharedPreferences.setMockInitialValues({});
+    final s = await Settings.load();
+    await s.setPlace(_athens);
+    var told = 0;
+    s.addListener(() => told++);
+    await s.setPlace(_athens);
+    expect(told, 0);
+  });
+
+  test('the sunrise convention is remembered and announced', () async {
+    SharedPreferences.setMockInitialValues({});
+    final s = await Settings.load();
+    expect(s.convention, RiseConvention.visibleDisc);
+    var told = 0;
+    s.addListener(() => told++);
+    await s.setConvention(RiseConvention.hindu);
+    expect(told, 1);
+    expect((await Settings.load()).convention, RiseConvention.hindu);
   });
 
   test(
@@ -56,16 +91,14 @@ void main() {
         'place':
             '{"name":"Nowhere","lat":0,"lon":0,"zone":"Mars/Olympus_Mons"}',
       });
-      expect(await savedPlace(), isNull);
+      final s = await Settings.load();
+      expect(s.placeChosen, isFalse);
     },
   );
 
   test('a corrupt stored value is forgotten rather than fatal', () async {
     SharedPreferences.setMockInitialValues({'place': 'not json at all'});
-    expect(await savedPlace(), isNull);
-  });
-
-  test('the short name is what a heading wants', () {
-    expect(_athens.shortName, 'Athens');
+    final s = await Settings.load();
+    expect(s.placeChosen, isFalse);
   });
 }

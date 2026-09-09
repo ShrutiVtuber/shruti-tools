@@ -14,6 +14,19 @@ videos, and a notification when she goes live. AGPL-3.0.
 
 One and two are why it exists. Three is why somebody keeps it.
 
+## ⚠ One settings object, read by every screen
+
+The tabs are an `IndexedStack`, so all five are alive at once — deliberately,
+so a cast chart survives a visit elsewhere. That is exactly what made
+per-screen state a bug: each screen read the saved place in `initState` and
+never heard about a change, so Stations could say Athens while Hours went on
+computing London with "LONDON" printed at the top of its card.
+
+`services/settings.dart` holds it once. A screen READS `SettingsScope.of` in
+build; it never keeps its own copy. The exception is the chart's birth place,
+which is deliberately separate — the settings place is where the reader is,
+and choosing a birth city should not silently change every station table.
+
 ## ⚠ The traps, all of which look fine
 
 **A wrong time is indistinguishable from a right one.** The screen once showed

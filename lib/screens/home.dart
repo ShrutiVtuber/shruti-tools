@@ -28,20 +28,12 @@ class StationsScreen extends StatefulWidget {
 }
 
 class _StationsScreenState extends State<StationsScreen> {
-  // London only until somebody chooses. Named on screen either way — a
-  // station table for the wrong city is indistinguishable from a right one
-  // until somebody misses a dawn.
-  Place _place = Place.london;
-
-  late List<Station> _today;
   LiveStatus _live = LiveStatus.offline;
   Timer? _tick;
 
   @override
   void initState() {
     super.initState();
-    _today = stationsFor(DateTime.now(), _place.lat, _place.lon);
-    _restorePlace();
     _refreshLive();
     // The countdown is only useful if it counts.
     _tick = Timer.periodic(const Duration(seconds: 30), (_) {
@@ -55,31 +47,6 @@ class _StationsScreenState extends State<StationsScreen> {
     super.dispose();
   }
 
-  /// Whatever was chosen last time. Read after the first frame rather than
-  /// before it, so the app opens instantly on a table that is right for
-  /// somewhere, instead of on a spinner.
-  Future<void> _restorePlace() async {
-    final saved = await savedPlace();
-    if (saved == null || !mounted) return;
-    setState(() {
-      _place = saved;
-      _today = stationsFor(DateTime.now(), saved.lat, saved.lon);
-    });
-  }
-
-  Future<void> _choosePlace() async {
-    final picked = await Navigator.of(
-      context,
-    ).push<Place>(MaterialPageRoute(builder: (_) => const PickPlaceScreen()));
-    if (picked == null || !mounted) return;
-    await savePlace(picked);
-    if (!mounted) return;
-    setState(() {
-      _place = picked;
-      _today = stationsFor(DateTime.now(), picked.lat, picked.lon);
-    });
-  }
-
   Future<void> _refreshLive() async {
     final status = await liveStatus();
     if (mounted) setState(() => _live = status);
@@ -87,14 +54,22 @@ class _StationsScreenState extends State<StationsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final next = nextStation(_today, DateTime.now());
+    // Read, never remembered. Every tab is alive at once — this is an
+    // IndexedStack so a cast chart survives a visit elsewhere — and a screen
+    // holding its own copy went on answering for the place it was built with.
+    final settings = SettingsScope.of(context);
+    final place = settings.place;
+    final today = stationsFor(
+      DateTime.now(),
+      place.lat,
+      place.lon,
+      convention: settings.convention,
+    );
+    final next = nextStation(today, DateTime.now());
     return RefreshIndicator(
       color: Tone.accent,
       backgroundColor: Tone.card,
-      onRefresh: () async {
-        _today = stationsFor(DateTime.now(), _place.lat, _place.lon);
-        await _refreshLive();
-      },
+      onRefresh: _refreshLive,
       child: ListView(
         padding: const EdgeInsets.fromLTRB(Gap.lg, Gap.xl, Gap.lg, Gap.huge),
         children: [
@@ -110,15 +85,15 @@ class _StationsScreenState extends State<StationsScreen> {
           const SizedBox(height: Gap.xl),
           _NextStationCard(
             next: next,
-            place: _place,
-            onChangePlace: _choosePlace,
+            place: place,
+            onChangePlace: () => pickPlaceInto(context),
           ),
           const SizedBox(height: Gap.md),
           _LiveCard(live: _live),
           const SizedBox(height: Gap.xl),
           const Eyebrow('Today'),
           const SizedBox(height: Gap.sm),
-          _StationTable(stations: _today, next: next, place: _place),
+          _StationTable(stations: today, next: next, place: place),
         ],
       ),
     );

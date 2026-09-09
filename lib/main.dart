@@ -14,6 +14,7 @@
 import 'package:flutter/material.dart';
 
 import 'screens/shell.dart';
+import 'services/settings.dart';
 import 'services/ephemeris.dart';
 import 'theme/theme.dart';
 
@@ -23,19 +24,27 @@ Future<void> main() async {
   // as it builds. It is a file copy and a library open — milliseconds — and
   // doing it here means no screen has to carry a "not ready yet" state.
   await startEphemeris();
-  runApp(const ShrutiTools());
+  // Read before the first frame so no screen has to open on a spinner, and so
+  // every tab starts from the same answer rather than each asking for itself.
+  final settings = await Settings.load();
+  runApp(ShrutiTools(settings: settings));
 }
 
 class ShrutiTools extends StatelessWidget {
-  const ShrutiTools({super.key});
+  const ShrutiTools({super.key, required this.settings});
+
+  final Settings settings;
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "Shruti's Tools",
-      debugShowCheckedModeBanner: false,
-      theme: shrutiTheme(),
-      home: const Shell(),
+    return SettingsScope(
+      notifier: settings,
+      child: MaterialApp(
+        title: "Shruti's Tools",
+        debugShowCheckedModeBanner: false,
+        theme: shrutiTheme(),
+        home: const Shell(),
+      ),
     );
   }
 }

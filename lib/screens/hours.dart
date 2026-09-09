@@ -31,16 +31,11 @@ class HoursScreen extends StatefulWidget {
 }
 
 class _HoursScreenState extends State<HoursScreen> {
-  Place _place = Place.london;
-  RiseConvention _convention = RiseConvention.visibleDisc;
-  List<PlanetaryHour> _hours = const [];
   Timer? _tick;
 
   @override
   void initState() {
     super.initState();
-    _recompute();
-    _restore();
     _tick = Timer.periodic(const Duration(seconds: 30), (_) {
       if (mounted) setState(() {});
     });
@@ -52,31 +47,18 @@ class _HoursScreenState extends State<HoursScreen> {
     super.dispose();
   }
 
-  Future<void> _restore() async {
-    final place = await savedPlace();
-    final convention = await savedConvention();
-    if (!mounted) return;
-    setState(() {
-      if (place != null) _place = place;
-      _convention = convention;
-    });
-    _recompute();
-  }
-
-  void _recompute() {
-    setState(() {
-      _hours = hoursFor(
-        DateTime.now(),
-        _place.lat,
-        _place.lon,
-        convention: _convention,
-      );
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    final now = hourNow(_hours, DateTime.now());
+    // Read, never remembered — see services/settings.dart.
+    final settings = SettingsScope.of(context);
+    final place = settings.place;
+    final hours = hoursFor(
+      DateTime.now(),
+      place.lat,
+      place.lon,
+      convention: settings.convention,
+    );
+    final now = hourNow(hours, DateTime.now());
     return ListView(
       padding: const EdgeInsets.fromLTRB(Gap.lg, Gap.xl, Gap.lg, Gap.huge),
       children: [
@@ -92,7 +74,7 @@ class _HoursScreenState extends State<HoursScreen> {
         ),
         const SizedBox(height: Gap.xl),
 
-        if (_hours.isEmpty)
+        if (hours.isEmpty)
           _Card(
             child: Text(
               'The sun does not both rise and set here today, so there is '
@@ -101,47 +83,35 @@ class _HoursScreenState extends State<HoursScreen> {
             ),
           )
         else ...[
-          _NowCard(hour: now, place: _place, onChangePlace: _pickPlace),
+          _NowCard(
+            hour: now,
+            place: place,
+            onChangePlace: () => pickPlaceInto(context),
+          ),
           const SizedBox(height: Gap.md),
           _ConventionCard(
-            convention: _convention,
-            onChanged: (c) async {
-              await saveConvention(c);
-              if (!mounted) return;
-              setState(() => _convention = c);
-              _recompute();
-            },
+            convention: settings.convention,
+            onChanged: settings.setConvention,
           ),
           const SizedBox(height: Gap.xl),
           const Eyebrow('Day'),
           const SizedBox(height: Gap.sm),
           _HourList(
-            hours: _hours.where((h) => h.byDay).toList(),
+            hours: hours.where((h) => h.byDay).toList(),
             current: now,
-            place: _place,
+            place: place,
           ),
           const SizedBox(height: Gap.lg),
           const Eyebrow('Night'),
           const SizedBox(height: Gap.sm),
           _HourList(
-            hours: _hours.where((h) => !h.byDay).toList(),
+            hours: hours.where((h) => !h.byDay).toList(),
             current: now,
-            place: _place,
+            place: place,
           ),
         ],
       ],
     );
-  }
-
-  Future<void> _pickPlace() async {
-    final picked = await Navigator.of(
-      context,
-    ).push<Place>(MaterialPageRoute(builder: (_) => const PickPlaceScreen()));
-    if (picked == null || !mounted) return;
-    await savePlace(picked);
-    if (!mounted) return;
-    setState(() => _place = picked);
-    _recompute();
   }
 }
 
@@ -354,16 +324,26 @@ class _Card extends StatelessWidget {
 
   final Widget child;
 
+  /// A Material rather than a decorated Container.
+  ///
+  /// The radio rows inside paint their ink on the nearest Material ancestor,
+  /// and a DecoratedBox in between hides it — Flutter says so outright:
+  /// "ListTile background color or ink splashes may be invisible." Only in
+  /// debug, which is why a release build looked fine and a widget test did
+  /// not.
   @override
-  Widget build(BuildContext context) => Container(
-    width: double.infinity,
-    padding: const EdgeInsets.all(Gap.lg),
-    decoration: BoxDecoration(
-      color: Tone.card,
-      borderRadius: BorderRadius.circular(Corner.md),
-      border: Border.all(color: Tone.line),
+  Widget build(BuildContext context) => Material(
+    color: Tone.card,
+    borderRadius: BorderRadius.circular(Corner.md),
+    child: Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(Gap.lg),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(Corner.md),
+        border: Border.all(color: Tone.line),
+      ),
+      child: child,
     ),
-    child: child,
   );
 }
 

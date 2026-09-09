@@ -6,6 +6,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../models/place.dart';
+import '../services/settings.dart';
 import '../services/site.dart';
 import '../theme/tokens.dart';
 
@@ -147,4 +148,17 @@ class _Note extends StatelessWidget {
     padding: const EdgeInsets.all(Gap.xl),
     child: Text(text, style: Theme.of(context).textTheme.bodyMedium),
   );
+}
+
+/// Open the picker and, if something is chosen, tell the settings.
+///
+/// One function rather than the same six lines on four screens — and the
+/// reason those six lines were a bug is that each screen also kept its own
+/// copy of the answer.
+Future<void> pickPlaceInto(BuildContext context) async {
+  final settings = SettingsScope.of(context);
+  final picked = await Navigator.of(
+    context,
+  ).push<Place>(MaterialPageRoute(builder: (_) => const PickPlaceScreen()));
+  if (picked != null) await settings.setPlace(picked);
 }

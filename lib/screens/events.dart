@@ -17,7 +17,6 @@ class EventsScreen extends StatefulWidget {
 }
 
 class _EventsScreenState extends State<EventsScreen> {
-  Place _place = Place.london;
   List<SkyEvent> _events = const [];
   int _days = 30;
   bool _working = true;
@@ -25,12 +24,6 @@ class _EventsScreenState extends State<EventsScreen> {
   @override
   void initState() {
     super.initState();
-    _restore();
-  }
-
-  Future<void> _restore() async {
-    final place = await savedPlace();
-    if (place != null && mounted) setState(() => _place = place);
     _compute();
   }
 
@@ -50,6 +43,9 @@ class _EventsScreenState extends State<EventsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Only for TELLING the time — the events themselves are the same sky
+    // everywhere, and their instants do not depend on where anyone is.
+    final place = SettingsScope.of(context).place;
     return ListView(
       padding: const EdgeInsets.fromLTRB(Gap.lg, Gap.xl, Gap.lg, Gap.huge),
       children: [
@@ -95,18 +91,18 @@ class _EventsScreenState extends State<EventsScreen> {
             style: Theme.of(context).textTheme.bodyMedium,
           )
         else
-          ..._grouped(context),
+          ..._grouped(context, place),
       ],
     );
   }
 
   /// Grouped by day, because "what is happening this week" is read a day at a
   /// time and a flat list of forty rows is not read at all.
-  List<Widget> _grouped(BuildContext context) {
+  List<Widget> _grouped(BuildContext context, Place place) {
     final out = <Widget>[];
     String? lastDay;
     for (final e in _events) {
-      final there = _place.tell(e.at);
+      final there = place.tell(e.at);
       final day = '${there.year}-${there.month}-${there.day}';
       if (day != lastDay) {
         if (lastDay != null) out.add(const SizedBox(height: Gap.lg));
@@ -119,7 +115,7 @@ class _EventsScreenState extends State<EventsScreen> {
         out.add(const SizedBox(height: Gap.sm));
         lastDay = day;
       }
-      out.add(_EventRow(event: e, place: _place));
+      out.add(_EventRow(event: e, place: place));
       out.add(const SizedBox(height: Gap.sm));
     }
     return out;

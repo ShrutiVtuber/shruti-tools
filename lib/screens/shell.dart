@@ -2,7 +2,7 @@
 //
 // The tabs.
 //
-// Four instruments. Her writing and her videos will be a fourth when the
+// Four instruments and the settings. Her writing and her videos will be a fourth when the
 // journal is mounted — deliberately not a stub in the bar meanwhile, because a
 // tab that opens onto "coming soon" is worse than a tab that is not there yet.
 import 'package:flutter/material.dart';
@@ -11,6 +11,7 @@ import 'chart.dart';
 import 'home.dart';
 import 'events.dart';
 import 'hours.dart';
+import 'settings.dart';
 
 class Shell extends StatefulWidget {
   const Shell({super.key});
@@ -36,6 +37,7 @@ class _ShellState extends State<Shell> {
             HoursScreen(),
             EventsScreen(),
             ChartScreen(),
+            SettingsScreen(),
           ],
         ),
       ),
@@ -62,6 +64,11 @@ class _ShellState extends State<Shell> {
             icon: Icon(Icons.brightness_3_outlined),
             selectedIcon: Icon(Icons.brightness_3),
             label: 'Chart',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.tune_outlined),
+            selectedIcon: Icon(Icons.tune),
+            label: 'Settings',
           ),
         ],
       ),

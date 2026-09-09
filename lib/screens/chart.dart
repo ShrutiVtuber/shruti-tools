@@ -22,18 +22,16 @@ class _ChartScreenState extends State<ChartScreen> {
   DateTime _date = DateTime(1990, 5, 4);
   TimeOfDay _time = const TimeOfDay(hour: 14, minute: 30);
   bool _timeKnown = true;
-  Place _place = Place.london;
   Chart? _chart;
 
-  @override
-  void initState() {
-    super.initState();
-    savedPlace().then((p) {
-      if (p != null && mounted) setState(() => _place = p);
-    });
-  }
+  /// The birth place, which is NOT the settings place.
+  ///
+  /// Deliberately separate: the place in settings is where the reader is, and
+  /// a chart is cast for where somebody was born. Sharing them would mean
+  /// choosing a birth city silently changed every station table.
+  Place? _born;
 
-  void _cast() {
+  void _cast(Place place) {
     setState(() {
       _chart = castChart(
         when: DateTime(
@@ -43,7 +41,7 @@ class _ChartScreenState extends State<ChartScreen> {
           _time.hour,
           _time.minute,
         ),
-        place: _place,
+        place: place,
         timeKnown: _timeKnown,
       );
     });
@@ -51,6 +49,8 @@ class _ChartScreenState extends State<ChartScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Defaults to where the reader is, then stays where they put it.
+    final place = _born ?? SettingsScope.of(context).place;
     final chart = _chart;
     return ListView(
       padding: const EdgeInsets.fromLTRB(Gap.lg, Gap.xl, Gap.lg, Gap.huge),
@@ -97,14 +97,12 @@ class _ChartScreenState extends State<ChartScreen> {
         const SizedBox(height: Gap.sm),
         _Field(
           label: 'In',
-          value: _place.shortName,
+          value: place.shortName,
           onTap: () async {
             final picked = await Navigator.of(context).push<Place>(
               MaterialPageRoute(builder: (_) => const PickPlaceScreen()),
             );
-            if (picked == null || !mounted) return;
-            await savePlace(picked);
-            if (mounted) setState(() => _place = picked);
+            if (picked != null && mounted) setState(() => _born = picked);
           },
         ),
         const SizedBox(height: Gap.md),
@@ -128,7 +126,7 @@ class _ChartScreenState extends State<ChartScreen> {
           ),
         ),
         const SizedBox(height: Gap.md),
-        FilledButton(onPressed: _cast, child: const Text('Cast')),
+        FilledButton(onPressed: () => _cast(place), child: const Text('Cast')),
 
         if (chart != null) ...[
           const SizedBox(height: Gap.xxl),
