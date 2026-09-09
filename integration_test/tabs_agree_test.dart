@@ -17,9 +17,11 @@ import 'package:integration_test/integration_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shruti_tools/models/place.dart';
 import 'package:shruti_tools/screens/account.dart';
+import 'package:shruti_tools/screens/notifications.dart';
 import 'package:shruti_tools/screens/shell.dart';
 import 'package:shruti_tools/services/ephemeris.dart';
 import 'package:shruti_tools/services/account.dart';
+import 'package:shruti_tools/services/notifications.dart';
 import 'package:shruti_tools/services/settings.dart';
 import 'package:shruti_tools/services/stations.dart';
 import 'package:shruti_tools/theme/theme.dart';
@@ -39,6 +41,7 @@ void main() {
     SharedPreferences.setMockInitialValues({});
     final settings = await Settings.load();
     final account = await Account.load();
+    final notices = await Notifications.load(account);
 
     await tester.pumpWidget(
       SettingsScope(
@@ -48,7 +51,14 @@ void main() {
         // absent — a missing scope is a wiring mistake, not a state to render.
         child: AccountScope(
           notifier: account,
-          child: MaterialApp(theme: shrutiTheme(), home: const Shell()),
+          // ⚠ All THREE scopes. Settings shows who is signed in and what this
+          // phone wants to be told, and both `of(context)` calls are
+          // deliberately unforgiving about being absent — a missing scope is a
+          // wiring mistake, not a state to render.
+          child: NoticeScope(
+            notifier: notices,
+            child: MaterialApp(theme: shrutiTheme(), home: const Shell()),
+          ),
         ),
       ),
     );
@@ -82,6 +92,7 @@ void main() {
     SharedPreferences.setMockInitialValues({});
     final settings = await Settings.load();
     final account = await Account.load();
+    final notices = await Notifications.load(account);
     await tester.pumpWidget(
       SettingsScope(
         notifier: settings,
@@ -90,7 +101,14 @@ void main() {
         // absent — a missing scope is a wiring mistake, not a state to render.
         child: AccountScope(
           notifier: account,
-          child: MaterialApp(theme: shrutiTheme(), home: const Shell()),
+          // ⚠ All THREE scopes. Settings shows who is signed in and what this
+          // phone wants to be told, and both `of(context)` calls are
+          // deliberately unforgiving about being absent — a missing scope is a
+          // wiring mistake, not a state to render.
+          child: NoticeScope(
+            notifier: notices,
+            child: MaterialApp(theme: shrutiTheme(), home: const Shell()),
+          ),
         ),
       ),
     );

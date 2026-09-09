@@ -112,15 +112,35 @@ Tests: `integration_test/account_test.dart` — six, including one that takes th
 token the app is holding and asks the SITE who it belongs to. That is the half
 that says it is the same account rather than two that agree.
 
-## Then, in her order
+## Done since: the practice room and notifications
 
-1. **Practice readings** — submit, read, comment, vote. Account required.
-   Series is a first-class thing, not a tag.
-2. **The Discord bridge**, gateway — see the site's PLAN doc. The cheap half
-   (a slash command returning the material to write from) can ship first; the
-   bot already answers signed interactions.
-3. **Notifications**, last, deliberately: the features decide what is
-   notifiable. Three of the four kinds need no server at all.
+**Practice** — `services/practice.dart`, the Practice tab, and the write and
+read screens. ⚠ A WORK is the unit: switching sign while writing keeps you in
+the same draft, and it is the SAME draft the website's desk holds.
+
+**Six tabs, two of them pairs.** Day is Stations + Hours; Letters is Reckoning +
+Sigil. A bottom bar holds about six before the labels stop being readable, and
+the practice room needed one.
+
+**`services/periods.dart`** is the third ISO-week implementation in the estate
+(TypeScript on the site, Python in the bot). All three are held against ONE
+fixture generated from the site's own code across 785 weeks of fifteen years —
+including a 53-week year and weeks belonging to the previous year.
+
+**Notifications** — the switches, where they are kept, sending them to the site
+and taking the phone off the list are all built. ⚠ `_registrationToken()` in
+`services/notifications.dart` returns null until Firebase exists: the five lines
+to write are in the comment above it, and the app is deliberately NOT built
+against `firebase_messaging` yet because adding the plugin without a
+`google-services.json` does not compile.
+
+## What is left
+
+Nothing she has asked for. The two open things are hers to do:
+
+1. **Firebase** — a project, `google-services.json`, two packages, five lines.
+   `../shurtiwebsite/docs/PLAN-horoscope-practice.md` has the steps.
+2. **APNs**, when there is an iOS build. The backend already sends the block.
 
 ## What is written down elsewhere
 

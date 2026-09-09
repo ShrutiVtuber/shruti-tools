@@ -16,6 +16,8 @@ import 'package:flutter/material.dart';
 import 'screens/shell.dart';
 import 'screens/account.dart';
 import 'services/account.dart';
+import 'services/notifications.dart';
+import 'screens/notifications.dart';
 import 'services/settings.dart';
 import 'services/ephemeris.dart';
 import 'theme/theme.dart';
@@ -33,14 +35,21 @@ Future<void> main() async {
   // belongs to is fetched afterwards without holding up the first frame. A
   // phone with no signal still opens on a working app.
   final account = await Account.load();
-  runApp(ShrutiTools(settings: settings, account: account));
+  final notices = await Notifications.load(account);
+  runApp(ShrutiTools(settings: settings, account: account, notices: notices));
 }
 
 class ShrutiTools extends StatelessWidget {
-  const ShrutiTools({super.key, required this.settings, required this.account});
+  const ShrutiTools({
+    super.key,
+    required this.settings,
+    required this.account,
+    required this.notices,
+  });
 
   final Settings settings;
   final Account account;
+  final Notifications notices;
 
   @override
   Widget build(BuildContext context) {
@@ -48,11 +57,14 @@ class ShrutiTools extends StatelessWidget {
       notifier: settings,
       child: AccountScope(
         notifier: account,
-        child: MaterialApp(
-          title: "Shruti's Tools",
-          debugShowCheckedModeBanner: false,
-          theme: shrutiTheme(),
-          home: const Shell(),
+        child: NoticeScope(
+          notifier: notices,
+          child: MaterialApp(
+            title: "Shruti's Tools",
+            debugShowCheckedModeBanner: false,
+            theme: shrutiTheme(),
+            home: const Shell(),
+          ),
         ),
       ),
     );
