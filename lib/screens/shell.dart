@@ -2,17 +2,19 @@
 //
 // The tabs.
 //
-// Five instruments and the settings — the fifth, Letters, holds two tools
-// behind a segmented control rather than taking a seventh slot in the bar. Her
+// Five tabs and the settings. Two of them hold a pair behind a segmented
+// control rather than taking a slot each: Day is the stations and the planetary
+// hours, Letters is the reckoning and the sigils. A bar holds about six before
+// the labels stop being readable, and the practice room needed one. Her
 // writing and her videos will be a tab when the journal is mounted;
 // deliberately not a stub in the bar meanwhile, because a tab that opens onto
 // "coming soon" is worse than a tab that is not there yet.
 import 'package:flutter/material.dart';
 
 import 'chart.dart';
-import 'home.dart';
+import 'day.dart';
 import 'events.dart';
-import 'hours.dart';
+import 'practice.dart';
 import 'letters.dart';
 import 'settings.dart';
 
@@ -36,11 +38,11 @@ class _ShellState extends State<Shell> {
         child: IndexedStack(
           index: _tab,
           children: const [
-            StationsScreen(),
-            HoursScreen(),
+            DayScreen(),
             EventsScreen(),
             ChartScreen(),
             LettersScreen(),
+            PracticeScreen(),
             SettingsScreen(),
           ],
         ),
@@ -52,12 +54,7 @@ class _ShellState extends State<Shell> {
           NavigationDestination(
             icon: Icon(Icons.wb_twilight_outlined),
             selectedIcon: Icon(Icons.wb_twilight),
-            label: 'Stations',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.schedule_outlined),
-            selectedIcon: Icon(Icons.schedule),
-            label: 'Hours',
+            label: 'Day',
           ),
           NavigationDestination(
             icon: Icon(Icons.auto_awesome_outlined),
@@ -73,6 +70,11 @@ class _ShellState extends State<Shell> {
             icon: Icon(Icons.abc_outlined),
             selectedIcon: Icon(Icons.abc),
             label: 'Letters',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.forum_outlined),
+            selectedIcon: Icon(Icons.forum),
+            label: 'Practice',
           ),
           NavigationDestination(
             icon: Icon(Icons.tune_outlined),
