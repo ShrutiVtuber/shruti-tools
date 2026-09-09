@@ -147,6 +147,16 @@ Figure? cast(
 /// the file — someone will send this to a friend.
 String toSvg(Figure f) {
   String n(double v) => v.toStringAsFixed(3);
+
+  /// A double the way JavaScript prints one: 256 and 1, not 256.0 and 1.0.
+  ///
+  /// Pedantic-looking, and the reason the agreement test can compare the two
+  /// engines byte for byte instead of squinting at geometry. The site rounds
+  /// SOME numbers to three places and interpolates others raw — the enclosure's
+  /// centre is raw, its radius is rounded — so the two spellings both have to
+  /// exist here, applied to exactly the same numbers as over there.
+  String js(double v) =>
+      v == v.roundToDouble() ? v.toInt().toString() : v.toString();
   final path = [
     for (var i = 0; i < f.points.length; i++)
       '${i == 0 ? 'M' : 'L'}${n(f.points[i].x)} ${n(f.points[i].y)}',
@@ -155,16 +165,16 @@ String toSvg(Figure f) {
   var ring = '';
   if (f.enclosure == 'circle') {
     ring =
-        '<circle cx="${n(f.cx)}" cy="${n(f.cy)}" '
+        '<circle cx="${js(f.cx)}" cy="${js(f.cy)}" '
         'r="${n(f.radius * 1.28)}" fill="none" stroke="currentColor" '
-        'stroke-width="${f.stroke}"/>';
+        'stroke-width="${js(f.stroke)}"/>';
   } else if (f.enclosure == 'vesica') {
     final r = f.radius * 1.15, dx = f.radius * 1.15 * 0.5;
     ring =
-        '<circle cx="${n(f.cx - dx)}" cy="${n(f.cy)}" r="${n(r)}" '
-        'fill="none" stroke="currentColor" stroke-width="${f.stroke}"/>'
-        '<circle cx="${n(f.cx + dx)}" cy="${n(f.cy)}" r="${n(r)}" '
-        'fill="none" stroke="currentColor" stroke-width="${f.stroke}"/>';
+        '<circle cx="${n(f.cx - dx)}" cy="${js(f.cy)}" r="${n(r)}" '
+        'fill="none" stroke="currentColor" stroke-width="${js(f.stroke)}"/>'
+        '<circle cx="${n(f.cx + dx)}" cy="${js(f.cy)}" r="${n(r)}" '
+        'fill="none" stroke="currentColor" stroke-width="${js(f.stroke)}"/>';
   }
 
   final start = f.points.first, end = f.points.last;
@@ -175,12 +185,12 @@ String toSvg(Figure f) {
       '  <g stroke="currentColor" fill="none" stroke-linecap="round" '
       'stroke-linejoin="round">\n'
       '    $ring\n'
-      '    <path d="$path" stroke-width="${f.stroke}"/>\n'
+      '    <path d="$path" stroke-width="${js(f.stroke)}"/>\n'
       '    <circle cx="${n(start.x)}" cy="${n(start.y)}" '
       'r="${n(f.stroke * 2.2)}" fill="currentColor" stroke="none"/>\n'
       '    <path d="M${n(end.x - s3)} ${n(end.y - s3)} L${n(end.x + s3)} '
       '${n(end.y + s3)} M${n(end.x + s3)} ${n(end.y - s3)} L${n(end.x - s3)} '
-      '${n(end.y + s3)}" stroke-width="${f.stroke}"/>\n'
+      '${n(end.y + s3)}" stroke-width="${js(f.stroke)}"/>\n'
       '  </g>\n'
       '</svg>';
 }

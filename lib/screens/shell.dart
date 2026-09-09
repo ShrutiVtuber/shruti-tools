@@ -2,16 +2,18 @@
 //
 // The tabs.
 //
-// Five instruments and the settings. Her writing and her videos will be a fourth when the
-// journal is mounted — deliberately not a stub in the bar meanwhile, because a
-// tab that opens onto "coming soon" is worse than a tab that is not there yet.
+// Five instruments and the settings — the fifth, Letters, holds two tools
+// behind a segmented control rather than taking a seventh slot in the bar. Her
+// writing and her videos will be a tab when the journal is mounted;
+// deliberately not a stub in the bar meanwhile, because a tab that opens onto
+// "coming soon" is worse than a tab that is not there yet.
 import 'package:flutter/material.dart';
 
 import 'chart.dart';
 import 'home.dart';
 import 'events.dart';
 import 'hours.dart';
-import 'isopsephy.dart';
+import 'letters.dart';
 import 'settings.dart';
 
 class Shell extends StatefulWidget {
@@ -38,7 +40,7 @@ class _ShellState extends State<Shell> {
             HoursScreen(),
             EventsScreen(),
             ChartScreen(),
-            IsopsephyScreen(),
+            LettersScreen(),
             SettingsScreen(),
           ],
         ),
