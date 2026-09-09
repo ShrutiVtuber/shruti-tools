@@ -57,6 +57,13 @@ dependencies:
   # the relative default works on desktop and fails on Android, which is the
   # worst combination.
   path_provider: ^2.1.5
+  # Handing the finished sigil to the share sheet, which on a phone is the
+  # only way to keep it — "copy SVG" has nowhere to be pasted on Android.
+  #
+  # ⚠ The file handed over is a PNG named sigil.png in a temp directory. The
+  # NAME must never carry the statement: a filename travels further than the
+  # file, showing up in notification shades and chat previews.
+  share_plus: ^13.3.0
   # Reading .mbf packs, which are zip containers. Only used when a language is
   # actually downloaded — nothing is unpacked at startup.
   archive: ^3.6.1

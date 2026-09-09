@@ -7,13 +7,16 @@
 // when the screen is left. The website says the same thing on its own version
 // and means it; the phone has to mean it too, or the promise is worth nothing.
 // If you add a "recent statements" convenience here, you have broken the tool.
-import 'dart:math' as math;
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../services/sigil.dart' as sigil;
 import '../theme/tokens.dart';
+import '../widgets/sigil_figure.dart';
 
 class SigilScreen extends StatefulWidget {
   const SigilScreen({super.key});
@@ -299,31 +302,32 @@ class _FigureCard extends StatelessWidget {
           const SizedBox(height: Gap.lg),
           AspectRatio(
             aspectRatio: 1,
-            child: CustomPaint(painter: _SigilPainter(figure!)),
+            child: CustomPaint(painter: SigilPainter(figure!)),
           ),
           const SizedBox(height: Gap.lg),
           Row(
             children: [
               Expanded(
-                child: OutlinedButton.icon(
-                  onPressed: () async {
-                    await Clipboard.setData(
-                      ClipboardData(text: sigil.toSvg(figure!)),
-                    );
-                    if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text(
-                            'SVG copied — the letters only, not '
-                            'the statement.',
-                          ),
-                        ),
-                      );
-                    }
-                  },
-                  icon: const Icon(Icons.content_copy_outlined, size: 18),
-                  label: const Text('Copy SVG'),
+                child: FilledButton.icon(
+                  onPressed: () => _share(context, figure!),
+                  icon: const Icon(Icons.ios_share_outlined, size: 18),
+                  label: const Text('Keep the figure'),
                 ),
+              ),
+              const SizedBox(width: Gap.sm),
+              OutlinedButton.icon(
+                onPressed: () async {
+                  await Clipboard.setData(
+                    ClipboardData(text: sigil.toSvg(figure!)),
+                  );
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('SVG copied.')),
+                    );
+                  }
+                },
+                icon: const Icon(Icons.code_outlined, size: 18),
+                label: const Text('SVG'),
               ),
             ],
           ),
@@ -338,48 +342,17 @@ class _FigureCard extends StatelessWidget {
   }
 }
 
-/// The same geometry as the website, scaled to whatever box it is given.
-class _SigilPainter extends CustomPainter {
-  const _SigilPainter(this.f);
-  final sigil.Figure f;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final k = size.width / f.size; // the figure is cast at 512; fit the box
-    final line = Paint()
-      ..color = Tone.ink
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = f.stroke * k
-      ..strokeCap = StrokeCap.round
-      ..strokeJoin = StrokeJoin.round;
-    final solid = Paint()..color = Tone.ink;
-
-    Offset at(math.Point<double> p) => Offset(p.x * k, p.y * k);
-    final centre = Offset(f.cx * k, f.cy * k);
-
-    if (f.enclosure == 'circle') {
-      canvas.drawCircle(centre, f.radius * 1.28 * k, line);
-    } else if (f.enclosure == 'vesica') {
-      final r = f.radius * 1.15 * k, dx = r * 0.5;
-      canvas.drawCircle(centre.translate(-dx, 0), r, line);
-      canvas.drawCircle(centre.translate(dx, 0), r, line);
-    }
-
-    final path = Path();
-    for (var i = 0; i < f.points.length; i++) {
-      final o = at(f.points[i]);
-      i == 0 ? path.moveTo(o.dx, o.dy) : path.lineTo(o.dx, o.dy);
-    }
-    canvas.drawPath(path, line);
-
-    // A dot where the line starts, a cross where it ends — so the figure can
-    // be walked in the right direction a year from now.
-    canvas.drawCircle(at(f.points.first), f.stroke * 2.2 * k, solid);
-    final end = at(f.points.last), s3 = f.stroke * 3 * k;
-    canvas.drawLine(end.translate(-s3, -s3), end.translate(s3, s3), line);
-    canvas.drawLine(end.translate(s3, -s3), end.translate(-s3, s3), line);
-  }
-
-  @override
-  bool shouldRepaint(_SigilPainter old) => old.f != f;
+/// Draw the figure at export size and hand it to the share sheet.
+///
+/// ⚠ The file is called `sigil.png` and never anything derived from the
+/// statement. A filename travels further than the file does — into notification
+/// shades, chat previews and file listings — and the statement is not going
+/// with it. For the same reason nothing is passed as share text or subject.
+Future<void> _share(BuildContext context, sigil.Figure figure) async {
+  final bytes = await pngOf(figure);
+  if (bytes == null || !context.mounted) return;
+  final file = File('${(await getTemporaryDirectory()).path}/sigil.png');
+  await file.writeAsBytes(bytes, flush: true);
+  if (!context.mounted) return;
+  await SharePlus.instance.share(ShareParams(files: [XFile(file.path)]));
 }

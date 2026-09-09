@@ -46,6 +46,14 @@ mutating each engine and watching the other side go red. To change the geometry
 on purpose: `node frontend/site/scripts/gen-sigil-fixture.mjs >
 test/fixtures/sigil_agreement.json`, copy it here, ship both.
 
+The figure leaves as a **2048px PNG through the share sheet** — the same size
+the site exports, so the two are the same picture. `lib/widgets/sigil_figure.dart`
+holds the painter and `pngOf`, kept out of the screen so the export can be
+tested: `test/sigil_export_test.dart` counts actual ink rather than PNG byte
+length. ⚠ The first version compared byte lengths and PASSED with `drawPath`
+commented out — the difference it was reading came from the enclosure ring.
+Every assertion in that file has since been checked by mutation.
+
 The two tools share the **Letters** tab (`lib/screens/letters.dart`) behind a
 segmented control. Seven bottom tabs is a row nobody can read, and they belong
 together: both take letters and give back something that is not letters.
