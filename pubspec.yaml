@@ -57,6 +57,9 @@ dependencies:
   # the relative default works on desktop and fails on Android, which is the
   # worst combination.
   path_provider: ^2.1.5
+  # Reading .mbf packs, which are zip containers. Only used when a language is
+  # actually downloaded — nothing is unpacked at startup.
+  archive: ^3.6.1
 
 dev_dependencies:
   flutter_test:
