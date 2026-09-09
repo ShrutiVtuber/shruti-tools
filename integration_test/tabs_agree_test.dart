@@ -68,8 +68,8 @@ void main() {
   testWidgets('the sunrise convention reaches the stations too', (
     tester,
   ) async {
-    // Chosen on the Hours screen, and it moves sunrise — which is the first
-    // row of the Stations table. One setting, one answer.
+    // Chosen on the Hours screen and on Settings, and it moves sunrise — which
+    // is the first row of the Stations table. One setting, one answer.
     SharedPreferences.setMockInitialValues({});
     final settings = await Settings.load();
     await tester.pumpWidget(
@@ -80,18 +80,39 @@ void main() {
     );
     await tester.pumpAndSettle(const Duration(seconds: 2));
 
-    String dawn() {
-      final row = find.textContaining(RegExp(r'^\d\d:\d\d$'));
-      return (tester.widgetList<Text>(row).first).data ?? '';
-    }
+    /// Every clock time on screen, in the order they are drawn.
+    ///
+    /// ⚠ Not "the first one". This test used to take that and call it dawn,
+    /// which passed until the table happened to open on midnight — and a
+    /// transit does NOT move with the convention, correctly, because there is
+    /// no limb and no refraction in a body crossing the meridian. The test was
+    /// wrong and the code was right.
+    List<String> times() => tester
+        .widgetList<Text>(find.textContaining(RegExp(r'^\d\d:\d\d$')))
+        .map((t) => t.data ?? '')
+        .toList();
 
-    final before = dawn();
+    final before = times();
+    expect(before.length, greaterThanOrEqualTo(4));
+
     await settings.setConvention(RiseConvention.hindu);
     await tester.pumpAndSettle(const Duration(seconds: 2));
+    final after = times();
+
+    expect(after.length, before.length);
+    final moved = [
+      for (var i = 0; i < before.length; i++)
+        if (before[i] != after[i]) i,
+    ];
+    // Dawn and dusk move; noon and midnight do not. Both halves matter: if
+    // nothing moved the setting is not reaching the table, and if everything
+    // moved the convention is being applied to transits it has no business
+    // touching.
+    expect(moved, isNotEmpty, reason: 'the setting never reached the stations');
     expect(
-      dawn(),
-      isNot(before),
-      reason: 'the Vedic sunrise is minutes later; the table must follow',
+      moved.length,
+      lessThan(before.length),
+      reason: 'a transit must not move with the sunrise convention',
     );
   });
 }
