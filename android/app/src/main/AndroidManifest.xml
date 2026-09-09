@@ -1,4 +1,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Reading her site: whether she is live, and the places lookup.
+         
+         ⚠ Flutter puts this in the DEBUG and PROFILE manifests only. Without
+         it here, a release build has no network at all — and it does not
+         announce that. The place search answered "nothing found" and the live
+         card said "Offline", which is a perfectly ordinary thing for it to
+         say. Both were the same missing line.
+         
+         Nothing in the app REQUIRES the network: the ephemeris is on the
+         device and the stations are computed from it. This is for the parts
+         that are about her. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:label="shruti_tools"
         android:name="${applicationName}"

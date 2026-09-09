@@ -20,6 +20,8 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
+import '../models/place.dart';
+
 const siteOrigin = String.fromEnvironment(
   'SHRUTI_SITE',
   defaultValue: 'https://shrutivtuber.com',
@@ -147,6 +149,41 @@ List<Video> _videos(dynamic body) {
 }
 
 Future<List<Video>> videos() async => _videos(await _get('/api/videos'));
+
+/// Searching for somewhere to compute stations for.
+///
+/// The site's lookup is used rather than a bundled gazetteer, and rather than
+/// the phone's geocoder, because it returns the one field that is easy to
+/// forget and impossible to guess: the IANA timezone. Coordinates decide when
+/// the sun rises; the zone decides what that instant is called.
+///
+/// This is the one thing in the app that genuinely needs a network. The chosen
+/// place is remembered, so only CHANGING it does — a phone with no signal
+/// still has yesterday's answer and still computes today's stations from it.
+Future<List<Place>> searchPlaces(String query) async {
+  final q = query.trim();
+  if (q.length < 2) return const [];
+  final body = await _get('/api/places?q=${Uri.encodeQueryComponent(q)}');
+  if (body is! Map) return const [];
+  final list = body['places'];
+  if (list is! List) return const [];
+  return [
+    for (final r in list)
+      if (r is Map && r['timezone'] is String)
+        Place(
+          name: [
+            r['name'],
+            // The region disambiguates the eight Athenses. Country alone does
+            // not: four of them are in the United States.
+            if ((r['region'] ?? '') != '') r['region'],
+            if ((r['country'] ?? '') != '') r['country'],
+          ].whereType<String>().join(', '),
+          lat: (r['lat'] as num).toDouble(),
+          lon: (r['lon'] as num).toDouble(),
+          zone: r['timezone'] as String,
+        ),
+  ];
+}
 
 /// A piece of her writing.
 class Writing {

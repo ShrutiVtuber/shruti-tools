@@ -43,6 +43,37 @@ class Place {
 
   tz.Location get location => tz.getLocation(zone);
 
+  /// Just the town, for a heading where the country is noise.
+  String get shortName => name.split(',').first.trim();
+
+  Map<String, dynamic> toJson() => {
+    'name': name,
+    'lat': lat,
+    'lon': lon,
+    'zone': zone,
+  };
+
+  /// Rejects a stored place whose zone the database no longer knows, rather
+  /// than throwing on the first frame. Zones are renamed and retired — a phone
+  /// that saved "Europe/Kiev" should fall back, not crash.
+  static Place? fromJson(Map<String, dynamic> j) {
+    final zone = j['zone'];
+    final lat = j['lat'];
+    final lon = j['lon'];
+    if (zone is! String || lat is! num || lon is! num) return null;
+    try {
+      tz.getLocation(zone);
+    } catch (_) {
+      return null;
+    }
+    return Place(
+      name: (j['name'] ?? '') as String,
+      lat: lat.toDouble(),
+      lon: lon.toDouble(),
+      zone: zone,
+    );
+  }
+
   /// An instant, told in this place's own time.
   tz.TZDateTime tell(DateTime instant) =>
       tz.TZDateTime.from(instant.toUtc(), location);

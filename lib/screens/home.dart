@@ -13,10 +13,12 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../models/place.dart';
+import '../services/settings.dart';
 import '../services/site.dart';
 import '../services/stations.dart';
 import '../theme/tokens.dart';
 import '../widgets/eyebrow.dart';
+import 'pick_place.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -26,11 +28,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // London until the app can ask where the phone is, or she picks somewhere.
-  // Named on screen rather than assumed silently — a station table for the
-  // wrong city is indistinguishable from a right one until somebody misses a
-  // dawn.
-  static const _place = Place.london;
+  // London only until somebody chooses. Named on screen either way — a
+  // station table for the wrong city is indistinguishable from a right one
+  // until somebody misses a dawn.
+  Place _place = Place.london;
 
   late List<Station> _today;
   LiveStatus _live = LiveStatus.offline;
@@ -40,6 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _today = stationsFor(DateTime.now(), _place.lat, _place.lon);
+    _restorePlace();
     _refreshLive();
     // The countdown is only useful if it counts.
     _tick = Timer.periodic(const Duration(seconds: 30), (_) {
@@ -51,6 +53,31 @@ class _HomeScreenState extends State<HomeScreen> {
   void dispose() {
     _tick?.cancel();
     super.dispose();
+  }
+
+  /// Whatever was chosen last time. Read after the first frame rather than
+  /// before it, so the app opens instantly on a table that is right for
+  /// somewhere, instead of on a spinner.
+  Future<void> _restorePlace() async {
+    final saved = await savedPlace();
+    if (saved == null || !mounted) return;
+    setState(() {
+      _place = saved;
+      _today = stationsFor(DateTime.now(), saved.lat, saved.lon);
+    });
+  }
+
+  Future<void> _choosePlace() async {
+    final picked = await Navigator.of(
+      context,
+    ).push<Place>(MaterialPageRoute(builder: (_) => const PickPlaceScreen()));
+    if (picked == null || !mounted) return;
+    await savePlace(picked);
+    if (!mounted) return;
+    setState(() {
+      _place = picked;
+      _today = stationsFor(DateTime.now(), picked.lat, picked.lon);
+    });
   }
 
   Future<void> _refreshLive() async {
@@ -88,7 +115,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
               const SizedBox(height: Gap.xl),
-              _NextStationCard(next: next, place: _place),
+              _NextStationCard(
+                next: next,
+                place: _place,
+                onChangePlace: _choosePlace,
+              ),
               const SizedBox(height: Gap.md),
               _LiveCard(live: _live),
               const SizedBox(height: Gap.xl),
@@ -105,10 +136,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
 /// The one thing worth putting above everything else.
 class _NextStationCard extends StatelessWidget {
-  const _NextStationCard({required this.next, required this.place});
+  const _NextStationCard({
+    required this.next,
+    required this.place,
+    required this.onChangePlace,
+  });
 
   final Station? next;
   final Place place;
+  final VoidCallback onChangePlace;
 
   @override
   Widget build(BuildContext context) {
@@ -117,7 +153,7 @@ class _NextStationCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Eyebrow('Next station'),
+            _PlaceLine(place: place, onTap: onChangePlace),
             const SizedBox(height: Gap.sm),
             Text(
               'Nothing further today',
@@ -141,7 +177,7 @@ class _NextStationCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Eyebrow('Next station · ${place.name}'),
+          _PlaceLine(place: place, onTap: onChangePlace),
           const SizedBox(height: Gap.sm),
           Row(
             crossAxisAlignment: CrossAxisAlignment.baseline,
@@ -169,6 +205,34 @@ class _NextStationCard extends StatelessWidget {
       ),
     );
   }
+}
+
+/// The place, and the way to change it.
+///
+/// Tapping the name is the whole control. A settings screen for one setting is
+/// a place to hide the only thing that makes the table wrong.
+class _PlaceLine extends StatelessWidget {
+  const _PlaceLine({required this.place, required this.onTap});
+
+  final Place place;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) => InkWell(
+    onTap: onTap,
+    borderRadius: BorderRadius.circular(Corner.sm),
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 2),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Eyebrow('Next station · ${place.shortName}'),
+          const SizedBox(width: Gap.xs),
+          const Icon(Icons.expand_more, size: 15, color: Tone.faint),
+        ],
+      ),
+    ),
+  );
 }
 
 class _LiveCard extends StatelessWidget {
