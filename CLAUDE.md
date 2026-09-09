@@ -80,6 +80,24 @@ that evaluates projects eagerly, and Gradle then refuses `afterEvaluate`.
 `flutter_timezone` is deliberately absent: it still compiles Kotlin for Java 11
 while every other plugin is on 17, and no combination satisfies both.
 
+## What could send a notification
+
+Written down as the features land, because the list is what the settings
+screen has to offer and it is easier to keep than to reconstruct:
+
+| | from | needs |
+|---|---|---|
+| a solar station — the adorations | on the device | a local schedule, no server |
+| a planetary hour beginning, or one ruler in particular | on the device | as above |
+| she has gone live | `/api/live` | a push, while it is still true |
+| a new video | `/api/videos` | a push |
+| a new piece of writing | the journal, once it is mounted | a push |
+
+The first two are **local** and want no network at all — the phone already
+knows when tomorrow's dawn is. Only the last three need a server to speak
+first, and only those need FCM. Worth keeping separate in the settings, since
+one set works on a plane and the other does not.
+
 ## Standing constraints
 
 - **AGPL, and she is the sole copyright holder.** That is what makes an App

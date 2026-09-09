@@ -24,6 +24,29 @@ class Station {
   final DateTime at;
 }
 
+/// Where sunrise IS.
+///
+/// The traditions disagree and the disagreement is real: about four and a half
+/// minutes at Athens, which is enough to move a planetary-hour boundary and
+/// therefore enough to change which planet rules the moment you are standing
+/// in. Picking one globally silently corrupts the other, so it is carried
+/// rather than assumed — the same choice the engine makes, under the same two
+/// names.
+enum RiseConvention {
+  /// Upper limb of the apparent disc, WITH refraction. The standard almanac
+  /// sunrise, and the Greco-Egyptian basis for planetary hours.
+  visibleDisc('Hellenistic', 'upper limb, with refraction'),
+
+  /// Centre of the disc, NO refraction. What Indian pañcāṅgas print, and what
+  /// the Vedic day boundary uses.
+  hindu('Vedic', 'centre of the disc, no refraction');
+
+  const RiseConvention(this.label, this.detail);
+
+  final String label;
+  final String detail;
+}
+
 enum StationKind {
   dawn('Dawn', 'Ra'),
   noon('Noon', 'Hathoor'),
@@ -68,20 +91,36 @@ DateTime _fromJd(double jd) {
 /// Returns fewer than four entries above the Arctic and Antarctic circles,
 /// where the sun may not rise or set at all. The screen says so rather than
 /// printing a blank — a station that does not occur is a fact, not a gap.
-List<Station> stationsFor(DateTime when, double lat, double lon) {
+List<Station> stationsFor(
+  DateTime when,
+  double lat,
+  double lon, {
+  RiseConvention convention = RiseConvention.visibleDisc,
+}) {
   final utc = when.toUtc();
   // Start the search from the previous midnight UT, so a call late in the day
   // still finds today's dawn rather than tomorrow's.
   final from = _jd(DateTime.utc(utc.year, utc.month, utc.day));
   final at = GeoPosition(lon, lat, 0);
 
-  Station? one(StationKind kind, RiseSetTransitFlag what) {
+  // The convention applies to RISE and SET only. A transit is the body
+  // crossing the meridian — there is no limb and no refraction in that, so
+  // adding the flag there would be answering a question nobody asked.
+  final bend = convention == RiseConvention.hindu
+      ? RiseSetTransitFlag.SE_BIT_HINDU_RISING
+      : null;
+
+  Station? one(
+    StationKind kind,
+    RiseSetTransitFlag what, {
+    bool bendable = false,
+  }) {
     try {
       final jd = Sweph.swe_rise_trans(
         from,
         HeavenlyBody.SE_SUN,
         SwephFlag.SEFLG_SWIEPH,
-        what,
+        bendable && bend != null ? (what | bend) : what,
         at,
         0, // atmospheric pressure: 0 means "use the standard"
         0, // temperature, likewise
@@ -96,9 +135,9 @@ List<Station> stationsFor(DateTime when, double lat, double lon) {
   }
 
   final found = <Station>[
-    ?one(StationKind.dawn, RiseSetTransitFlag.SE_CALC_RISE),
+    ?one(StationKind.dawn, RiseSetTransitFlag.SE_CALC_RISE, bendable: true),
     ?one(StationKind.noon, RiseSetTransitFlag.SE_CALC_MTRANSIT),
-    ?one(StationKind.dusk, RiseSetTransitFlag.SE_CALC_SET),
+    ?one(StationKind.dusk, RiseSetTransitFlag.SE_CALC_SET, bendable: true),
     ?one(StationKind.midnight, RiseSetTransitFlag.SE_CALC_ITRANSIT),
   ];
   found.sort((a, b) => a.at.compareTo(b.at));

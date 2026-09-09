@@ -2,14 +2,14 @@
 //
 // The tabs.
 //
-// Two for now, and both are instruments. Her writing and her videos will be a
-// third when the journal is mounted — deliberately not a stub in the bar
-// meanwhile, because a tab that opens onto "coming soon" is worse than a tab
-// that is not there yet.
+// Three instruments. Her writing and her videos will be a fourth when the
+// journal is mounted — deliberately not a stub in the bar meanwhile, because a
+// tab that opens onto "coming soon" is worse than a tab that is not there yet.
 import 'package:flutter/material.dart';
 
 import 'chart.dart';
 import 'home.dart';
+import 'hours.dart';
 
 class Shell extends StatefulWidget {
   const Shell({super.key});
@@ -30,7 +30,7 @@ class _ShellState extends State<Shell> {
         // tab that forgets what you did on it is a tab you stop using.
         child: IndexedStack(
           index: _tab,
-          children: const [StationsScreen(), ChartScreen()],
+          children: const [StationsScreen(), HoursScreen(), ChartScreen()],
         ),
       ),
       bottomNavigationBar: NavigationBar(
@@ -41,6 +41,11 @@ class _ShellState extends State<Shell> {
             icon: Icon(Icons.wb_twilight_outlined),
             selectedIcon: Icon(Icons.wb_twilight),
             label: 'Stations',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.schedule_outlined),
+            selectedIcon: Icon(Icons.schedule),
+            label: 'Hours',
           ),
           NavigationDestination(
             icon: Icon(Icons.brightness_3_outlined),
