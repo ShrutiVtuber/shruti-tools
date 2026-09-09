@@ -13,7 +13,7 @@
 // One and two are the reason it exists. Three is why somebody keeps it.
 import 'package:flutter/material.dart';
 
-import 'screens/home.dart';
+import 'screens/shell.dart';
 import 'services/ephemeris.dart';
 import 'theme/theme.dart';
 
@@ -35,7 +35,7 @@ class ShrutiTools extends StatelessWidget {
       title: "Shruti's Tools",
       debugShowCheckedModeBanner: false,
       theme: shrutiTheme(),
-      home: const HomeScreen(),
+      home: const Shell(),
     );
   }
 }

@@ -20,14 +20,14 @@ import '../theme/tokens.dart';
 import '../widgets/eyebrow.dart';
 import 'pick_place.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class StationsScreen extends StatefulWidget {
+  const StationsScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<StationsScreen> createState() => _StationsScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _StationsScreenState extends State<StationsScreen> {
   // London only until somebody chooses. Named on screen either way — a
   // station table for the wrong city is indistinguishable from a right one
   // until somebody misses a dawn.
@@ -88,47 +88,38 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final next = nextStation(_today, DateTime.now());
-    return Scaffold(
-      body: SafeArea(
-        child: RefreshIndicator(
-          color: Tone.accent,
-          backgroundColor: Tone.card,
-          onRefresh: () async {
-            _today = stationsFor(DateTime.now(), _place.lat, _place.lon);
-            await _refreshLive();
-          },
-          child: ListView(
-            padding: const EdgeInsets.fromLTRB(
-              Gap.lg,
-              Gap.xl,
-              Gap.lg,
-              Gap.huge,
-            ),
-            children: [
-              Text(
-                "Shruti's Tools",
-                style: Theme.of(context).textTheme.displaySmall,
-              ),
-              const SizedBox(height: Gap.xs),
-              Text(
-                'Instruments for magick',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              const SizedBox(height: Gap.xl),
-              _NextStationCard(
-                next: next,
-                place: _place,
-                onChangePlace: _choosePlace,
-              ),
-              const SizedBox(height: Gap.md),
-              _LiveCard(live: _live),
-              const SizedBox(height: Gap.xl),
-              const Eyebrow('Today'),
-              const SizedBox(height: Gap.sm),
-              _StationTable(stations: _today, next: next, place: _place),
-            ],
+    return RefreshIndicator(
+      color: Tone.accent,
+      backgroundColor: Tone.card,
+      onRefresh: () async {
+        _today = stationsFor(DateTime.now(), _place.lat, _place.lon);
+        await _refreshLive();
+      },
+      child: ListView(
+        padding: const EdgeInsets.fromLTRB(Gap.lg, Gap.xl, Gap.lg, Gap.huge),
+        children: [
+          Text(
+            "Shruti's Tools",
+            style: Theme.of(context).textTheme.displaySmall,
           ),
-        ),
+          const SizedBox(height: Gap.xs),
+          Text(
+            'Instruments for magick',
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+          const SizedBox(height: Gap.xl),
+          _NextStationCard(
+            next: next,
+            place: _place,
+            onChangePlace: _choosePlace,
+          ),
+          const SizedBox(height: Gap.md),
+          _LiveCard(live: _live),
+          const SizedBox(height: Gap.xl),
+          const Eyebrow('Today'),
+          const SizedBox(height: Gap.sm),
+          _StationTable(stations: _today, next: next, place: _place),
+        ],
       ),
     );
   }

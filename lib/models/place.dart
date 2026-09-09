@@ -77,4 +77,12 @@ class Place {
   /// An instant, told in this place's own time.
   tz.TZDateTime tell(DateTime instant) =>
       tz.TZDateTime.from(instant.toUtc(), location);
+
+  /// A wall-clock reading HERE, as an instant.
+  ///
+  /// The other direction, and the one a birth time needs: a certificate says
+  /// "14:30" and means 14:30 in the place it was written. The same reading is
+  /// a different moment in every zone, and summer time moves it again.
+  tz.TZDateTime at(int year, int month, int day, int hour, int minute) =>
+      tz.TZDateTime(location, year, month, day, hour, minute);
 }
