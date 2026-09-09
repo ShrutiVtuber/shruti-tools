@@ -89,6 +89,7 @@ screen has to offer and it is easier to keep than to reconstruct:
 |---|---|---|
 | a solar station — the adorations | on the device | a local schedule, no server |
 | a planetary hour beginning, or one ruler in particular | on the device | as above |
+| an ingress, a station, a new or full moon | on the device | as above |
 | she has gone live | `/api/live` | a push, while it is still true |
 | a new video | `/api/videos` | a push |
 | a new piece of writing | the journal, once it is mounted | a push |
