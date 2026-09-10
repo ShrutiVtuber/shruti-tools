@@ -18,6 +18,7 @@ import '../services/practice.dart';
 import '../theme/tokens.dart';
 import '../widgets/brand.dart';
 import '../widgets/parts.dart';
+import 'sky_drawer.dart';
 import '../widgets/motifs.dart';
 import '../widgets/forms.dart';
 import '../theme/glyph.dart';
@@ -53,6 +54,13 @@ class _WriteScreenState extends State<WriteScreen> {
   List<SkyDay> _sky = const [];
   List<SkyEvent> _skyEvents = const [];
   Chart? _day;
+
+  /// Which signs of this period already have words in them.
+  ///
+  /// ⚠ The one fact that turns a row of identical chips into a piece of work
+  /// in progress. Without it, somebody writing twelve has to open all twelve
+  /// to find the four they have done.
+  Set<String> _written = const {};
 
   /// ⚠ Computed HERE, not fetched. The app carries Swiss Ephemeris, so the
   /// wheel draws a whole month on a train with no signal — which is the reason
@@ -121,14 +129,17 @@ class _WriteScreenState extends State<WriteScreen> {
       _trouble = null;
     });
     try {
-      final body = await _room.draft(
+      final answer = await _room.draft(
         period: _period,
         covers: _covers,
         sign: _sign,
       );
       if (!mounted) return;
-      _text.text = body;
-      setState(() => _said = body.trim().isEmpty ? '' : 'kept');
+      _text.text = answer.bodyMd;
+      setState(() {
+        _written = answer.written.toSet();
+        _said = answer.bodyMd.trim().isEmpty ? '' : 'kept';
+      });
     } on PracticeTrouble catch (e) {
       if (mounted) setState(() => _trouble = e.message);
     } finally {
@@ -137,6 +148,15 @@ class _WriteScreenState extends State<WriteScreen> {
   }
 
   Future<void> _keep() async {
+    // ⚠ The tick has to appear the moment the words are kept. Waiting for the
+    // next fetch means writing a sign, looking up, and seeing nothing changed.
+    setState(() {
+      if (_text.text.trim().isEmpty) {
+        _written = {..._written}..remove(_sign);
+      } else {
+        _written = {..._written, _sign};
+      }
+    });
     try {
       final id = await _room.keep(
         period: _period,
@@ -182,6 +202,15 @@ class _WriteScreenState extends State<WriteScreen> {
         title: 'Write a reading',
         hour: false,
         actions: [
+          // ⚠ The whole ephemeris, behind a button, as a sheet you close.
+          // Her words: a reference you can open and shut while keeping the
+          // working area clear. Below the box it would be a scroll away at
+          // exactly the moment somebody wants to check a degree.
+          Tap(
+            icon: Icons.menu_book_outlined,
+            label: 'The sky in full',
+            onTap: () => showSkyDrawer(context, opensOn: _span().$1),
+          ),
           Push(
             label: 'Save draft',
             weight: Weight.text,
@@ -230,18 +259,43 @@ class _WriteScreenState extends State<WriteScreen> {
             ),
 
             const SizedBox(height: Gap.lg),
-            const Eyebrow('Which sign'),
+            Row(
+              children: [
+                const Eyebrow('Which sign'),
+                const Spacer(),
+                // ⚠ The count of what is done, where somebody choosing the
+                // next sign is already looking. A progress bar would say the
+                // same thing louder and no more usefully.
+                Text(
+                  _written.isEmpty
+                      ? 'nothing written yet'
+                      : '${_written.length} of 12 written',
+                  style: TextStyle(
+                    fontFamily: Face.body,
+                    fontFamilyFallback: const [Face.glyph],
+                    fontSize: Type.caption,
+                    color: _written.length >= 12 ? Gilt.gilt : Tone.faint,
+                    fontFeatures: const [FontFeature.tabularFigures()],
+                  ),
+                ),
+              ],
+            ),
             const SizedBox(height: Gap.sm),
             TagRow(
               children: [
                 for (final s in zodiac)
                   Tag(
                     label: titled(s),
-                    leading: Glyph(
-                      signGlyph[s] ?? '',
-                      size: 13,
-                      color: _sign == s ? Tone.accent : Gilt.gilt,
-                    ),
+                    // ⚠ A tick, not only a tint: which signs are done has to
+                    // survive a screen somebody cannot see colour on, and it
+                    // is the whole reason to look at this row.
+                    leading: _written.contains(s)
+                        ? const Icon(Icons.check, size: 13, color: Gilt.gilt)
+                        : Glyph(
+                            signGlyph[s] ?? '',
+                            size: 13,
+                            color: _sign == s ? Tone.accent : Tone.faint,
+                          ),
                     selected: _sign == s,
                     onTap: () {
                       // ⚠ Keep what is on screen before moving: the box is

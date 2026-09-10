@@ -24,12 +24,21 @@ import '../widgets/eyebrow.dart';
 import '../widgets/parts.dart';
 import '../widgets/period_wheel.dart';
 
-Future<void> showSkyDrawer(BuildContext context) => Navigator.of(context).push(
-  MaterialPageRoute(fullscreenDialog: true, builder: (_) => const SkyDrawer()),
-);
+/// [opensOn] is the month to land on — the period being written for, when it
+/// is opened from the writing screen. ⚠ Opening on "today" beside a reading
+/// for next March is a reference for the wrong sky, which is worse than none.
+Future<void> showSkyDrawer(BuildContext context, {DateTime? opensOn}) =>
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        fullscreenDialog: true,
+        builder: (_) => SkyDrawer(opensOn: opensOn),
+      ),
+    );
 
 class SkyDrawer extends StatefulWidget {
-  const SkyDrawer({super.key});
+  const SkyDrawer({super.key, this.opensOn});
+
+  final DateTime? opensOn;
 
   @override
   State<SkyDrawer> createState() => _SkyDrawerState();
@@ -37,8 +46,8 @@ class SkyDrawer extends StatefulWidget {
 
 class _SkyDrawerState extends State<SkyDrawer> {
   late DateTime _month = DateTime.utc(
-    DateTime.now().year,
-    DateTime.now().month,
+    (widget.opensOn ?? DateTime.now()).year,
+    (widget.opensOn ?? DateTime.now()).month,
   );
   bool _retrogradesOnly = false;
   List<SkyDay> _days = const [];

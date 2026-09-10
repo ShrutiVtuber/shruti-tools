@@ -39,6 +39,8 @@ class Work {
     required this.mine,
     required this.opening,
     required this.submittedAt,
+    this.hidden = false,
+    this.hiddenBy = '',
     this.readings = const [],
     this.comments = const [],
   });
@@ -56,6 +58,8 @@ class Work {
     mine: j['mine'] as bool? ?? false,
     opening: j['opening'] as String? ?? '',
     submittedAt: j['submittedAt'] as String?,
+    hidden: j['hidden'] as bool? ?? false,
+    hiddenBy: j['hiddenBy'] as String? ?? '',
     readings: [
       for (final r in (j['readings'] as List? ?? []))
         Reading.fromJson(r as Map<String, dynamic>),
@@ -80,6 +84,13 @@ class Work {
   final bool mine;
   final String opening;
   final String? submittedAt;
+
+  /// ⚠ Off the feed, and WHY. A takedown by three strangers is provisional and
+  /// waiting for her; a decision of hers is settled; an author withdrawing
+  /// their own work is neither — and the three read very differently to the
+  /// person who wrote it.
+  final bool hidden;
+  final String hiddenBy;
   final List<Reading> readings;
   final List<Remark> comments;
 
@@ -114,6 +125,7 @@ class Remark {
     required this.bodyMd,
     required this.at,
     required this.mine,
+    this.fromDiscord = false,
   });
 
   factory Remark.fromJson(Map<String, dynamic> j) => Remark(
@@ -122,6 +134,7 @@ class Remark {
     bodyMd: j['bodyMd'] as String? ?? '',
     at: j['at'] as String?,
     mine: j['mine'] as bool? ?? false,
+    fromDiscord: j['fromDiscord'] as bool? ?? false,
   );
 
   final int id;
@@ -129,6 +142,11 @@ class Remark {
   final String bodyMd;
   final String? at;
   final bool mine;
+
+  /// ⚠ Bridged from Discord, and said so. There is no site account behind it —
+  /// nobody signed up, agreed to anything, or can be suspended — so it carries
+  /// the name Discord gave it rather than being attributed to somebody real.
+  final bool fromDiscord;
 }
 
 extension _Titled on String {
@@ -221,16 +239,26 @@ class Practice {
   }
 
   /// What the account holds for one sign of one period.
-  Future<String> draft({
+  /// This sign's words, and which signs of the period already have any.
+  ///
+  /// ⚠ Both in one call. The count is what turns a row of identical chips into
+  /// a piece of work in progress — without it somebody writing twelve has to
+  /// open all twelve to find the four they have done.
+  Future<({String bodyMd, List<String> written})> draft({
     required String period,
     required String covers,
     required String sign,
   }) async {
-    final body = await _send(
-      'GET',
-      '/api/practice/draft?period=$period&covers=$covers&sign=$sign',
+    final body =
+        await _send(
+              'GET',
+              '/api/practice/draft?period=$period&covers=$covers&sign=$sign',
+            )
+            as Map<String, dynamic>;
+    return (
+      bodyMd: body['bodyMd'] as String? ?? '',
+      written: [for (final s in (body['written'] as List? ?? [])) s as String],
     );
-    return (body as Map<String, dynamic>)['bodyMd'] as String? ?? '';
   }
 
   /// Keep what is being written. Same draft as the website's desk.
@@ -268,4 +296,47 @@ class Practice {
 
   Future<void> unsay(int commentId) async =>
       _send('DELETE', '/api/practice/comments/$commentId');
+
+  /// Say a piece of work should not be there.
+  ///
+  /// ⚠ The answer is the same words whether it was the first report or the
+  /// fourth. Telling somebody "you already reported this" invites a second
+  /// account, and telling them "that hid it" tells them exactly how many
+  /// friends it takes.
+  Future<void> report(
+    int workId, {
+    required String reason,
+    String detail = '',
+  }) => _send('POST', '/api/practice/$workId/report', {
+    'reason': reason,
+    'detail': detail,
+  });
+
+  Future<void> reportComment(
+    int commentId, {
+    required String reason,
+    String detail = '',
+  }) => _send('POST', '/api/practice/comments/$commentId/report', {
+    'reason': reason,
+    'detail': detail,
+  });
+
+  /// An author taking their own work back. Not a moderation event, and it does
+  /// not appear in her queue as though it were.
+  Future<void> withdraw(int workId) =>
+      _send('POST', '/api/practice/$workId/withdraw');
 }
+
+/// What a report can say, in the order the room actually needs them.
+///
+/// ⚠ The same list as the website and the backend. Three lists of reasons is
+/// three ways for a queue to fill with "other".
+const reportReasons = <(String, String)>[
+  ('abuse', 'Aimed at a person'),
+  ('hate', 'Aimed at a group'),
+  ('sexual', 'Sexual, or involving a minor'),
+  ('spam', 'Spam or advertising'),
+  ('self-harm', 'Somebody who may need help'),
+  ('not-a-reading', 'Not a reading at all'),
+  ('other', 'Something else'),
+];

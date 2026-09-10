@@ -32,6 +32,10 @@ class _WorkScreenState extends State<WorkScreen> {
   bool _busy = false;
   String? _trouble;
 
+  /// Which sign of a set is on screen. Null until the work arrives, and then
+  /// the first one — never a sign the work does not contain.
+  String? _showing;
+
   Practice get _room => Practice(AccountScope.of(context));
 
   @override
@@ -74,11 +78,154 @@ class _WorkScreenState extends State<WorkScreen> {
     }
   }
 
+  /// Say a piece of work should not be there.
+  ///
+  /// ⚠ The reason is a short list, not a free-text box. A queue of a hundred
+  /// paragraphs is a queue nobody reads; a queue of labelled reasons can be
+  /// taken in at a glance, which is what makes it get looked at at all.
+  Future<void> _askReport(Work work) async {
+    var reason = reportReasons.first.$1;
+    final detail = TextEditingController();
+
+    final sent = await showModalBottomSheet<bool>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Tone.card,
+      builder: (sheet) => StatefulBuilder(
+        builder: (context, setSheet) => SafeArea(
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(
+              Gap.lg,
+              0,
+              Gap.lg,
+              Gap.lg + MediaQuery.viewInsetsOf(context).bottom,
+            ),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(bottom: Gap.md),
+                    child: Hem(),
+                  ),
+                  Text(
+                    'Report this reading',
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  const SizedBox(height: Gap.sm),
+                  const Text(
+                    'It goes to Shruti. If a few people report the same thing '
+                    'it comes off the feed until she has looked.',
+                    style: TextStyle(
+                      fontFamily: Face.body,
+                      fontFamilyFallback: [Face.glyph],
+                      fontSize: Type.caption,
+                      height: 1.5,
+                      color: Tone.faint,
+                    ),
+                  ),
+                  const SizedBox(height: Gap.sm),
+                  for (final (value, label) in reportReasons)
+                    ChoiceRow(
+                      label: label,
+                      checked: reason == value,
+                      onChanged: (_) => setSheet(() => reason = value),
+                    ),
+                  const SizedBox(height: Gap.md),
+                  Field(
+                    label: 'Anything else she should know',
+                    controller: detail,
+                    multiline: true,
+                    rows: 2,
+                    maxLength: 1000,
+                  ),
+                  const SizedBox(height: Gap.lg),
+                  Push(
+                    label: 'Send the report',
+                    full: true,
+                    onTap: () => Navigator.of(sheet).pop(true),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    if (sent == true && mounted) {
+      try {
+        await _room.report(work.id, reason: reason, detail: detail.text);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Thank you — it has gone to Shruti.')),
+          );
+        }
+      } on PracticeTrouble catch (e) {
+        if (mounted) setState(() => _trouble = e.message);
+      }
+    }
+
+    detail.dispose();
+  }
+
+  /// An author taking their own work back.
+  Future<void> _askWithdraw(Work work) async {
+    final sure = await showDialog<bool>(
+      context: context,
+      builder: (dialog) => AlertDialog(
+        title: const Text('Take this down?'),
+        content: const Text(
+          'Nobody but you will see it. Nothing is deleted, and the comments '
+          'stay with it — you can ask Shruti to put it back.',
+        ),
+        actions: [
+          Push(
+            label: 'Leave it up',
+            weight: Weight.text,
+            onTap: () => Navigator.of(dialog).pop(false),
+          ),
+          Push(
+            label: 'Take it down',
+            weight: Weight.outlined,
+            destructive: true,
+            onTap: () => Navigator.of(dialog).pop(true),
+          ),
+        ],
+      ),
+    );
+    if (sure != true || !mounted) return;
+    try {
+      await _room.withdraw(work.id);
+      if (mounted) setState(() => _work = _room.read(work.id));
+    } on PracticeTrouble catch (e) {
+      if (mounted) setState(() => _trouble = e.message);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final signedIn = AccountScope.of(context).signedIn;
     return Scaffold(
-      appBar: const Bar(title: 'A reading', hour: false),
+      appBar: Bar(
+        title: 'A reading',
+        hour: false,
+        actions: [
+          FutureBuilder<Work>(
+            future: _work,
+            builder: (context, snap) {
+              final w = snap.data;
+              if (w == null) return const SizedBox.shrink();
+              return Tap(
+                icon: Icons.more_vert,
+                label: w.mine ? 'What to do with this' : 'Report this',
+                onTap: () => w.mine ? _askWithdraw(w) : _askReport(w),
+              );
+            },
+          ),
+        ],
+      ),
       body: SafeArea(
         child: FutureBuilder<Work>(
           future: _work,
@@ -106,6 +253,13 @@ class _WorkScreenState extends State<WorkScreen> {
               );
             }
             final w = snap.data!;
+            // ⚠ Settle the chosen sign the moment the work arrives. Left
+            // null, the guard below renders EVERY sign at once — which is
+            // exactly what the tabs exist to prevent, and it would only show
+            // up on a set.
+            if (w.series && _showing == null && w.readings.isNotEmpty) {
+              _showing = w.readings.first.sign;
+            }
             return ListView(
               padding: const EdgeInsets.fromLTRB(
                 Gap.gutter,
@@ -114,6 +268,35 @@ class _WorkScreenState extends State<WorkScreen> {
                 Gap.huge,
               ),
               children: [
+                // ⚠ The author is told what happened to their writing, and
+                // why. Somebody whose reading vanished with no explanation
+                // concludes the room ate it; "three people reported this and
+                // she has not looked yet" is a different sentence, and it is
+                // the true one.
+                if (w.hidden) ...[
+                  NoticeBar(
+                    tone: w.hiddenBy == 'author'
+                        ? BannerTone.note
+                        : BannerTone.caution,
+                    title: switch (w.hiddenBy) {
+                      'reports' => 'Off the feed while she looks',
+                      'author' => 'You took this down',
+                      _ => 'Shruti took this down',
+                    },
+                    text: switch (w.hiddenBy) {
+                      'reports' =>
+                        'Enough people reported it that it was hidden '
+                            'automatically. Shruti reads every report and '
+                            'either agrees or puts it straight back. Nothing '
+                            'has been deleted.',
+                      'author' =>
+                        'Only you can see it. Ask Shruti if you want it back '
+                            'up.',
+                      _ => 'Ask her why if you would like to know.',
+                    },
+                  ),
+                  const SizedBox(height: Gap.lg),
+                ],
                 Text(
                   'PRACTICE · ${w.series ? "${w.signs.length} SIGNS" : (w.signs.isEmpty ? periodLabel(w.period, w.covers).toUpperCase() : titled(w.signs.first).toUpperCase())}',
                   style: const TextStyle(
@@ -219,35 +402,65 @@ class _WorkScreenState extends State<WorkScreen> {
                 ),
 
                 const SizedBox(height: Gap.lg),
-                for (final r in w.readings) ...[
-                  Row(
+                // ⚠ A set is ONE piece of work — her words, "submitted, read
+                // and voted on as one" — so the signs are tabs rather than a
+                // scroll through twelve. Moving between them keeps your place.
+                //
+                // ⚠ Wraps rather than scrolls sideways: twelve chips on a
+                // phone is two rows, and a row that scrolls hides its own last
+                // sign.
+                if (w.series) ...[
+                  TagRow(
                     children: [
-                      Glyph(
-                        signGlyph[r.sign] ?? '',
-                        size: 15,
-                        color: Gilt.gilt,
-                      ),
-                      const SizedBox(width: 7),
-                      Text(
-                        r.signName.toUpperCase(),
-                        style: const TextStyle(
-                          fontFamily: Face.body,
-                          fontFamilyFallback: [Face.glyph],
-                          fontSize: Type.eyebrow,
-                          height: 1,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: 1.54,
-                          color: Tone.faint,
+                      for (final r in w.readings)
+                        Tag(
+                          label: r.signName,
+                          selected: _showing == r.sign,
+                          leading: Glyph(
+                            signGlyph[r.sign] ?? '',
+                            size: 13,
+                            color: _showing == r.sign ? Tone.accent : Gilt.gilt,
+                          ),
+                          onTap: () => setState(() => _showing = r.sign),
                         ),
-                      ),
                     ],
                   ),
-                  const SizedBox(height: Gap.sm),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: Gap.xl),
-                    child: Prose(text: r.bodyMd, drop: w.readings.length == 1),
-                  ),
+                  const SizedBox(height: Gap.lg),
                 ],
+                for (final r in w.readings)
+                  if (!w.series || _showing == r.sign) ...[
+                    if (!w.series)
+                      Row(
+                        children: [
+                          Glyph(
+                            signGlyph[r.sign] ?? '',
+                            size: 15,
+                            color: Gilt.gilt,
+                          ),
+                          const SizedBox(width: 7),
+                          Text(
+                            r.signName.toUpperCase(),
+                            style: const TextStyle(
+                              fontFamily: Face.body,
+                              fontFamilyFallback: [Face.glyph],
+                              fontSize: Type.eyebrow,
+                              height: 1,
+                              fontWeight: FontWeight.w600,
+                              letterSpacing: 1.54,
+                              color: Tone.faint,
+                            ),
+                          ),
+                        ],
+                      ),
+                    if (!w.series) const SizedBox(height: Gap.sm),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: Gap.xl),
+                      child: Prose(
+                        text: r.bodyMd,
+                        drop: w.readings.length == 1,
+                      ),
+                    ),
+                  ],
 
                 const Rule(mark: '♄'),
                 const SizedBox(height: Gap.lg),
