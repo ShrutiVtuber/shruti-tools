@@ -20,6 +20,8 @@ import '../services/periods.dart';
 import '../services/practice.dart';
 import '../theme/tokens.dart';
 import '../widgets/brand.dart';
+import '../widgets/content.dart';
+import '../widgets/forms.dart';
 import '../widgets/parts.dart';
 import 'account.dart';
 import 'practice_work.dart';
@@ -93,27 +95,31 @@ class _PracticeScreenState extends State<PracticeScreen> {
             style: TextStyle(color: Tone.soft, height: 1.45),
           ),
           const SizedBox(height: Gap.lg),
-          Wrap(
-            spacing: Gap.sm,
+          TagRow(
             children: [
               for (final (value, label) in const [
                 ('recent', 'Newest'),
                 ('top', 'Most voted'),
               ])
-                ChoiceChip(
-                  label: Text(label),
+                Tag(
+                  label: label,
+                  kind: ChipKind.filter,
                   selected: _sort == value,
-                  onSelected: (_) {
-                    setState(() {
-                      _sort = value;
-                      _feed = _room(context).feed(sort: value);
-                    });
-                  },
+                  onTap: () => setState(() {
+                    _sort = value;
+                    _feed = _room(context).feed(sort: value);
+                  }),
                 ),
             ],
           ),
           const SizedBox(height: Gap.lg),
-          ..._body(snap, empty: 'Nothing submitted yet. Be first.'),
+          ..._body(
+            snap,
+            emptyTitle: 'The room is quiet',
+            empty:
+                'Nobody has posted a reading this week. Yours would be '
+                'the first.',
+          ),
         ],
       ),
     ),
@@ -169,9 +175,10 @@ class _PracticeScreenState extends State<PracticeScreen> {
             const SizedBox(height: Gap.lg),
             ..._body(
               snap,
+              emptyTitle: 'Nothing written yet',
               empty:
-                  'Nothing yet. A draft here is the same draft as the one '
-                  'on the website.',
+                  'A draft kept here is the same draft as the one on the '
+                  'website — start on a phone, finish at a desk.',
             ),
           ],
         ),
@@ -179,27 +186,36 @@ class _PracticeScreenState extends State<PracticeScreen> {
     );
   }
 
-  List<Widget> _body(AsyncSnapshot<List<Work>> snap, {required String empty}) {
+  List<Widget> _body(
+    AsyncSnapshot<List<Work>> snap, {
+    required String emptyTitle,
+    required String empty,
+    Widget? emptyAction,
+  }) {
     if (snap.connectionState != ConnectionState.done) {
+      // ⚠ Three skeleton cards rather than a spinner. A spinner says "wait";
+      // a skeleton says what is coming and how much of it, and the screen does
+      // not jump when the answer lands.
       return const [
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: Gap.xl),
-          child: Text('Fetching…', style: TextStyle(color: Tone.faint)),
-        ),
+        Skeleton(height: 96),
+        SizedBox(height: Gap.sm),
+        Skeleton(height: 96),
+        SizedBox(height: Gap.sm),
+        Skeleton(height: 96),
       ];
     }
     if (snap.hasError) {
-      return [
-        Text(
-          '${snap.error}',
-          style: const TextStyle(color: Tone.live, height: 1.45),
-        ),
-      ];
+      return [Notice(tone: BannerTone.warning, text: '${snap.error}')];
     }
     final works = snap.data ?? const <Work>[];
     if (works.isEmpty) {
       return [
-        Text(empty, style: const TextStyle(color: Tone.faint, height: 1.45)),
+        EmptyState(
+          mark: '♄',
+          title: emptyTitle,
+          body: empty,
+          action: emptyAction,
+        ),
       ];
     }
     return [
@@ -209,85 +225,71 @@ class _PracticeScreenState extends State<PracticeScreen> {
           onOpen: () => Navigator.of(context)
               .push(MaterialPageRoute(builder: (_) => WorkScreen(id: w.id)))
               .then((_) => _again()),
+          // ⚠ Signed out the arrows are dimmed rather than hidden: somebody
+          // who can see that voting exists knows what an account is FOR,
+          // which a missing control never says.
+          onVote: AccountScope.of(context).signedIn && !w.isDraft
+              ? (_) async {
+                  await _room(context).vote(w.id);
+                  _again();
+                }
+              : null,
         ),
     ];
   }
 }
 
+/// One work in the room, in the shared card.
+///
+/// ⚠ The vote lives on the card and lands where it is: a vote that pushes to a
+/// detail screen is a vote nobody casts while scrolling, which is when people
+/// actually read a feed.
 class _WorkCard extends StatelessWidget {
-  const _WorkCard({required this.work, required this.onOpen});
+  const _WorkCard({required this.work, required this.onOpen, this.onVote});
 
   final Work work;
   final VoidCallback onOpen;
+  final ValueChanged<int>? onVote;
 
   @override
-  Widget build(BuildContext context) => InkWell(
-    onTap: onOpen,
-    borderRadius: BorderRadius.circular(Corner.md),
-    child: Container(
-      margin: const EdgeInsets.only(bottom: Gap.sm),
-      padding: const EdgeInsets.all(Gap.lg),
-      decoration: BoxDecoration(
-        color: Tone.card,
-        borderRadius: BorderRadius.circular(Corner.md),
-        border: Border.all(color: Tone.line),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  work.shownTitle,
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-              ),
-              if (work.isDraft)
-                const Text(
-                  'draft',
-                  style: TextStyle(color: Tone.rose, fontSize: 11),
-                )
-              else
-                Row(
-                  children: [
-                    Icon(
-                      work.voted ? Icons.favorite : Icons.favorite_border,
-                      size: 14,
-                      color: work.voted ? Tone.rose : Tone.faint,
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      '${work.votes}',
-                      style: const TextStyle(color: Tone.faint, fontSize: 12),
-                    ),
-                  ],
-                ),
-            ],
-          ),
-          const SizedBox(height: 2),
-          Text(
-            [
-              work.author,
-              // A series says so; a single reading names its sign.
-              if (work.series)
-                '${work.signs.length} signs'
-              else if (work.signs.isNotEmpty)
-                titled(work.signs.first),
-            ].join(' · '),
-            style: const TextStyle(color: Tone.faint, fontSize: 12),
-          ),
-          if (work.opening.trim().isNotEmpty) ...[
-            const SizedBox(height: Gap.sm),
-            Text(
-              work.opening.trim(),
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(color: Tone.soft, height: 1.45),
-            ),
-          ],
-        ],
-      ),
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.only(bottom: 10),
+    child: WorkCard(
+      title: work.shownTitle,
+      author: work.author,
+      mine: work.mine,
+      date: _when(work.submittedAt),
+      excerpt: work.opening.trim().isEmpty ? null : work.opening.trim(),
+      votes: work.votes,
+      myVote: work.voted ? 1 : 0,
+      comments: work.comments.length,
+      status: work.isDraft ? 'draft' : (work.mine ? 'posted' : null),
+      sign: work.series
+          ? '${work.signs.length} signs'
+          : (work.signs.isEmpty ? null : titled(work.signs.first)),
+      onOpen: onOpen,
+      onVote: onVote,
     ),
   );
+
+  static String _when(String? at) {
+    if (at == null) return 'draft';
+    final t = DateTime.tryParse(at)?.toLocal();
+    if (t == null) return '';
+    const months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+    return '${t.day} ${months[t.month - 1]}';
+  }
 }

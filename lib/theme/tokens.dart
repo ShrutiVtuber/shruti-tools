@@ -134,6 +134,32 @@ abstract final class Gap {
 /// ⚠ Rounder than the website's 4 / 10 / 16, deliberately: this is a phone, it
 /// is Material 3, and her line is soft. Anything SHARED with the site — an
 /// email, a share image — keeps the site's radii, not these.
+/// The type scale, named as the design system names it.
+///
+/// ⚠ Sizes, not styles. A style pairs a size with a family, a weight and a
+/// colour, and those live in `theme.dart` — this is here so a widget that
+/// genuinely needs a bare number reaches for the same number as the widget
+/// beside it.
+abstract final class Type {
+  static const masthead = 34.0;
+  static const display = 28.0;
+  static const title = 22.0;
+  static const heading = 17.0;
+  static const prose = 17.0;
+  static const body = 16.0;
+  static const label = 14.0;
+  static const caption = 13.0;
+
+  /// Times, degrees, counts.
+  static const data = 15.0;
+
+  /// The stations table and the ephemeris. ⚠ Dense on purpose.
+  static const dataDense = 13.0;
+
+  /// Uppercase only.
+  static const eyebrow = 11.0;
+}
+
 abstract final class Corner {
   /// Chips, buttons, inputs.
   static const sm = 8.0;

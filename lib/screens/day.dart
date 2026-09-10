@@ -17,8 +17,10 @@ import '../services/settings.dart';
 import '../services/stations.dart';
 import '../theme/tokens.dart';
 import '../widgets/brand.dart';
+import '../widgets/forms.dart';
 import '../widgets/parts.dart';
 import 'events.dart';
+import 'sky_drawer.dart';
 import 'home.dart';
 import 'hours.dart';
 
@@ -34,7 +36,17 @@ class _SkyScreenState extends State<SkyScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: Bar(title: 'Sky', subtitle: SettingsScope.of(context).place.name),
+    appBar: Bar(
+      title: 'Sky',
+      subtitle: SettingsScope.of(context).place.name,
+      actions: [
+        Tap(
+          icon: Icons.menu_book_outlined,
+          label: 'Sky drawer',
+          onTap: () => showSkyDrawer(context),
+        ),
+      ],
+    ),
     body: Column(
       children: [
         // Sky's own surface: the day as an arc, the counterpart to Home's plate.

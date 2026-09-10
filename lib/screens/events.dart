@@ -7,8 +7,8 @@ import '../models/place.dart';
 import '../services/events.dart';
 import '../services/ephemeris.dart';
 import '../services/settings.dart';
+import '../theme/glyph.dart';
 import '../theme/tokens.dart';
-import '../widgets/eyebrow.dart';
 import '../widgets/parts.dart';
 
 class EventsScreen extends StatefulWidget {
@@ -49,17 +49,13 @@ class _EventsScreenState extends State<EventsScreen> {
     // everywhere, and their instants do not depend on where anyone is.
     final place = SettingsScope.of(context).place;
     return ListView(
-      padding: const EdgeInsets.fromLTRB(Gap.lg, Gap.xl, Gap.lg, Gap.huge),
+      padding: const EdgeInsets.fromLTRB(
+        Gap.gutterDense,
+        Gap.md,
+        Gap.gutterDense,
+        Gap.huge,
+      ),
       children: [
-        Text('What next', style: Theme.of(context).textTheme.displaySmall),
-        const SizedBox(height: Gap.xs),
-        Text(
-          'Ingresses, stations and lunations — computed here, so this page '
-          'works with no signal.',
-          style: Theme.of(context).textTheme.bodyMedium,
-        ),
-        const SizedBox(height: Gap.lg),
-
         Segmented<int>(
           options: const [(7, 'Week'), (30, 'Month'), (90, 'Season')],
           chosen: _days,
@@ -68,26 +64,32 @@ class _EventsScreenState extends State<EventsScreen> {
             _compute();
           },
         ),
-        const SizedBox(height: Gap.xl),
+        const SizedBox(height: Gap.md),
 
         if (_working)
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: Gap.xxl),
-            child: Center(child: CircularProgressIndicator(color: Tone.accent)),
+          const Column(
+            children: [
+              Skeleton(height: 74),
+              SizedBox(height: 10),
+              Skeleton(height: 74),
+              SizedBox(height: 10),
+              Skeleton(height: 74),
+            ],
           )
-        // ⚠ Authored, not "No data". A quiet sky is a fact about the sky,
-        // and a reader should be told which quiet they are looking at.
+        // ⚠ Authored, not "No data". A quiet sky is a fact about the sky, and
+        // a reader should be told which quiet they are looking at.
         else if (_events.isEmpty)
           EmptyState(
             mark: '♄',
-            title: 'The sky is quiet',
-            body:
-                'Nothing ingresses, stations or lunates in the next '
-                '$_days days. That is not an error — some stretches are '
-                'simply uneventful, and that is worth knowing too.',
+            title: 'Nothing in the next $_days days',
+            body: 'The sky is quiet. That happens, and it is not an error.',
           )
         else
-          ..._grouped(context, place),
+          for (final e in _events)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: _Coming(event: e, place: place),
+            ),
 
         const SizedBox(height: Gap.xxl),
         Provenance(
@@ -104,78 +106,88 @@ class _EventsScreenState extends State<EventsScreen> {
       ],
     );
   }
-
-  /// Grouped by day, because "what is happening this week" is read a day at a
-  /// time and a flat list of forty rows is not read at all.
-  List<Widget> _grouped(BuildContext context, Place place) {
-    final out = <Widget>[];
-    String? lastDay;
-    for (final e in _events) {
-      final there = place.tell(e.at);
-      final day = '${there.year}-${there.month}-${there.day}';
-      if (day != lastDay) {
-        if (lastDay != null) out.add(const SizedBox(height: Gap.lg));
-        out.add(
-          Eyebrow(
-            '${_weekday(there.weekday)} '
-            '${there.day} ${_month(there.month)}',
-          ),
-        );
-        out.add(const SizedBox(height: Gap.sm));
-        lastDay = day;
-      }
-      out.add(_EventRow(event: e, place: place));
-      out.add(const SizedBox(height: Gap.sm));
-    }
-    return out;
-  }
 }
 
-class _EventRow extends StatelessWidget {
-  const _EventRow({required this.event, required this.place});
+/// One thing the sky is about to do.
+///
+/// ⚠ A station is CAUTION and everything else is plain — and the caution is a
+/// rose ring and a rose mark and the word "stations", never the tint alone.
+class _Coming extends StatelessWidget {
+  const _Coming({required this.event, required this.place});
 
   final SkyEvent event;
   final Place place;
 
   @override
   Widget build(BuildContext context) {
+    final loud =
+        event.kind == EventKind.retrograde || event.kind == EventKind.direct;
     final there = place.tell(event.at);
-    final notable =
-        event.kind == EventKind.newMoon ||
-        event.kind == EventKind.fullMoon ||
-        event.kind == EventKind.retrograde ||
-        event.kind == EventKind.direct;
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: Gap.lg, vertical: Gap.md),
-      decoration: BoxDecoration(
-        color: Tone.card,
-        borderRadius: BorderRadius.circular(Corner.sm),
-        border: Border.all(color: notable ? Tone.lineStrong : Tone.line),
-      ),
+    return Pressable(
+      tone: loud ? Surface.warning : Surface.plain,
+      padding: const EdgeInsets.all(14),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            width: 28,
-            child: Text(
-              event.glyph,
-              style: TextStyle(
-                fontFamily: 'AstroSymbols',
-                fontSize: 17,
-                color: notable ? Tone.accent : Tone.soft,
+          Container(
+            width: 34,
+            height: 34,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: Tone.inset,
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: loud ? Tone.rose.withValues(alpha: 0.4) : Tone.line,
               ),
             ),
-          ),
-          Expanded(
-            child: Text(
-              event.title,
-              style: Theme.of(context).textTheme.bodyLarge,
+            child: Glyph(
+              event.glyph,
+              size: 15,
+              color: loud ? Tone.rose : Gilt.gilt,
             ),
           ),
-          Text(
-            '${there.hour.toString().padLeft(2, '0')}:'
-            '${there.minute.toString().padLeft(2, '0')}',
-            style: Theme.of(context).textTheme.bodySmall!.copyWith(
-              fontFeatures: const [FontFeature.tabularFigures()],
+          const SizedBox(width: Gap.md),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '${_weekday(there.weekday)} ${there.day} '
+                          '${_month(there.month)}'
+                      .toUpperCase(),
+                  style: TextStyle(
+                    fontFamily: Face.body,
+                    fontSize: Type.eyebrow,
+                    height: 1,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 1.54,
+                    color: loud ? Tone.rose : Tone.faint,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  event.title,
+                  style: const TextStyle(
+                    fontFamily: Face.display,
+                    fontSize: 17,
+                    height: 1.3,
+                    fontWeight: FontWeight.w500,
+                    color: Tone.ink,
+                  ),
+                ),
+                const SizedBox(height: 3),
+                Text(
+                  '${there.hour.toString().padLeft(2, "0")}:'
+                  '${there.minute.toString().padLeft(2, "0")} ${place.shortName}',
+                  style: const TextStyle(
+                    fontFamily: Face.body,
+                    fontSize: Type.caption,
+                    height: 1.4,
+                    color: Tone.faint,
+                    fontFeatures: [FontFeature.tabularFigures()],
+                  ),
+                ),
+              ],
             ),
           ),
         ],

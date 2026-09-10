@@ -17,6 +17,10 @@ import '../services/periods.dart';
 import '../services/practice.dart';
 import '../theme/tokens.dart';
 import '../widgets/brand.dart';
+import '../widgets/parts.dart';
+import '../widgets/motifs.dart';
+import '../widgets/forms.dart';
+import '../theme/glyph.dart';
 import '../models/place.dart';
 import '../services/chart.dart';
 import '../widgets/period_events.dart';
@@ -174,21 +178,36 @@ class _WriteScreenState extends State<WriteScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const Bar(title: 'Write a reading', hour: false),
+      appBar: Bar(
+        title: 'Write a reading',
+        hour: false,
+        actions: [
+          Push(
+            label: 'Save draft',
+            weight: Weight.text,
+            size: Bulk.sm,
+            onTap: _keep,
+          ),
+        ],
+      ),
       body: SafeArea(
         child: ListView(
-          padding: const EdgeInsets.fromLTRB(Gap.lg, Gap.lg, Gap.lg, Gap.huge),
+          padding: const EdgeInsets.fromLTRB(
+            Gap.gutter,
+            Gap.gutter,
+            Gap.gutter,
+            Gap.huge,
+          ),
           children: [
             const Eyebrow('Which period'),
             const SizedBox(height: Gap.sm),
-            Wrap(
-              spacing: Gap.sm,
+            TagRow(
               children: [
                 for (final p in periods)
-                  ChoiceChip(
-                    label: Text(titled(p)),
+                  Tag(
+                    label: titled(p),
                     selected: _period == p,
-                    onSelected: (_) {
+                    onTap: () {
                       setState(() {
                         _period = p;
                         _covers = currentCovers(p);
@@ -199,24 +218,31 @@ class _WriteScreenState extends State<WriteScreen> {
                   ),
               ],
             ),
-            const SizedBox(height: Gap.xs),
+            const SizedBox(height: Gap.sm),
             Text(
               periodLabel(_period, _covers),
-              style: const TextStyle(color: Tone.faint, fontSize: 13),
+              style: const TextStyle(
+                fontFamily: Face.body,
+                fontSize: Type.caption,
+                color: Tone.faint,
+              ),
             ),
 
             const SizedBox(height: Gap.lg),
             const Eyebrow('Which sign'),
             const SizedBox(height: Gap.sm),
-            Wrap(
-              spacing: Gap.xs,
-              runSpacing: Gap.xs,
+            TagRow(
               children: [
                 for (final s in zodiac)
-                  ChoiceChip(
-                    label: Text('${signGlyph[s]} ${titled(s)}'),
+                  Tag(
+                    label: titled(s),
+                    leading: Glyph(
+                      signGlyph[s] ?? '',
+                      size: 13,
+                      color: _sign == s ? Tone.accent : Gilt.gilt,
+                    ),
                     selected: _sign == s,
-                    onSelected: (_) {
+                    onTap: () {
                       // ⚠ Keep what is on screen before moving: the box is
                       // about to be replaced with another sign's words.
                       _keep().then((_) {
@@ -228,10 +254,13 @@ class _WriteScreenState extends State<WriteScreen> {
               ],
             ),
 
+            // ⚠ The sky goes ABOVE the box and the box goes below all of it,
+            // because the box has to be tall enough to write something
+            // meaningful in. Reference first, writing second.
             if (_day != null) ...[
-              const SizedBox(height: Gap.lg),
-              const Eyebrow('The sky that day'),
-              const SizedBox(height: Gap.sm),
+              const SizedBox(height: Gap.xl),
+              const SectionHeader(title: 'The sky that day'),
+              const SizedBox(height: Gap.md),
               AspectRatio(
                 aspectRatio: 1,
                 child: CustomPaint(
@@ -242,15 +271,15 @@ class _WriteScreenState extends State<WriteScreen> {
                 ),
               ),
               const SizedBox(height: Gap.lg),
-              const Eyebrow('What happens in it'),
-              const SizedBox(height: Gap.sm),
+              const SectionHeader(title: 'What happens in it'),
+              const SizedBox(height: Gap.md),
               PeriodEvents(events: _skyEvents),
             ],
 
             if (_sky.length > 1) ...[
-              const SizedBox(height: Gap.lg),
-              const Eyebrow('The sky across it'),
-              const SizedBox(height: Gap.sm),
+              const SizedBox(height: Gap.xl),
+              const SectionHeader(title: 'The sky across it'),
+              const SizedBox(height: Gap.md),
               AspectRatio(
                 aspectRatio: 1,
                 child: CustomPaint(
@@ -261,68 +290,81 @@ class _WriteScreenState extends State<WriteScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: Gap.xs),
+              const SizedBox(height: Gap.sm),
               const Text(
                 'Each body from where it starts to where it ends. Ticks are '
                 'sign changes, circles are stations. The inner ring is the '
-                'period day by day — the Moon\'s phase, not its position.',
-                style: TextStyle(color: Tone.faint, fontSize: 12, height: 1.5),
+                "period day by day — the Moon's phase, not its position.",
+                style: TextStyle(
+                  fontFamily: Face.body,
+                  fontSize: Type.caption,
+                  height: 1.5,
+                  color: Tone.faint,
+                ),
               ),
               const SizedBox(height: Gap.lg),
-              const Eyebrow('What happens in it'),
-              const SizedBox(height: Gap.sm),
+              const SectionHeader(title: 'What happens in it'),
+              const SizedBox(height: Gap.md),
               PeriodEvents(events: _skyEvents),
             ],
 
+            const SizedBox(height: Gap.xl),
+            const Rule(),
             const SizedBox(height: Gap.lg),
             if (_loading)
-              const Text(
-                'Fetching your draft…',
-                style: TextStyle(color: Tone.faint),
-              )
+              const Skeleton(height: 260)
             else
-              TextField(
+              Field(
+                label: 'The reading',
                 controller: _text,
-                maxLines: null,
-                minLines: 12,
-                textCapitalization: TextCapitalization.sentences,
+                multiline: true,
+                rows: 12,
+                maxLength: 4000,
+                counter: true,
+                hint:
+                    'A few hundred words on one sky. It does not have to be '
+                    'right.',
+                helper: _said.isEmpty ? null : _said,
                 onChanged: (_) => setState(() => _said = 'not kept yet'),
-                decoration: const InputDecoration(
-                  hintText: 'What does this sky ask of this sign?',
-                  alignLabelWithHint: true,
-                ),
               ),
-            const SizedBox(height: Gap.xs),
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    _said,
-                    style: const TextStyle(color: Tone.faint, fontSize: 12),
-                  ),
-                ),
-                TextButton(onPressed: _keep, child: const Text('Keep')),
-              ],
-            ),
 
             if (_trouble != null) ...[
-              const SizedBox(height: Gap.sm),
-              Text(
-                _trouble!,
-                style: const TextStyle(color: Tone.live, height: 1.45),
-              ),
+              const SizedBox(height: Gap.md),
+              Notice(tone: BannerTone.warning, text: _trouble!),
             ],
 
             const SizedBox(height: Gap.lg),
-            FilledButton(
-              onPressed: _sending ? null : _submit,
-              child: Text(_sending ? 'Sending…' : 'Submit for others to read'),
+            Row(
+              children: [
+                Expanded(
+                  child: Push(
+                    label: 'Save draft',
+                    weight: Weight.outlined,
+                    full: true,
+                    onTap: _keep,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Push(
+                    label: _sending ? 'Sending…' : 'Submit it',
+                    loading: _sending,
+                    full: true,
+                    onTap: _sending ? null : _submit,
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: Gap.sm),
             const Text(
-              'Everything you have written for this period goes together, as one '
-              'piece of work. Signs you left blank are not sent.',
-              style: TextStyle(color: Tone.faint, fontSize: 12, height: 1.5),
+              'Everything you have written for this period goes together, as '
+              'one piece of work. Signs you left blank are not sent.',
+              style: TextStyle(
+                fontFamily: Face.body,
+                fontSize: Type.caption,
+                height: 1.5,
+                color: Tone.faint,
+              ),
             ),
           ],
         ),

@@ -11,15 +11,21 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../services/settings.dart';
+import '../services/ephemeris.dart';
 import '../services/site.dart';
 import '../services/stations.dart';
 import '../theme/tokens.dart';
 import '../widgets/brand.dart';
+import '../widgets/motifs.dart';
+import '../widgets/forms.dart';
+import '../widgets/data.dart';
+import '../widgets/parts.dart';
 import 'account.dart';
 import 'licences.dart';
 import 'notifications.dart';
 import '../widgets/eyebrow.dart';
 import 'pick_place.dart';
+import 'sunrise.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -27,302 +33,212 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final settings = SettingsScope.of(context);
+    final account = AccountScope.of(context);
+    final wanted = NoticeScope.of(context);
+
     return Scaffold(
-      appBar: const Bar(title: 'Settings'),
+      appBar: const Bar(title: 'Settings', hour: false),
       body: ListView(
-        padding: const EdgeInsets.fromLTRB(Gap.lg, Gap.lg, Gap.lg, Gap.huge),
+        padding: const EdgeInsets.fromLTRB(
+          Gap.gutter,
+          Gap.gutter,
+          Gap.gutter,
+          Gap.huge,
+        ),
         children: [
-          // First, because it is the only thing here that reaches off the phone
-          // — and because somebody looking for "how do I sign in" looks in
-          // settings before anywhere else.
-          const Eyebrow('Your account'),
-          const SizedBox(height: Gap.sm),
-          Builder(
-            builder: (context) {
-              final account = AccountScope.of(context);
-              return _Card(
+          ListGroup(
+            children: [
+              ListRow(
+                label: 'Account',
+                description: account.signedIn
+                    ? (account.reader?.shownName ?? 'Signed in')
+                    : 'Not signed in',
+                value: account.signedIn ? 'Signed in' : null,
                 onTap: () => Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (_) =>
                         const Scaffold(body: SafeArea(child: AccountScreen())),
                   ),
                 ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            account.signedIn
-                                ? (account.reader?.shownName ?? 'Signed in')
-                                : 'Not signed in',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                          const SizedBox(height: 2),
-                          Text(
-                            account.signedIn
-                                ? 'The same account as shrutivtuber.com'
-                                : 'Sign in, or make one here',
-                            style: Theme.of(context).textTheme.bodySmall,
-                          ),
-                        ],
-                      ),
-                    ),
-                    const Icon(
-                      Icons.chevron_right,
-                      size: 18,
-                      color: Tone.faint,
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-          const SizedBox(height: Gap.sm),
-          _Note(
-            'Nothing else in the app needs one. Every instrument computes on '
-            'this phone and works signed out.',
-          ),
-
-          const SizedBox(height: Gap.xl),
-          const Eyebrow('Being told things'),
-          const SizedBox(height: Gap.sm),
-          Builder(
-            builder: (context) {
-              final wanted = NoticeScope.of(context);
-              return _Card(
+              ),
+              ListRow(
+                label: 'Notifications',
+                value: wanted.on ? 'On' : 'Off',
                 onTap: () => Navigator.of(context).push(
                   MaterialPageRoute(builder: (_) => const NoticesScreen()),
                 ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            wanted.on ? 'On' : 'Off',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                          const SizedBox(height: 2),
-                          Text(
-                            wanted.on
-                                ? 'Choose what reaches this phone'
-                                : 'Streams, videos, readings — pick which',
-                            style: Theme.of(context).textTheme.bodySmall,
-                          ),
-                        ],
-                      ),
-                    ),
-                    const Icon(
-                      Icons.chevron_right,
-                      size: 18,
-                      color: Tone.faint,
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-
-          const SizedBox(height: Gap.xl),
-          const Eyebrow('Where you are'),
-          const SizedBox(height: Gap.sm),
-          _Card(
-            onTap: () => pickPlaceInto(context),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        settings.place.name,
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        settings.placeChosen
-                            ? settings.place.zone
-                            : '${settings.place.zone} — not chosen yet',
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                    ],
-                  ),
-                ),
-                const Icon(Icons.chevron_right, size: 18, color: Tone.faint),
-              ],
-            ),
-          ),
-          const SizedBox(height: Gap.sm),
-          _Note(
-            'The stations and the planetary hours are computed for here, and '
-            'told in this timezone. Searching needs a connection; the '
-            'instruments do not.',
-          ),
-
-          const SizedBox(height: Gap.xl),
-          const Eyebrow('Where sunrise is'),
-          const SizedBox(height: Gap.sm),
-          _Card(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                for (final c in RiseConvention.values)
-                  RadioListTile<RiseConvention>(
-                    value: c,
-                    // ignore: deprecated_member_use
-                    groupValue: settings.convention,
-                    // ignore: deprecated_member_use
-                    onChanged: (v) =>
-                        v == null ? null : settings.setConvention(v),
-                    dense: true,
-                    contentPadding: EdgeInsets.zero,
-                    activeColor: Tone.accent,
-                    title: Text(
-                      c.label,
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                    subtitle: Text(
-                      c.detail,
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                  ),
-              ],
-            ),
-          ),
-          const SizedBox(height: Gap.sm),
-          _Note(
-            'The traditions disagree and the disagreement is real — about four '
-            'and a half minutes, which is enough to move a planetary hour '
-            'boundary, and so enough to change which planet rules the moment '
-            'you are standing in.',
-          ),
-
-          const SizedBox(height: Gap.xl),
-          const Eyebrow('Elsewhere'),
-          const SizedBox(height: Gap.sm),
-          _Link(label: 'The site', detail: 'shrutivtuber.com', url: siteOrigin),
-          const SizedBox(height: Gap.sm),
-          _Link(
-            label: 'The Discord',
-            detail: 'where a stream is announced first',
-            url: 'https://discord.gg/Q8FW4AZNS6',
-          ),
-          const SizedBox(height: Gap.sm),
-          _Link(
-            label: 'Twitch',
-            detail: 'where the streams happen',
-            url: 'https://www.twitch.tv/shrutivtuber',
-          ),
-
-          const SizedBox(height: Gap.xl),
-          const Eyebrow('About'),
-          const SizedBox(height: Gap.sm),
-          _Note(
-            "Astrolabe computes on this phone. The ephemeris is bundled, "
-            'so the stations, the hours, the chart and what the sky does next '
-            'all work with no signal and send nothing anywhere. The site is '
-            'asked only for what only she knows — whether she is streaming, and '
-            'what she has posted.',
-          ),
-          const SizedBox(height: Gap.sm),
-          _Link(
-            label: 'Source, and the licence',
-            detail: 'AGPL-3.0 — yours to read, change and run',
-            url: 'https://github.com/ShrutiVtuber/astrolabe',
-          ),
-
-          const SizedBox(height: Gap.xl),
-          const Eyebrow('About'),
-          const SizedBox(height: Gap.sm),
-          Builder(
-            builder: (context) => _Card(
-              onTap: () => Navigator.of(
-                context,
-              ).push(MaterialPageRoute(builder: (_) => const LicencesScreen())),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Licences and source',
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                        const SizedBox(height: 2),
-                        Text(
-                          'Free software, and the ephemeris it computes with',
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                      ],
-                    ),
-                  ),
-                  const Icon(Icons.chevron_right, size: 18, color: Tone.faint),
-                ],
               ),
+            ],
+          ),
+          const SizedBox(height: Gap.md),
+          const _Note(
+            'Nothing else in the app needs an account. Every instrument '
+            'computes on this phone and works signed out.',
+          ),
+
+          const SizedBox(height: Gap.xl),
+          const Eyebrow('The sky, where you are'),
+          const SizedBox(height: Gap.sm),
+          ListGroup(
+            children: [
+              ListRow(
+                label: 'Place',
+                description: 'Used for sunrise, sunset and the hours',
+                value: settings.placeChosen
+                    ? settings.place.shortName
+                    : '${settings.place.shortName} · not chosen',
+                onTap: () => pickPlaceInto(context),
+              ),
+              ListRow(
+                label: 'Sunrise convention',
+                description: 'Which moment starts the day',
+                value: settings.convention == RiseConvention.visibleDisc
+                    ? 'Upper limb'
+                    : 'Centre of disc',
+                onTap: () => showSunriseSheet(context),
+              ),
+              const ListRow(label: 'Zodiac', value: 'Tropical'),
+              const ListRow(label: 'Houses', value: 'Whole sign'),
+            ],
+          ),
+          const SizedBox(height: Gap.md),
+          const _Note(
+            'The stations and the planetary hours are computed for here and '
+            'told in this timezone. Searching for a place needs a connection; '
+            'the instruments never do.',
+          ),
+
+          const SizedBox(height: Gap.xl),
+          const Eyebrow('On this phone'),
+          const SizedBox(height: Gap.sm),
+          Pressable(
+            padding: const EdgeInsets.symmetric(horizontal: Gap.lg),
+            child: Column(
+              children: [
+                Switcher(
+                  label: 'Reduce motion',
+                  description:
+                      'Follows your system setting. Nothing in the app is '
+                      'only legible in motion.',
+                  value: MediaQuery.disableAnimationsOf(context),
+                  onChanged: null,
+                  enabled: false,
+                ),
+              ],
             ),
           ),
+
+          const SizedBox(height: Gap.xl),
+          const Eyebrow('Hers'),
+          const SizedBox(height: Gap.sm),
+          ListGroup(
+            children: [
+              _Away(
+                label: 'Support her work',
+                detail: 'Opens your browser',
+                url: '$siteOrigin/support',
+              ),
+              _Away(
+                label: 'The shop',
+                detail: 'Prints, and other made things',
+                url: '$siteOrigin/shop',
+              ),
+              _Away(
+                label: 'Classes',
+                detail: 'When they are open',
+                url: '$siteOrigin/classes',
+              ),
+              _Away(
+                label: 'shrutivtuber.com',
+                detail: 'The site itself',
+                url: siteOrigin,
+              ),
+              const _Away(
+                label: 'The Discord',
+                detail: 'Streams are announced here first',
+                url: 'https://discord.gg/Q8FW4AZNS6',
+              ),
+              const _Away(
+                label: 'Twitch',
+                detail: 'Where the streams happen',
+                url: 'https://www.twitch.tv/shrutivtuber',
+              ),
+            ],
+          ),
+          const SizedBox(height: Gap.sm),
+          const _Note(
+            'Nothing is bought inside Astrolabe. These open your browser, '
+            'where the address bar says whose checkout it is.',
+          ),
+
+          const SizedBox(height: Gap.xl),
+          const Eyebrow('About'),
+          const SizedBox(height: Gap.sm),
+          ListGroup(
+            children: [
+              ListRow(
+                label: 'Licences',
+                description:
+                    'AGPL-3.0 · free software, and the ephemeris it computes '
+                    'with',
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const LicencesScreen()),
+                ),
+              ),
+              const _Away(
+                label: 'Source',
+                detail: 'ShrutiVtuber/astrolabe',
+                url: 'https://github.com/ShrutiVtuber/astrolabe',
+              ),
+            ],
+          ),
+          const SizedBox(height: Gap.md),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: Gap.xs),
+            child: Column(
+              children: [
+                Fact(
+                  label: 'Astrolabe',
+                  value: appVersion,
+                  small: true,
+                  tone: Tone.faint,
+                ),
+                Fact(
+                  label: 'Ephemeris',
+                  value: engineVersion,
+                  small: true,
+                  tone: Tone.faint,
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: Gap.lg),
+          const Rule(),
         ],
       ),
     );
   }
 }
 
-class _Card extends StatelessWidget {
-  const _Card({required this.child, this.onTap});
-
-  final Widget child;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) => Material(
-    color: Tone.card,
-    borderRadius: BorderRadius.circular(Corner.md),
-    child: InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(Corner.md),
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(Gap.lg),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(Corner.md),
-          border: Border.all(color: Tone.line),
-        ),
-        child: child,
-      ),
-    ),
-  );
-}
-
-class _Link extends StatelessWidget {
-  const _Link({required this.label, required this.detail, required this.url});
+/// A row that leaves the app.
+///
+/// ⚠ The mark is the leave-the-app one rather than a chevron, and that is not
+/// decoration: everything that takes money leaves the app, and a reader is
+/// owed the knowledge before the tap rather than after it.
+class _Away extends StatelessWidget {
+  const _Away({required this.label, required this.detail, required this.url});
 
   final String label;
   final String detail;
   final String url;
 
   @override
-  Widget build(BuildContext context) => _Card(
+  Widget build(BuildContext context) => ListRow(
+    label: label,
+    description: detail,
+    external: true,
     onTap: () =>
         launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication),
-    child: Row(
-      children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(label, style: Theme.of(context).textTheme.bodyLarge),
-              const SizedBox(height: 2),
-              Text(detail, style: Theme.of(context).textTheme.bodySmall),
-            ],
-          ),
-        ),
-        const Icon(Icons.arrow_outward, size: 17, color: Tone.faint),
-      ],
-    ),
   );
 }
 

@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import '../services/isopsephy.dart';
 import '../services/packs.dart';
 import '../theme/tokens.dart';
+import '../widgets/parts.dart';
 import '../widgets/eyebrow.dart';
 
 class IsopsephyScreen extends StatefulWidget {
@@ -205,6 +206,21 @@ class _IsopsephyScreenState extends State<IsopsephyScreen> {
             'The list of languages needs a connection. Anything already '
             'downloaded still works.',
           ),
+
+        const SizedBox(height: Gap.xxl),
+        const Provenance(
+          facts: [
+            ('the rule', 'each script by its own table; no table crosses'),
+            (
+              '⚠ matches',
+              'only ever found inside one system — a Greek sum and a Hebrew '
+                  'sum that agree are a coincidence of two alphabets, not a '
+                  'correspondence',
+            ),
+            ('computed', 'on this phone · nothing typed here is sent'),
+            ('tables', 'downloaded once, then held on this phone'),
+          ],
+        ),
       ],
     );
   }

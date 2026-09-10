@@ -73,46 +73,58 @@ class SectionHeader extends StatelessWidget {
   );
 }
 
-/// The default surface.
+/// The app's surface.
 ///
-/// ⚠ Press DEEPENS, never lifts and never scales. A card that grows under a
-/// thumb is a toy; a card that darkens is a thing being pressed.
-class Plaque extends StatefulWidget {
-  const Plaque({
+/// ⚠ Press DEEPENS and strengthens the hairline. It never lifts and never
+/// scales — a card that grows under a thumb reads as a toy, and on a
+/// #121829 page a Material shadow barely reads anyway, so fill and hairline do
+/// the structural work.
+class Pressable extends StatefulWidget {
+  const Pressable({
     super.key,
     required this.child,
     this.onTap,
-    this.tone = PlaqueTone.plain,
+    this.tone = Surface.plain,
     this.padding = const EdgeInsets.all(Gap.lg),
+    this.hem = false,
   });
 
   final Widget child;
   final VoidCallback? onTap;
-  final PlaqueTone tone;
+  final Surface tone;
   final EdgeInsets padding;
 
+  /// A hairline along the top edge, in the ornament colour.
+  final bool hem;
+
   @override
-  State<Plaque> createState() => _PlaqueState();
+  State<Pressable> createState() => _PressableState();
 }
 
-/// ⚠ Four, and no more. Gold sells exactly one thing — an offer — and a fifth
-/// tone would be a fifth meaning nobody has been taught.
-enum PlaqueTone { plain, inset, offer, warning }
+/// ⚠ Four tones and no more. Gold sells exactly one thing — an offer — and a
+/// fifth tone would be a fifth meaning nobody has been taught.
+enum Surface { plain, inset, offer, warning }
 
-class _PlaqueState extends State<Plaque> {
+class _PressableState extends State<Pressable> {
   bool _down = false;
 
   @override
   Widget build(BuildContext context) {
     final pressed = _down && widget.onTap != null;
     final (fill, edge) = switch (widget.tone) {
-      PlaqueTone.plain => (
+      Surface.plain => (
         pressed ? Tone.veil : Tone.card,
         pressed ? Tone.lineStrong : Tone.line,
       ),
-      PlaqueTone.inset => (Tone.inset, Tone.line),
-      PlaqueTone.offer => (pressed ? Tone.veil : Tone.card, Gilt.dim),
-      PlaqueTone.warning => (Tone.liveWash, Tone.live.withValues(alpha: 0.5)),
+      Surface.inset => (Tone.inset, Tone.line),
+      Surface.offer => (
+        pressed ? Tone.veil : Tone.card,
+        Gilt.gilt.withValues(alpha: 0.38),
+      ),
+      Surface.warning => (
+        Tone.rose.withValues(alpha: 0.10),
+        Tone.rose.withValues(alpha: 0.40),
+      ),
     };
 
     return GestureDetector(
@@ -129,13 +141,28 @@ class _PlaqueState extends State<Plaque> {
       child: AnimatedContainer(
         duration: Motion.of(context, Motion.quick),
         curve: Motion.ease,
-        padding: widget.padding,
+        clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
           color: fill,
           borderRadius: BorderRadius.circular(Corner.md),
           border: Border.all(color: edge),
+          boxShadow: widget.tone == Surface.inset
+              ? null
+              : const [
+                  BoxShadow(
+                    color: Color(0x52000000),
+                    blurRadius: 2,
+                    offset: Offset(0, 1),
+                  ),
+                ],
         ),
-        child: widget.child,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            if (widget.hem) const Hem(),
+            Padding(padding: widget.padding, child: widget.child),
+          ],
+        ),
       ),
     );
   }
@@ -258,6 +285,10 @@ class ListGroup extends StatelessWidget {
 /// ⚠ "No data" is not copy. Every use of this writes the sentence for its own
 /// case, because an empty room and an empty sky are different facts and a
 /// reader can tell.
+///
+/// ⚠ The drawing is optional and its absence is DESIGNED: with no art the mark
+/// ring holds the same height, so the screen does not reflow when her artwork
+/// lands.
 class EmptyState extends StatelessWidget {
   const EmptyState({
     super.key,
@@ -265,105 +296,197 @@ class EmptyState extends StatelessWidget {
     required this.body,
     this.mark = '☾',
     this.action,
+    this.secondary,
+    this.compact = false,
   });
 
   final String title;
   final String body;
   final String mark;
   final Widget? action;
+  final Widget? secondary;
+  final bool compact;
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.symmetric(horizontal: Gap.lg, vertical: Gap.xxl),
-    child: Column(
-      children: [
-        Glyph(mark, size: 26, color: Gilt.dim),
-        const SizedBox(height: Gap.lg),
-        Text(
-          title,
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.titleMedium,
+    padding: EdgeInsets.symmetric(
+      horizontal: compact ? Gap.ml : Gap.xl,
+      vertical: compact ? 28 : Gap.huge,
+    ),
+    child: Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 330),
+        child: Column(
+          children: [
+            Container(
+              width: compact ? 56 : 72,
+              height: compact ? 56 : 72,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: Tone.inset,
+                shape: BoxShape.circle,
+                border: Border.all(color: Gilt.gilt.withValues(alpha: 0.34)),
+              ),
+              child: Scatter(
+                faint: true,
+                child: Center(
+                  child: Glyph(mark, size: compact ? 22 : 28, color: Gilt.gilt),
+                ),
+              ),
+            ),
+            const SizedBox(height: 14),
+            Text(
+              title,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontFamily: Face.display,
+                fontSize: Type.title,
+                height: 1.25,
+                fontWeight: FontWeight.w500,
+                color: Tone.ink,
+              ),
+            ),
+            const SizedBox(height: 7),
+            Text(
+              body,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontFamily: Face.body,
+                fontSize: Type.label,
+                height: 1.55,
+                color: Tone.faint,
+              ),
+            ),
+            if (action != null || secondary != null) ...[
+              const SizedBox(height: 16),
+              ?action,
+              if (secondary != null) ...[
+                const SizedBox(height: Gap.sm),
+                secondary!,
+              ],
+            ],
+          ],
         ),
-        const SizedBox(height: Gap.sm),
-        Text(
-          body,
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.bodyMedium,
-        ),
-        if (action != null) ...[const SizedBox(height: Gap.lg), action!],
-      ],
+      ),
     ),
   );
 }
 
-/// Something the reader should know before they carry on.
+/// An inline notice, pinned under the app bar.
 ///
 /// ⚠ Named Notice rather than Banner: Flutter already has a Banner, and two
 /// things called the same thing in one file is a bug waiting for a hurry.
+///
+/// ⚠ **Offline does not mean broken.** Every instrument still computes on the
+/// device, so the offline copy says which HALF is missing — never "no
+/// connection", which is a sentence about the network rather than about what
+/// the reader can still do.
 class Notice extends StatelessWidget {
   const Notice({
     super.key,
     required this.text,
+    this.title,
     this.tone = BannerTone.note,
     this.action,
     this.onAction,
+    this.onDismiss,
   });
 
   final String text;
+  final String? title;
   final BannerTone tone;
   final String? action;
   final VoidCallback? onAction;
+  final VoidCallback? onDismiss;
 
   @override
   Widget build(BuildContext context) {
-    final (fill, edge, mark, tint) = switch (tone) {
-      BannerTone.note => (Tone.card, Tone.line, Icons.info_outlined, Tone.soft),
-      BannerTone.offline => (
-        Tone.card,
-        Tone.line,
-        Icons.cloud_off_outlined,
-        Tone.faint,
+    final (mark, tint, fill) = switch (tone) {
+      BannerTone.offline => (Icons.cloud_off_outlined, Gilt.gilt, Gilt.wash),
+      BannerTone.warning => (Icons.error_outlined, Tone.live, Tone.liveWash),
+      BannerTone.caution => (
+        Icons.priority_high,
+        Tone.rose,
+        Tone.rose.withValues(alpha: 0.10),
       ),
-      BannerTone.warning => (
-        Tone.liveWash,
-        Tone.live.withValues(alpha: 0.5),
-        Icons.error_outlined,
-        Tone.live,
-      ),
+      BannerTone.note => (Icons.info_outlined, Tone.accent, Tone.accentWash),
     };
     return Container(
-      padding: const EdgeInsets.all(Gap.md),
+      padding: const EdgeInsets.fromLTRB(13, 11, 13, 11),
       decoration: BoxDecoration(
         color: fill,
         borderRadius: BorderRadius.circular(Corner.md),
-        border: Border.all(color: edge),
+        border: Border.all(color: tint.withValues(alpha: 0.36)),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(mark, size: 18, color: tint),
-          const SizedBox(width: Gap.md),
-          Expanded(
-            child: Text(text, style: Theme.of(context).textTheme.bodySmall),
+          Padding(
+            padding: const EdgeInsets.only(top: 1),
+            child: Icon(mark, size: 19, color: tint),
           ),
-          if (action != null) ...[
-            const SizedBox(width: Gap.sm),
-            TextButton(
-              onPressed: onAction,
-              style: TextButton.styleFrom(
-                minimumSize: const Size(0, 32),
-                padding: const EdgeInsets.symmetric(horizontal: Gap.sm),
-              ),
-              child: Text(action!),
+          const SizedBox(width: 11),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (title != null) ...[
+                  Text(
+                    title!,
+                    style: TextStyle(
+                      fontFamily: Face.body,
+                      fontSize: Type.label,
+                      height: 1.35,
+                      fontWeight: FontWeight.w600,
+                      color: tint,
+                    ),
+                  ),
+                  const SizedBox(height: 3),
+                ],
+                Text(
+                  text,
+                  style: const TextStyle(
+                    fontFamily: Face.body,
+                    fontSize: Type.caption,
+                    height: 1.5,
+                    color: Tone.soft,
+                  ),
+                ),
+                if (action != null)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 6),
+                    child: GestureDetector(
+                      onTap: onAction,
+                      child: Text(
+                        action!,
+                        style: TextStyle(
+                          fontFamily: Face.body,
+                          fontSize: Type.caption,
+                          height: 1,
+                          fontWeight: FontWeight.w600,
+                          color: tint,
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
             ),
-          ],
+          ),
+          if (onDismiss != null)
+            GestureDetector(
+              onTap: onDismiss,
+              child: const Padding(
+                padding: EdgeInsets.only(left: Gap.sm),
+                child: Icon(Icons.close, size: 17, color: Tone.faint),
+              ),
+            ),
         ],
       ),
     );
   }
 }
 
-enum BannerTone { note, offline, warning }
+enum BannerTone { note, offline, warning, caution }
 
 /// A choice between a few things, sitting directly under the app bar.
 class Segmented<T> extends StatelessWidget {
@@ -477,4 +600,50 @@ class Provenance extends StatelessWidget {
         ),
     ],
   );
+}
+
+/// The shape of what is coming, while it comes.
+///
+/// ⚠ Not a spinner. A spinner says "wait"; a skeleton says what is arriving
+/// and how much of it, and the screen does not jump when the answer lands. It
+/// breathes, unless the reader has asked for stillness.
+class Skeleton extends StatefulWidget {
+  const Skeleton({super.key, this.height = 72, this.width});
+
+  final double height;
+  final double? width;
+
+  @override
+  State<Skeleton> createState() => _SkeletonState();
+}
+
+class _SkeletonState extends State<Skeleton>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _breath = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 1400),
+  )..repeat(reverse: true);
+
+  @override
+  void dispose() {
+    _breath.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final still = Motion.stilled(context);
+    return AnimatedBuilder(
+      animation: _breath,
+      builder: (context, _) => Container(
+        height: widget.height,
+        width: widget.width,
+        decoration: BoxDecoration(
+          color: Color.lerp(Tone.card, Tone.veil, still ? 0.4 : _breath.value),
+          borderRadius: BorderRadius.circular(Corner.md),
+          border: Border.all(color: Tone.line),
+        ),
+      ),
+    );
+  }
 }

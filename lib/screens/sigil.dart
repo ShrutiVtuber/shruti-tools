@@ -16,6 +16,7 @@ import 'package:share_plus/share_plus.dart';
 
 import '../services/sigil.dart' as sigil;
 import '../theme/tokens.dart';
+import '../widgets/parts.dart';
 import '../widgets/sigil_figure.dart';
 
 class SigilScreen extends StatefulWidget {
@@ -99,6 +100,22 @@ class _SigilScreenState extends State<SigilScreen> {
           'The tool is a convenience, never a requirement. Every step is shown '
           'so the same figure can be drawn by hand.',
           style: TextStyle(color: Tone.faint, fontSize: 13, height: 1.5),
+        ),
+        const SizedBox(height: Gap.xxl),
+        const Provenance(
+          facts: [
+            ('the method', 'the rose of the magi, on the Latin alphabet'),
+            (
+              'the rule',
+              'vowels and repeats struck out, then each remaining letter '
+                  'placed on the rose and joined in order',
+            ),
+            (
+              'computed',
+              'on this phone · the statement is never sent and never kept',
+            ),
+            ('agrees with', 'shrutivtuber.com, to the same SVG'),
+          ],
         ),
         const SizedBox(height: Gap.xxl),
       ],

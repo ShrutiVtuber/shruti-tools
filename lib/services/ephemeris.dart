@@ -34,6 +34,10 @@ bool _ready = false;
 /// version.
 const engineVersion = 'Swiss Ephemeris 2.10.03';
 
+/// ⚠ Kept in step with pubspec.yaml by hand, and named here so the one place
+/// that shows it is not six places that disagree.
+const appVersion = '1.0.0 (1)';
+
 /// Unpack the ephemeris and point the library at it.
 ///
 /// ⚠ **`epheFilesPath` must be ABSOLUTE.**

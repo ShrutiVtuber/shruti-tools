@@ -1,22 +1,26 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 //
-// What somebody opening the app wants first.
+// Sky · Stations — the four hinges of the day, at this place.
 //
 // The order is deliberate and it is the site's order, for the same reason: the
 // next station goes above everything, because a person opening this at four in
-// the afternoon wants "sunset in 2h 14m" before they want a table. Whether she
-// is live goes second — it is the only thing here that is urgent, and only
-// sometimes.
+// the afternoon wants "sunset in 2h 14m" before they want a table.
+//
+// ⚠ The design system calls the reference table dense on purpose, and this is
+// where that starts: thirty-pixel rows, thirteen-point tabular figures, and no
+// sideways scrolling ever. The table FITS or a column is cut.
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 
 import '../models/place.dart';
 import '../services/ephemeris.dart';
+import '../services/period_sky.dart';
 import '../services/settings.dart';
 import '../services/stations.dart';
+import '../theme/glyph.dart';
 import '../theme/tokens.dart';
-import '../widgets/eyebrow.dart';
+import '../widgets/data.dart';
 import '../widgets/parts.dart';
 import 'pick_place.dart';
 
@@ -52,66 +56,156 @@ class _StationsScreenState extends State<StationsScreen> {
     // holding its own copy went on answering for the place it was built with.
     final settings = SettingsScope.of(context);
     final place = settings.place;
+    final now = DateTime.now().toUtc();
     final today = stationsFor(
-      DateTime.now(),
+      now,
       place.lat,
       place.lon,
       convention: settings.convention,
     );
-    final next = nextStation(today, DateTime.now());
-    return RefreshIndicator(
-      color: Tone.accent,
-      backgroundColor: Tone.card,
-      // Pulling down recomputes the day for the chosen place. It is
-      // arithmetic, so it is instant and needs no network.
-      onRefresh: () async => setState(() {}),
-      child: ListView(
-        padding: const EdgeInsets.fromLTRB(Gap.lg, Gap.xl, Gap.lg, Gap.huge),
-        children: [
-          // ⚠ The page's own name, not the app's. This said "Astrolabe" and
-          // carried the live card, which made the stations table look like a
-          // home screen and buried the one urgent thing in the app inside an
-          // astronomical table. Both moved to Home.
-          Text('Stations', style: Theme.of(context).textTheme.displaySmall),
-          const SizedBox(height: Gap.xs),
-          Text(
-            'Sunrise, noon, sunset and midnight, computed here',
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-          const SizedBox(height: Gap.xl),
-          _NextStationCard(
-            next: next,
-            place: place,
-            onChangePlace: () => pickPlaceInto(context),
-          ),
-          const SizedBox(height: Gap.xl),
-          const Eyebrow('Today'),
-          const SizedBox(height: Gap.sm),
-          _StationTable(stations: today, next: next, place: place),
+    final next = today.where((s) => s.at.isAfter(now)).firstOrNull;
+    final retrograde = _retrograde(now);
 
-          const SizedBox(height: Gap.xxl),
-          Provenance(
-            facts: [
-              ('engine', engineVersion),
-              ('computed', 'on this phone · nothing sent, nothing stored'),
-              (
-                'sunrise',
-                settings.convention == RiseConvention.visibleDisc
-                    ? "the Sun's upper limb clears the horizon, refracted"
-                    : 'the centre of the disc, no refraction',
-              ),
-              ('for', '${place.name} · ${place.zone}'),
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(
+        Gap.gutterDense,
+        Gap.md,
+        Gap.gutterDense,
+        Gap.huge,
+      ),
+      children: [
+        _NextStation(
+          next: next,
+          place: place,
+          onChangePlace: () => pickPlaceInto(context),
+        ),
+        const SizedBox(height: Gap.md),
+
+        if (today.isEmpty)
+          const EmptyState(
+            mark: '☉',
+            title: 'The Sun neither rises nor sets here today',
+            body:
+                'Above the Arctic circle in summer, or below it in winter, '
+                'the day has no hinges. Everything else still reckons.',
+          )
+        else
+          Reference(
+            caption:
+                '${place.name} · ${place.zone} · '
+                '${settings.convention == RiseConvention.visibleDisc ? "upper limb, refracted" : "centre of the disc"}',
+            columns: const [
+              Heading(label: 'Station', flex: 3),
+              Heading(label: 'Godform', flex: 3),
+              Heading(label: 'Time', numeric: true, flex: 2),
+            ],
+            rows: [
+              for (final s in today)
+                Line([
+                  Cell(s.kind.label),
+                  Cell(s.kind.godform, muted: true),
+                  Cell(_clock(place.tell(s.at))),
+                ], now: identical(s, next)),
             ],
           ),
+
+        // ⚠ ℞ AND rose AND the word. A retrograde marked by tint alone is a
+        // retrograde a printed page loses and a colour-blind reader never had.
+        if (retrograde.isNotEmpty) ...[
+          const SizedBox(height: Gap.md),
+          Pressable(
+            tone: Surface.warning,
+            padding: const EdgeInsets.all(Gap.md),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Glyph('℞', size: 17, color: Tone.rose),
+                const SizedBox(width: 9),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        retrograde.length == 1
+                            ? '${retrograde.first} is retrograde'
+                            : '${retrograde.take(retrograde.length - 1).join(", ")} '
+                                  'and ${retrograde.last} are retrograde',
+                        style: const TextStyle(
+                          fontFamily: Face.body,
+                          fontSize: Type.label,
+                          height: 1.35,
+                          fontWeight: FontWeight.w600,
+                          color: Tone.rose,
+                        ),
+                      ),
+                      const SizedBox(height: 3),
+                      const Text(
+                        'Every affected figure carries ℞ as well as the tint.',
+                        style: TextStyle(
+                          fontFamily: Face.body,
+                          fontSize: Type.caption,
+                          height: 1.5,
+                          color: Tone.soft,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
-      ),
+
+        const SizedBox(height: Gap.xxl),
+        Provenance(
+          facts: [
+            ('engine', engineVersion),
+            ('computed', 'on this phone · nothing sent, nothing stored'),
+            (
+              'the rule',
+              settings.convention == RiseConvention.visibleDisc
+                  ? "sunrise: the Sun's upper limb clears the horizon, refracted"
+                  : 'sunrise: the centre of the disc, no refraction',
+            ),
+            ('for', '${place.name} · ${place.zone}'),
+          ],
+        ),
+      ],
     );
   }
+
+  /// Which planets are retrograde right now — read from the day's motion, not
+  /// from a table of dates that would have to be kept.
+  List<String> _retrograde(DateTime now) {
+    final today = skyAcross(now, now);
+    final tomorrow = skyAcross(
+      now.add(const Duration(days: 1)),
+      now.add(const Duration(days: 1)),
+    );
+    if (today.isEmpty || tomorrow.isEmpty) return const [];
+    final out = <String>[];
+    for (final body in periodBodies) {
+      if (body == 'Sun' || body == 'Moon') continue;
+      final a = today.first.longitudes[body];
+      final b = tomorrow.first.longitudes[body];
+      if (a == null || b == null) continue;
+      var step = b - a;
+      // Unwrap: 359° → 1° is +2, not −358.
+      if (step < -180) step += 360;
+      if (step > 180) step -= 360;
+      if (step < 0) out.add(body);
+    }
+    return out;
+  }
+
+  static String _clock(DateTime t) =>
+      '${t.hour.toString().padLeft(2, "0")}:'
+      '${t.minute.toString().padLeft(2, "0")}';
 }
 
 /// The one thing worth putting above everything else.
-class _NextStationCard extends StatelessWidget {
-  const _NextStationCard({
+class _NextStation extends StatelessWidget {
+  const _NextStation({
     required this.next,
     required this.place,
     required this.onChangePlace,
@@ -123,213 +217,84 @@ class _NextStationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (next == null) {
-      return _Card(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _PlaceLine(place: place, onTap: onChangePlace),
-            const SizedBox(height: Gap.sm),
-            Text(
-              'Nothing further today',
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-            const SizedBox(height: Gap.xs),
-            Text(
-              'The table below is the whole of it.',
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-          ],
-        ),
-      );
-    }
+    final station = next;
+    final at = station == null ? null : place.tell(station.at);
+    final away = station?.at.difference(DateTime.now().toUtc());
 
-    final away = next!.at.difference(DateTime.now().toUtc());
-    // In the PLACE's time, not the phone's. See models/place.dart — this line
-    // used to read `.toLocal()` and put Athens times under a London heading.
-    final there = place.tell(next!.at);
-    return _Card(
+    return Pressable(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _PlaceLine(place: place, onTap: onChangePlace),
+          GestureDetector(
+            onTap: onChangePlace,
+            child: Row(
+              children: [
+                Text(
+                  'NEXT STATION · ${place.shortName.toUpperCase()}',
+                  style: const TextStyle(
+                    fontFamily: Face.body,
+                    fontSize: Type.eyebrow,
+                    height: 1,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 1.54,
+                    color: Tone.faint,
+                  ),
+                ),
+                const SizedBox(width: 4),
+                const Icon(Icons.expand_more, size: 15, color: Tone.faint),
+              ],
+            ),
+          ),
           const SizedBox(height: Gap.sm),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.baseline,
-            textBaseline: TextBaseline.alphabetic,
-            children: [
-              Text(
-                next!.kind.label,
-                style: Theme.of(context).textTheme.headlineMedium,
+          if (next == null)
+            Text(
+              'Nothing further today',
+              style: Theme.of(context).textTheme.titleLarge,
+            )
+          else
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
+              children: [
+                Text(
+                  station!.kind.label,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                const SizedBox(width: Gap.md),
+                Text(
+                  '${at!.hour.toString().padLeft(2, "0")}:'
+                  '${at.minute.toString().padLeft(2, "0")}',
+                  style: const TextStyle(
+                    fontFamily: Face.body,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    color: Tone.accent,
+                    fontFeatures: [FontFeature.tabularFigures()],
+                  ),
+                ),
+              ],
+            ),
+          if (next != null) ...[
+            const SizedBox(height: Gap.xs),
+            Text(
+              'in ${_away(away!)} · ${station!.kind.godform}',
+              style: const TextStyle(
+                fontFamily: Face.body,
+                fontSize: Type.caption,
+                height: 1.4,
+                color: Tone.faint,
               ),
-              const SizedBox(width: Gap.md),
-              Text(
-                _clock(there),
-                style: Theme.of(
-                  context,
-                ).textTheme.headlineSmall!.copyWith(color: Tone.accent),
-              ),
-            ],
-          ),
-          const SizedBox(height: Gap.xs),
-          Text(
-            'in ${_away(away)} · ${next!.kind.godform}',
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-/// The place, and the way to change it.
-///
-/// Tapping the name is the whole control. A settings screen for one setting is
-/// a place to hide the only thing that makes the table wrong.
-class _PlaceLine extends StatelessWidget {
-  const _PlaceLine({required this.place, required this.onTap});
-
-  final Place place;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) => InkWell(
-    onTap: onTap,
-    borderRadius: BorderRadius.circular(Corner.sm),
-    child: Padding(
-      padding: const EdgeInsets.symmetric(vertical: 2),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Eyebrow('Next station · ${place.shortName}'),
-          const SizedBox(width: Gap.xs),
-          const Icon(Icons.expand_more, size: 15, color: Tone.faint),
-        ],
-      ),
-    ),
-  );
-}
-
-class _StationTable extends StatelessWidget {
-  const _StationTable({
-    required this.stations,
-    required this.next,
-    required this.place,
-  });
-
-  final List<Station> stations;
-  final Station? next;
-  final Place place;
-
-  @override
-  Widget build(BuildContext context) {
-    if (stations.isEmpty) {
-      return _Card(
-        child: Text(
-          'The sun neither rises nor sets here today.',
-          style: Theme.of(context).textTheme.bodyMedium,
-        ),
-      );
-    }
-    return _Card(
-      padding: EdgeInsets.zero,
-      child: Column(
-        children: [
-          for (var i = 0; i < stations.length; i++) ...[
-            if (i > 0) const Divider(height: 1),
-            _StationRow(
-              station: stations[i],
-              current: identical(stations[i], next),
-              place: place,
             ),
           ],
         ],
       ),
     );
   }
-}
 
-class _StationRow extends StatelessWidget {
-  const _StationRow({
-    required this.station,
-    required this.current,
-    required this.place,
-  });
-
-  final Station station;
-  final bool current;
-  final Place place;
-
-  @override
-  Widget build(BuildContext context) {
-    final tone = current ? Tone.accent : Tone.ink;
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: Gap.lg, vertical: Gap.md),
-      child: Row(
-        children: [
-          SizedBox(
-            width: 92,
-            child: Text(
-              station.kind.label,
-              style: Theme.of(
-                context,
-              ).textTheme.titleMedium!.copyWith(color: tone),
-            ),
-          ),
-          Expanded(
-            child: Text(
-              station.kind.godform,
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-          ),
-          Text(
-            _clock(place.tell(station.at)),
-            style: Theme.of(context).textTheme.titleMedium!.copyWith(
-              color: tone,
-              fontFeatures: const [FontFeature.tabularFigures()],
-            ),
-          ),
-        ],
-      ),
-    );
+  static String _away(Duration d) {
+    final hours = d.inHours;
+    final minutes = d.inMinutes % 60;
+    if (hours <= 0) return '${d.inMinutes}m';
+    return '${hours}h ${minutes}m';
   }
-}
-
-class _Card extends StatelessWidget {
-  const _Card({required this.child, this.padding});
-
-  final Widget child;
-  final EdgeInsets? padding;
-
-  @override
-  Widget build(BuildContext context) {
-    final card = Container(
-      width: double.infinity,
-      padding: padding ?? const EdgeInsets.all(Gap.lg),
-      decoration: BoxDecoration(
-        color: Tone.card,
-        borderRadius: BorderRadius.circular(Corner.md),
-        border: Border.all(color: Tone.line),
-      ),
-      child: child,
-    );
-    return card;
-  }
-}
-
-/// A wall clock in some named place. Takes a DateTime whose FIELDS are already
-/// that place's — `Place.tell` produces one — never a UTC instant to be
-/// squinted at.
-String _clock(DateTime there) =>
-    '${there.hour.toString().padLeft(2, '0')}:'
-    '${there.minute.toString().padLeft(2, '0')}';
-
-/// "2h 14m", "14m". Never "0h 14m", and never a bare number of minutes when
-/// the answer is nearly a day away.
-String _away(Duration d) {
-  if (d.isNegative) return 'now';
-  final h = d.inHours;
-  final m = d.inMinutes % 60;
-  if (h == 0) return '${m}m';
-  return '${h}h ${m}m';
 }
