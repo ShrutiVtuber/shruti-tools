@@ -125,6 +125,7 @@ class Remark {
     required this.bodyMd,
     required this.at,
     required this.mine,
+    this.sign = '',
     this.fromDiscord = false,
   });
 
@@ -134,6 +135,7 @@ class Remark {
     bodyMd: j['bodyMd'] as String? ?? '',
     at: j['at'] as String?,
     mine: j['mine'] as bool? ?? false,
+    sign: j['sign'] as String? ?? '',
     fromDiscord: j['fromDiscord'] as bool? ?? false,
   );
 
@@ -142,6 +144,18 @@ class Remark {
   final String bodyMd;
   final String? at;
   final bool mine;
+
+  /// ⚠ Which reading this answers, or EMPTY for the whole set.
+  ///
+  /// Empty is a real answer and not a missing one: "this reads well as a
+  /// series" is a thing to say about twelve signs that is not a thing to say
+  /// about Aries. So a reader looking at one sign is shown that sign's remarks
+  /// AND the ones about the set — filtering those out would bury the most
+  /// useful thing anybody says about a series.
+  final String sign;
+
+  /// The sign's name for a heading, or empty for a remark about the set.
+  String get signName => sign.isEmpty ? '' : _Titled(sign).name;
 
   /// ⚠ Bridged from Discord, and said so. There is no site account behind it —
   /// nobody signed up, agreed to anything, or can be suspended — so it carries
@@ -291,8 +305,15 @@ class Practice {
     return (votes: body['votes'] as int, voted: body['voted'] as bool);
   }
 
-  Future<void> say(int workId, String what) async =>
-      _send('POST', '/api/practice/$workId/comments', {'body_md': what});
+  /// Answer a work, or one reading inside it.
+  ///
+  /// ⚠ `sign` empty means the whole set — the same convention as [Remark.sign]
+  /// and as the site. The backend checks it against the work's own readings and
+  /// falls back to the set rather than refusing, so a stale sign loses the
+  /// label and never the remark.
+  Future<void> say(int workId, String what, {String sign = ''}) async =>
+      _send('POST', '/api/practice/$workId/comments',
+            {'body_md': what, 'sign': sign});
 
   Future<void> unsay(int commentId) async =>
       _send('DELETE', '/api/practice/comments/$commentId');

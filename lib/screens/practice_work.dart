@@ -60,6 +60,14 @@ class _WorkScreenState extends State<WorkScreen> {
     }
   }
 
+  /// Which reading the comment box is answering. Null means the whole set.
+  ///
+  /// ⚠ Kept apart from `_showing`, which is only what is being READ. They move
+  /// together — turning to Taurus points the box at Taurus — but somebody may
+  /// well want to answer Taurus while re-reading Aries, and "this hangs
+  /// together as a set" is a remark no tab corresponds to.
+  String? _about;
+
   Future<void> _say() async {
     final what = _remark.text.trim();
     if (what.isEmpty) return;
@@ -68,7 +76,7 @@ class _WorkScreenState extends State<WorkScreen> {
       _trouble = null;
     });
     try {
-      await _room.say(widget.id, what);
+      await _room.say(widget.id, what, sign: _about ?? '');
       _remark.clear();
       setState(() => _work = _room.read(widget.id));
     } on PracticeTrouble catch (e) {
@@ -259,6 +267,7 @@ class _WorkScreenState extends State<WorkScreen> {
             // up on a set.
             if (w.series && _showing == null && w.readings.isNotEmpty) {
               _showing = w.readings.first.sign;
+              _about ??= w.readings.first.sign;
             }
             return ListView(
               padding: const EdgeInsets.fromLTRB(
@@ -421,7 +430,10 @@ class _WorkScreenState extends State<WorkScreen> {
                             size: 13,
                             color: _showing == r.sign ? Tone.accent : Gilt.gilt,
                           ),
-                          onTap: () => setState(() => _showing = r.sign),
+                          onTap: () => setState(() {
+                            _showing = r.sign;
+                            _about = r.sign;
+                          }),
                         ),
                     ],
                   ),
@@ -464,65 +476,84 @@ class _WorkScreenState extends State<WorkScreen> {
 
                 const Rule(mark: '♄'),
                 const SizedBox(height: Gap.lg),
-                SectionHeader(
-                  eyebrow: w.comments.isEmpty
-                      ? 'No comments yet'
-                      : '${w.comments.length} '
-                            'comment${w.comments.length == 1 ? "" : "s"}',
-                  title: 'The room',
-                ),
-                const SizedBox(height: Gap.md),
-                if (w.comments.isEmpty)
-                  const EmptyState(
-                    compact: true,
-                    mark: '☿',
-                    title: 'Nobody has answered yet',
-                    body:
-                        'A reading with no reply is a reading nobody argued '
-                        'with. Be the first to.',
-                  ),
-                for (final c in w.comments)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: Gap.md),
-                    child: Row(
+                Builder(
+                  builder: (context) {
+                    /* ⚠ A remark about the WHOLE SET belongs under every sign.
+                       It is about this reading too — this reading is one of the
+                       twelve — and hiding it behind a tab nobody thinks to
+                       press would bury the most useful thing anybody says about
+                       a series. A single-reading work has no tabs, so nothing
+                       is filtered and every remark shows. */
+                    final here = [
+                      for (final c in w.comments)
+                        if (!w.series || c.sign.isEmpty || c.sign == _showing) c,
+                    ];
+                    return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const VoteControl(value: 0, compact: true),
-                        const SizedBox(width: Gap.md),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                c.author,
-                                style: const TextStyle(
-                                  fontFamily: Face.body,
-                                  fontFamilyFallback: [Face.glyph],
-                                  fontSize: Type.caption,
-                                  color: Tone.soft,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              const SizedBox(height: 5),
-                              Text(
-                                c.bodyMd,
-                                style: const TextStyle(
-                                  fontFamily: Face.body,
-                                  fontFamilyFallback: [Face.glyph],
-                                  fontSize: 15,
-                                  height: 1.6,
-                                  color: Tone.soft,
-                                ),
-                              ),
-                            ],
-                          ),
+                        SectionHeader(
+                          eyebrow: here.isEmpty
+                              ? 'No comments yet'
+                              : '${here.length} '
+                                    'comment${here.length == 1 ? "" : "s"}',
+                          title: 'The room',
                         ),
+                        const SizedBox(height: Gap.md),
+                        if (here.isEmpty)
+                          EmptyState(
+                            compact: true,
+                            mark: '☿',
+                            title: w.series
+                                ? 'Nothing said about this one yet'
+                                : 'Nobody has answered yet',
+                            body:
+                                'A reading with no reply is a reading nobody '
+                                'argued with. Be the first to.',
+                          ),
+                        for (final c in here) _Said(remark: c, series: w.series),
                       ],
-                    ),
-                  ),
+                    );
+                  },
+                ),
+
 
                 const SizedBox(height: Gap.lg),
                 if (signedIn) ...[
+                  if (w.series) ...[
+                    /* ⚠ A control, not a mirror of the tabs. It follows them
+                       so the common case needs no thought, and it can be moved
+                       on its own because answering the set is a real thing to
+                       do that no tab stands for. */
+                    const Text(
+                      'What are you answering?',
+                      style: TextStyle(
+                        fontFamily: Face.body,
+                        fontFamilyFallback: [Face.glyph],
+                        fontSize: Type.caption,
+                        color: Tone.faint,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: Gap.sm),
+                    TagRow(
+                      children: [
+                        Tag(
+                          label: 'The whole set',
+                          kind: ChipKind.filter,
+                          selected: _about == null,
+                          onTap: () => setState(() => _about = null),
+                        ),
+                        for (final r in w.readings)
+                          Tag(
+                            label: r.signName,
+                            kind: ChipKind.filter,
+                            selected: _about == r.sign,
+                            onTap: () => setState(() => _about = r.sign),
+                          ),
+                      ],
+                    ),
+                    const SizedBox(height: Gap.md),
+                  ],
                   Field(
                     label: 'Add a comment',
                     controller: _remark,
@@ -564,4 +595,73 @@ class _WorkScreenState extends State<WorkScreen> {
       ),
     );
   }
+}
+
+/// One remark, and which reading it answers.
+///
+/// ⚠ The label is shown on remarks about the WHOLE SET too, not only on the
+/// per-sign ones. Labelling half of them would leave the others looking as
+/// though they had lost their label — the reader cannot tell an absent tag
+/// from a tag that means "all of it" unless it says so.
+class _Said extends StatelessWidget {
+  const _Said({required this.remark, required this.series});
+
+  final Remark remark;
+  final bool series;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.only(bottom: Gap.md),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const VoteControl(value: 0, compact: true),
+        const SizedBox(width: Gap.md),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      remark.author,
+                      style: const TextStyle(
+                        fontFamily: Face.body,
+                        fontFamilyFallback: [Face.glyph],
+                        fontSize: Type.caption,
+                        color: Tone.soft,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  if (series)
+                    Text(
+                      remark.sign.isEmpty ? 'the whole set' : remark.signName,
+                      style: const TextStyle(
+                        fontFamily: Face.body,
+                        fontFamilyFallback: [Face.glyph],
+                        fontSize: Type.caption,
+                        color: Tone.faint,
+                      ),
+                    ),
+                ],
+              ),
+              const SizedBox(height: 5),
+              Text(
+                remark.bodyMd,
+                style: const TextStyle(
+                  fontFamily: Face.body,
+                  fontFamilyFallback: [Face.glyph],
+                  fontSize: 15,
+                  height: 1.6,
+                  color: Tone.soft,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
 }
