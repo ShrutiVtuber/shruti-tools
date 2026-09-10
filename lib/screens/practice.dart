@@ -59,7 +59,18 @@ class _PracticeScreenState extends State<PracticeScreen> {
   Widget build(BuildContext context) {
     final account = AccountScope.of(context);
     return Scaffold(
-      appBar: const Bar(title: 'Practice'),
+      appBar: Bar(
+        title: 'Practice',
+        actions: [
+          Tap(
+            icon: Icons.edit_square,
+            label: 'Write a reading',
+            onTap: () => Navigator.of(context)
+                .push(MaterialPageRoute(builder: (_) => const WriteScreen()))
+                .then((_) => _again()),
+          ),
+        ],
+      ),
       body: Column(
         children: [
           Padding(
@@ -119,7 +130,53 @@ class _PracticeScreenState extends State<PracticeScreen> {
             empty:
                 'Nobody has posted a reading this week. Yours would be '
                 'the first.',
+            emptyAction: Push(
+              label: 'Write one',
+              onTap: () => Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (_) => const WriteScreen()))
+                  .then((_) => _again()),
+            ),
           ),
+          if (!account.signedIn) ...[
+            const SizedBox(height: Gap.lg),
+            Pressable(
+              tone: Surface.inset,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'You are reading as a guest. Sign in to vote, comment, or '
+                    'put your own reading in front of the room.',
+                    style: TextStyle(
+                      fontFamily: Face.body,
+                      fontFamilyFallback: [Face.glyph],
+                      fontSize: Type.caption,
+                      height: 1.6,
+                      color: Tone.faint,
+                    ),
+                  ),
+                  const SizedBox(height: Gap.md),
+                  Row(
+                    children: [
+                      Push(
+                        label: 'Sign in',
+                        size: Bulk.sm,
+                        onTap: () => Navigator.of(context)
+                            .push(
+                              MaterialPageRoute(
+                                builder: (_) => const Scaffold(
+                                  body: SafeArea(child: AccountScreen()),
+                                ),
+                              ),
+                            )
+                            .then((_) => _again()),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
         ],
       ),
     ),
@@ -128,27 +185,38 @@ class _PracticeScreenState extends State<PracticeScreen> {
   Widget _own(Account account) {
     if (!account.signedIn) {
       return ListView(
-        padding: const EdgeInsets.fromLTRB(Gap.lg, Gap.xl, Gap.lg, Gap.huge),
+        padding: const EdgeInsets.fromLTRB(
+          Gap.gutterDense,
+          Gap.lg,
+          Gap.gutterDense,
+          Gap.huge,
+        ),
         children: [
-          Text('Your writing', style: Theme.of(context).textTheme.displaySmall),
-          const SizedBox(height: Gap.sm),
-          const Text(
-            'An account keeps what you write, on this phone and on the website '
-            'both — and it is what puts a name on a reading when you submit '
-            'one.',
-            style: TextStyle(color: Tone.soft, height: 1.45),
-          ),
-          const SizedBox(height: Gap.lg),
-          FilledButton(
-            onPressed: () => Navigator.of(context)
-                .push(
-                  MaterialPageRoute(
-                    builder: (_) =>
-                        const Scaffold(body: SafeArea(child: AccountScreen())),
-                  ),
-                )
-                .then((_) => _again()),
-            child: const Text('Sign in, or make an account'),
+          EmptyState(
+            mark: '☿',
+            title: 'Your work would live here',
+            body:
+                'Drafts are kept on this phone. Posting one needs an '
+                'account, because the room needs to know who wrote it.',
+            action: Push(
+              label: 'Sign in',
+              onTap: () => Navigator.of(context)
+                  .push(
+                    MaterialPageRoute(
+                      builder: (_) => const Scaffold(
+                        body: SafeArea(child: AccountScreen()),
+                      ),
+                    ),
+                  )
+                  .then((_) => _again()),
+            ),
+            secondary: Push(
+              label: 'Write a draft first',
+              weight: Weight.text,
+              onTap: () => Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (_) => const WriteScreen()))
+                  .then((_) => _again()),
+            ),
           ),
         ],
       );
@@ -160,17 +228,13 @@ class _PracticeScreenState extends State<PracticeScreen> {
         builder: (context, snap) => ListView(
           padding: const EdgeInsets.fromLTRB(Gap.lg, Gap.lg, Gap.lg, Gap.huge),
           children: [
-            Text(
-              'Your writing',
-              style: Theme.of(context).textTheme.displaySmall,
-            ),
-            const SizedBox(height: Gap.md),
-            FilledButton.icon(
-              onPressed: () => Navigator.of(context)
+            Push(
+              label: 'Write a reading',
+              icon: Icons.edit_outlined,
+              full: true,
+              onTap: () => Navigator.of(context)
                   .push(MaterialPageRoute(builder: (_) => const WriteScreen()))
                   .then((_) => _again()),
-              icon: const Icon(Icons.add, size: 18),
-              label: const Text('Write one'),
             ),
             const SizedBox(height: Gap.lg),
             ..._body(

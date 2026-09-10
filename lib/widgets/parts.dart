@@ -340,6 +340,7 @@ class EmptyState extends StatelessWidget {
               textAlign: TextAlign.center,
               style: const TextStyle(
                 fontFamily: Face.display,
+                fontFamilyFallback: [Face.glyph],
                 fontSize: Type.title,
                 height: 1.25,
                 fontWeight: FontWeight.w500,
@@ -352,6 +353,7 @@ class EmptyState extends StatelessWidget {
               textAlign: TextAlign.center,
               style: const TextStyle(
                 fontFamily: Face.body,
+                fontFamilyFallback: [Face.glyph],
                 fontSize: Type.label,
                 height: 1.55,
                 color: Tone.faint,
@@ -436,6 +438,7 @@ class NoticeBar extends StatelessWidget {
                     title!,
                     style: TextStyle(
                       fontFamily: Face.body,
+                      fontFamilyFallback: [Face.glyph],
                       fontSize: Type.label,
                       height: 1.35,
                       fontWeight: FontWeight.w600,
@@ -448,6 +451,7 @@ class NoticeBar extends StatelessWidget {
                   text,
                   style: const TextStyle(
                     fontFamily: Face.body,
+                    fontFamilyFallback: [Face.glyph],
                     fontSize: Type.caption,
                     height: 1.5,
                     color: Tone.soft,
@@ -462,6 +466,7 @@ class NoticeBar extends StatelessWidget {
                         action!,
                         style: TextStyle(
                           fontFamily: Face.body,
+                          fontFamilyFallback: [Face.glyph],
                           fontSize: Type.caption,
                           height: 1,
                           fontWeight: FontWeight.w600,
@@ -535,6 +540,7 @@ class Segmented<T> extends StatelessWidget {
                   label,
                   style: TextStyle(
                     fontFamily: Face.body,
+                    fontFamilyFallback: [Face.glyph],
                     fontSize: 14,
                     fontWeight: value == chosen
                         ? FontWeight.w600
@@ -579,6 +585,7 @@ class Provenance extends StatelessWidget {
                   label,
                   style: const TextStyle(
                     fontFamily: Face.body,
+                    fontFamilyFallback: [Face.glyph],
                     fontSize: 12,
                     color: Tone.faint,
                   ),
@@ -589,6 +596,7 @@ class Provenance extends StatelessWidget {
                   fact,
                   style: const TextStyle(
                     fontFamily: Face.body,
+                    fontFamilyFallback: [Face.glyph],
                     fontSize: 12,
                     height: 1.5,
                     color: Tone.soft,

@@ -61,6 +61,7 @@ ThemeData shrutiTheme() {
     ),
     scaffoldBackgroundColor: Tone.page,
     fontFamily: Face.body,
+    fontFamilyFallback: [Face.glyph],
     splashFactory: InkSparkle.splashFactory,
 
     textTheme: const TextTheme(
@@ -68,6 +69,7 @@ ThemeData shrutiTheme() {
       // 13pt, which is exactly the division of labour here.
       displayLarge: TextStyle(
         fontFamily: Face.display,
+        fontFamilyFallback: [Face.glyph],
         fontWeight: FontWeight.w500,
         fontSize: 34,
         height: 1.12,
@@ -76,6 +78,7 @@ ThemeData shrutiTheme() {
       ),
       displayMedium: TextStyle(
         fontFamily: Face.display,
+        fontFamilyFallback: [Face.glyph],
         fontWeight: FontWeight.w500,
         fontSize: 28,
         height: 1.12,
@@ -85,6 +88,7 @@ ThemeData shrutiTheme() {
       // Kept: screens written before the system used this for their title.
       displaySmall: TextStyle(
         fontFamily: Face.display,
+        fontFamilyFallback: [Face.glyph],
         fontWeight: FontWeight.w600,
         fontSize: 28,
         height: 1.15,
@@ -92,6 +96,7 @@ ThemeData shrutiTheme() {
       ),
       headlineMedium: TextStyle(
         fontFamily: Face.display,
+        fontFamilyFallback: [Face.glyph],
         fontWeight: FontWeight.w600,
         fontSize: 26,
         height: 1.2,
@@ -99,6 +104,7 @@ ThemeData shrutiTheme() {
       ),
       headlineSmall: TextStyle(
         fontFamily: Face.display,
+        fontFamilyFallback: [Face.glyph],
         fontWeight: FontWeight.w500,
         fontSize: 21,
         height: 1.25,
@@ -106,6 +112,7 @@ ThemeData shrutiTheme() {
       ),
       titleLarge: TextStyle(
         fontFamily: Face.display,
+        fontFamilyFallback: [Face.glyph],
         fontWeight: FontWeight.w600,
         fontSize: 22,
         height: 1.24,
@@ -113,6 +120,7 @@ ThemeData shrutiTheme() {
       ),
       titleMedium: TextStyle(
         fontFamily: Face.display,
+        fontFamilyFallback: [Face.glyph],
         fontWeight: FontWeight.w500,
         fontSize: 19,
         height: 1.3,
@@ -120,6 +128,7 @@ ThemeData shrutiTheme() {
       ),
       titleSmall: TextStyle(
         fontFamily: Face.body,
+        fontFamilyFallback: [Face.glyph],
         fontWeight: FontWeight.w600,
         fontSize: 17,
         height: 1.32,
@@ -129,24 +138,28 @@ ThemeData shrutiTheme() {
       // row set in it reads as a mistake.
       bodyLarge: TextStyle(
         fontFamily: Face.display,
+        fontFamilyFallback: [Face.glyph],
         fontSize: 17,
         height: 1.65,
         color: Tone.ink,
       ),
       bodyMedium: TextStyle(
         fontFamily: Face.body,
+        fontFamilyFallback: [Face.glyph],
         fontSize: 16,
         height: 1.5,
         color: Tone.soft,
       ),
       bodySmall: TextStyle(
         fontFamily: Face.body,
+        fontFamilyFallback: [Face.glyph],
         fontSize: 13,
         height: 1.4,
         color: Tone.soft,
       ),
       labelLarge: TextStyle(
         fontFamily: Face.body,
+        fontFamilyFallback: [Face.glyph],
         fontWeight: FontWeight.w500,
         fontSize: 14,
         height: 1.4,
@@ -157,6 +170,7 @@ ThemeData shrutiTheme() {
       // a screen reader is given the sentence rather than the shout.
       labelSmall: TextStyle(
         fontFamily: Face.body,
+        fontFamilyFallback: [Face.glyph],
         fontWeight: FontWeight.w600,
         fontSize: 11,
         height: 1.4,
@@ -173,6 +187,7 @@ ThemeData shrutiTheme() {
       toolbarHeight: Target.appBar,
       titleTextStyle: TextStyle(
         fontFamily: Face.display,
+        fontFamilyFallback: [Face.glyph],
         fontWeight: FontWeight.w600,
         fontSize: 21,
         color: Tone.ink,
@@ -212,6 +227,7 @@ ThemeData shrutiTheme() {
       labelTextStyle: WidgetStateProperty.resolveWith(
         (states) => TextStyle(
           fontFamily: Face.body,
+          fontFamilyFallback: [Face.glyph],
           fontSize: 11.5,
           fontWeight: states.contains(WidgetState.selected)
               ? FontWeight.w600
@@ -236,6 +252,7 @@ ThemeData shrutiTheme() {
         minimumSize: const Size(0, Target.min),
         textStyle: const TextStyle(
           fontFamily: Face.body,
+          fontFamilyFallback: [Face.glyph],
           fontWeight: FontWeight.w600,
           fontSize: 15,
         ),
@@ -252,6 +269,7 @@ ThemeData shrutiTheme() {
         minimumSize: const Size(0, Target.min),
         textStyle: const TextStyle(
           fontFamily: Face.body,
+          fontFamilyFallback: [Face.glyph],
           fontWeight: FontWeight.w600,
           fontSize: 15,
         ),
@@ -267,6 +285,7 @@ ThemeData shrutiTheme() {
         minimumSize: const Size(0, Target.min),
         textStyle: const TextStyle(
           fontFamily: Face.body,
+          fontFamilyFallback: [Face.glyph],
           fontWeight: FontWeight.w600,
           fontSize: 15,
         ),
@@ -321,12 +340,14 @@ ThemeData shrutiTheme() {
       ),
       titleTextStyle: const TextStyle(
         fontFamily: Face.display,
+        fontFamilyFallback: [Face.glyph],
         fontWeight: FontWeight.w600,
         fontSize: 22,
         color: Tone.ink,
       ),
       contentTextStyle: const TextStyle(
         fontFamily: Face.body,
+        fontFamilyFallback: [Face.glyph],
         fontSize: 16,
         height: 1.5,
         color: Tone.soft,
@@ -337,6 +358,7 @@ ThemeData shrutiTheme() {
       backgroundColor: Tone.veil,
       contentTextStyle: const TextStyle(
         fontFamily: Face.body,
+        fontFamilyFallback: [Face.glyph],
         fontSize: 14.5,
         color: Tone.ink,
       ),
@@ -355,11 +377,13 @@ ThemeData shrutiTheme() {
       side: const BorderSide(color: Tone.line),
       labelStyle: const TextStyle(
         fontFamily: Face.body,
+        fontFamilyFallback: [Face.glyph],
         fontSize: 14,
         color: Tone.soft,
       ),
       secondaryLabelStyle: const TextStyle(
         fontFamily: Face.body,
+        fontFamilyFallback: [Face.glyph],
         fontSize: 14,
         color: Tone.accent,
       ),
@@ -399,6 +423,7 @@ ThemeData shrutiTheme() {
       ),
       textStyle: const TextStyle(
         fontFamily: Face.body,
+        fontFamilyFallback: [Face.glyph],
         fontSize: 13,
         color: Tone.ink,
       ),

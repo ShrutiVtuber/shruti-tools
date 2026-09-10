@@ -24,6 +24,10 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../theme/tokens.dart';
 import '../widgets/brand.dart';
+import '../widgets/parts.dart';
+import '../widgets/data.dart';
+import '../widgets/content.dart';
+import '../services/ephemeris.dart';
 import '../widgets/eyebrow.dart';
 
 const sourceUrl = 'https://github.com/ShrutiVtuber/astrolabe';
@@ -73,30 +77,102 @@ class LicencesScreen extends StatelessWidget {
         launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
 
     return Scaffold(
-      appBar: const Bar(title: 'Licences'),
+      appBar: const Bar(title: 'Licences', hour: false),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.fromLTRB(Gap.lg, Gap.lg, Gap.lg, Gap.huge),
           children: [
-            const Eyebrow('This app'),
-            const SizedBox(height: Gap.sm),
-            const Text(
-              'Astrolabe is free software under the GNU Affero General Public '
-              'License, version 3. You may use it, read it, change it and pass '
-              'it on, provided what you pass on carries the same freedoms.',
-              style: TextStyle(color: Tone.soft, height: 1.5),
+            const Prose(
+              small: true,
+              text:
+                  'Astrolabe is free software under the GNU Affero General '
+                  'Public License, version 3. You may use it, read it, change '
+                  'it and pass it on, provided what you pass on carries the '
+                  'same freedoms.',
             ),
             const SizedBox(height: Gap.md),
-            OutlinedButton.icon(
-              onPressed: () => open(sourceUrl),
-              icon: const Icon(Icons.code_outlined, size: 18),
-              label: const Text('The source'),
+            Pressable(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const Fact(
+                    label: 'Astrolabe',
+                    value: 'AGPL-3.0-only',
+                    small: true,
+                  ),
+                  const Fact(
+                    label: 'Swiss Ephemeris',
+                    value: 'AGPL-3.0',
+                    small: true,
+                  ),
+                  const Fact(
+                    label: 'Flutter, Dart',
+                    value: 'BSD-3-Clause',
+                    small: true,
+                  ),
+                  const Fact(
+                    label: 'EB Garamond',
+                    value: 'OFL-1.1',
+                    small: true,
+                  ),
+                  const Fact(
+                    label: 'Commissioner',
+                    value: 'OFL-1.1',
+                    small: true,
+                  ),
+                  const SizedBox(height: 10),
+                  Container(
+                    padding: const EdgeInsets.only(top: 10),
+                    decoration: const BoxDecoration(
+                      border: Border(top: BorderSide(color: Tone.line)),
+                    ),
+                    child: const Column(
+                      children: [
+                        Fact(
+                          label: 'This build',
+                          value: appVersion,
+                          small: true,
+                          tone: Tone.faint,
+                        ),
+                        Fact(
+                          label: 'Ephemeris',
+                          value: engineVersion,
+                          small: true,
+                          tone: Tone.faint,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-            const SizedBox(height: Gap.xs),
-            const Text(
-              'Every line of it, including the version this build was made '
-              'from. The AGPL requires that anybody running this can get it.',
-              style: TextStyle(color: Tone.faint, fontSize: 12, height: 1.5),
+            const SizedBox(height: Gap.md),
+            ListGroup(
+              children: [
+                ListRow(
+                  label: 'Source for this build',
+                  description: 'ShrutiVtuber/astrolabe · $appVersion',
+                  external: true,
+                  onTap: () => open(sourceUrl),
+                ),
+              ],
+            ),
+            const SizedBox(height: Gap.sm),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: Gap.xs),
+              child: Text(
+                'Every line of it, including the version this build was made '
+                'from. ⚠ The AGPL requires that anybody running this can get '
+                'the source — which is why the link is here rather than in a '
+                'footer nobody reads.',
+                style: TextStyle(
+                  fontFamily: Face.body,
+                  fontFamilyFallback: [Face.glyph],
+                  fontSize: Type.caption,
+                  height: 1.55,
+                  color: Tone.faint,
+                ),
+              ),
             ),
 
             const SizedBox(height: Gap.xl),

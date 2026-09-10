@@ -277,6 +277,7 @@ class _Step extends StatelessWidget {
             style: const TextStyle(
               color: Tone.ink,
               fontFamily: Face.display,
+              fontFamilyFallback: [Face.glyph],
               fontSize: 16,
               letterSpacing: 1.5,
             ),

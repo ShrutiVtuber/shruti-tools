@@ -80,6 +80,7 @@ class Bar extends StatelessWidget implements PreferredSizeWidget {
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
                   fontFamily: Face.body,
+                  fontFamilyFallback: [Face.glyph],
                   fontSize: 12,
                   height: 1.3,
                   color: Tone.faint,
@@ -147,6 +148,7 @@ class HourChip extends StatelessWidget {
               ].join(' '),
               style: const TextStyle(
                 fontFamily: Face.body,
+                fontFamilyFallback: [Face.glyph],
                 fontSize: 12.5,
                 color: Tone.soft,
                 fontFeatures: [FontFeature.tabularFigures()],
@@ -387,6 +389,7 @@ class Masthead extends StatelessWidget {
                     line,
                     style: const TextStyle(
                       fontFamily: Face.display,
+                      fontFamilyFallback: [Face.glyph],
                       fontSize: 15.5,
                       height: 1.45,
                       color: Tone.soft,
@@ -477,6 +480,7 @@ class DayArc extends StatelessWidget {
                 daylight ? 'Daylight' : 'Night',
                 style: const TextStyle(
                   fontFamily: Face.body,
+                  fontFamilyFallback: [Face.glyph],
                   fontSize: 12,
                   color: Tone.faint,
                 ),
@@ -511,6 +515,7 @@ class _Foot extends StatelessWidget {
         label,
         style: const TextStyle(
           fontFamily: Face.body,
+          fontFamilyFallback: [Face.glyph],
           fontSize: 11,
           color: Tone.faint,
         ),
@@ -519,6 +524,7 @@ class _Foot extends StatelessWidget {
         value,
         style: const TextStyle(
           fontFamily: Face.body,
+          fontFamilyFallback: [Face.glyph],
           fontSize: 14,
           color: Tone.ink,
           fontFeatures: [FontFeature.tabularFigures()],
@@ -609,6 +615,7 @@ TextStyle figures({
   bool bold = false,
 }) => TextStyle(
   fontFamily: Face.body,
+  fontFamilyFallback: [Face.glyph],
   fontSize: size,
   color: colour,
   fontWeight: bold ? FontWeight.w600 : FontWeight.w400,

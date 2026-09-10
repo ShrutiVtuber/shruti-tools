@@ -182,6 +182,7 @@ class _AccountScreenState extends State<AccountScreen> {
             'account as shrutivtuber.com.',
             style: TextStyle(
               fontFamily: Face.body,
+              fontFamilyFallback: [Face.glyph],
               fontSize: Type.body,
               height: 1.5,
               color: Tone.soft,
@@ -216,6 +217,7 @@ class _AccountScreenState extends State<AccountScreen> {
               'another, and change any of them later.',
               style: TextStyle(
                 fontFamily: Face.body,
+                fontFamilyFallback: [Face.glyph],
                 fontSize: Type.caption,
                 height: 1.5,
                 color: Tone.faint,
@@ -340,6 +342,7 @@ class _SignedIn extends StatelessWidget {
                         reader?.shownName ?? 'Signed in',
                         style: const TextStyle(
                           fontFamily: Face.display,
+                          fontFamilyFallback: [Face.glyph],
                           fontSize: 18,
                           height: 1.3,
                           fontWeight: FontWeight.w500,
@@ -352,6 +355,7 @@ class _SignedIn extends StatelessWidget {
                           reader.email,
                           style: const TextStyle(
                             fontFamily: Face.body,
+                            fontFamilyFallback: [Face.glyph],
                             fontSize: Type.caption,
                             color: Tone.faint,
                           ),
@@ -371,6 +375,7 @@ class _SignedIn extends StatelessWidget {
               'too, with nothing more to do.',
               style: TextStyle(
                 fontFamily: Face.body,
+                fontFamilyFallback: [Face.glyph],
                 fontSize: Type.caption,
                 height: 1.5,
                 color: Tone.faint,
@@ -413,6 +418,7 @@ class _SignedIn extends StatelessWidget {
               'nothing you have saved is deleted.',
               style: TextStyle(
                 fontFamily: Face.body,
+                fontFamilyFallback: [Face.glyph],
                 fontSize: Type.caption,
                 height: 1.5,
                 color: Tone.faint,

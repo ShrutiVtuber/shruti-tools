@@ -168,6 +168,7 @@ class _ChartScreenState extends State<ChartScreen> {
                 'desk.',
                 style: TextStyle(
                   fontFamily: Face.body,
+                  fontFamilyFallback: [Face.glyph],
                   fontSize: Type.caption,
                   height: 1.6,
                   color: Tone.faint,
@@ -341,6 +342,7 @@ class _Picked extends StatelessWidget {
             label,
             style: const TextStyle(
               fontFamily: Face.body,
+              fontFamilyFallback: [Face.glyph],
               fontSize: Type.caption,
               height: 1.3,
               fontWeight: FontWeight.w600,
@@ -363,6 +365,7 @@ class _Picked extends StatelessWidget {
                     value,
                     style: const TextStyle(
                       fontFamily: Face.body,
+                      fontFamilyFallback: [Face.glyph],
                       fontSize: Type.body,
                       color: Tone.ink,
                       fontFeatures: [FontFeature.tabularFigures()],
@@ -379,6 +382,7 @@ class _Picked extends StatelessWidget {
               helper!,
               style: const TextStyle(
                 fontFamily: Face.body,
+                fontFamilyFallback: [Face.glyph],
                 fontSize: Type.caption,
                 height: 1.45,
                 color: Tone.faint,

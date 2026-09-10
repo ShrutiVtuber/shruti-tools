@@ -62,6 +62,7 @@ class ContentCard extends StatelessWidget {
                     .toUpperCase(),
                 style: const TextStyle(
                   fontFamily: Face.body,
+                  fontFamilyFallback: [Face.glyph],
                   fontSize: Type.eyebrow,
                   height: 1,
                   fontWeight: FontWeight.w600,
@@ -89,6 +90,7 @@ class ContentCard extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
               fontFamily: Face.display,
+              fontFamilyFallback: [Face.glyph],
               fontSize: 19,
               height: 1.35,
               fontWeight: FontWeight.w500,
@@ -103,6 +105,7 @@ class ContentCard extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(
                 fontFamily: Face.body,
+                fontFamilyFallback: [Face.glyph],
                 fontSize: Type.caption,
                 height: 1.55,
                 color: Tone.faint,
@@ -116,6 +119,7 @@ class ContentCard extends StatelessWidget {
                 date,
                 style: const TextStyle(
                   fontFamily: Face.body,
+                  fontFamilyFallback: [Face.glyph],
                   fontSize: Type.caption,
                   height: 1.4,
                   color: Tone.faint,
@@ -133,6 +137,7 @@ class ContentCard extends StatelessWidget {
                   readingTime!,
                   style: const TextStyle(
                     fontFamily: Face.body,
+                    fontFamilyFallback: [Face.glyph],
                     fontSize: Type.caption,
                     color: Tone.faint,
                   ),
@@ -217,6 +222,7 @@ class WorkCard extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           fontFamily: Face.body,
+                          fontFamilyFallback: [Face.glyph],
                           fontSize: Type.caption,
                           color: Tone.soft,
                         ),
@@ -227,6 +233,7 @@ class WorkCard extends StatelessWidget {
                       date,
                       style: const TextStyle(
                         fontFamily: Face.body,
+                        fontFamilyFallback: [Face.glyph],
                         fontSize: Type.caption,
                         color: Tone.faint,
                         fontFeatures: [FontFeature.tabularFigures()],
@@ -238,6 +245,7 @@ class WorkCard extends StatelessWidget {
                         statusWord.toUpperCase(),
                         style: TextStyle(
                           fontFamily: Face.body,
+                          fontFamilyFallback: [Face.glyph],
                           fontSize: 10,
                           height: 1,
                           fontWeight: FontWeight.w600,
@@ -255,6 +263,7 @@ class WorkCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                     fontFamily: Face.display,
+                    fontFamilyFallback: [Face.glyph],
                     fontSize: 18,
                     height: 1.3,
                     fontWeight: FontWeight.w500,
@@ -269,6 +278,7 @@ class WorkCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       fontFamily: Face.body,
+                      fontFamilyFallback: [Face.glyph],
                       fontSize: Type.caption,
                       height: 1.55,
                       color: Tone.faint,
@@ -283,6 +293,7 @@ class WorkCard extends StatelessWidget {
                         sign!,
                         style: const TextStyle(
                           fontFamily: Face.body,
+                          fontFamilyFallback: [Face.glyph],
                           fontSize: Type.caption,
                           color: Tone.faint,
                         ),
@@ -299,6 +310,7 @@ class WorkCard extends StatelessWidget {
                       '$comments',
                       style: const TextStyle(
                         fontFamily: Face.body,
+                        fontFamilyFallback: [Face.glyph],
                         fontSize: Type.caption,
                         color: Tone.faint,
                         fontFeatures: [FontFeature.tabularFigures()],
@@ -375,6 +387,7 @@ class VoteControl extends StatelessWidget {
               '$value',
               style: TextStyle(
                 fontFamily: Face.body,
+                fontFamilyFallback: [Face.glyph],
                 fontSize: Type.caption,
                 height: 1,
                 fontWeight: mine != 0 ? FontWeight.w600 : FontWeight.w500,
@@ -466,6 +479,7 @@ class OfferCard extends StatelessWidget {
                           (membersOnly ? 'Members' : 'Offer').toUpperCase(),
                           style: const TextStyle(
                             fontFamily: Face.body,
+                            fontFamilyFallback: [Face.glyph],
                             fontSize: Type.eyebrow,
                             height: 1,
                             fontWeight: FontWeight.w600,
@@ -487,6 +501,7 @@ class OfferCard extends StatelessWidget {
                             '· FULL',
                             style: TextStyle(
                               fontFamily: Face.body,
+                              fontFamilyFallback: [Face.glyph],
                               fontSize: Type.eyebrow,
                               letterSpacing: 1.54,
                               fontWeight: FontWeight.w600,
@@ -501,6 +516,7 @@ class OfferCard extends StatelessWidget {
                       title,
                       style: const TextStyle(
                         fontFamily: Face.display,
+                        fontFamilyFallback: [Face.glyph],
                         fontSize: 19,
                         height: 1.3,
                         fontWeight: FontWeight.w500,
@@ -513,6 +529,7 @@ class OfferCard extends StatelessWidget {
                         body!,
                         style: const TextStyle(
                           fontFamily: Face.body,
+                          fontFamilyFallback: [Face.glyph],
                           fontSize: Type.caption,
                           height: 1.55,
                           color: Tone.soft,
@@ -542,6 +559,7 @@ class OfferCard extends StatelessWidget {
                                 text: price,
                                 style: const TextStyle(
                                   fontFamily: Face.body,
+                                  fontFamilyFallback: [Face.glyph],
                                   fontSize: Type.data,
                                   height: 1,
                                   fontWeight: FontWeight.w600,
@@ -568,6 +586,7 @@ class OfferCard extends StatelessWidget {
                                 : (footnote ?? 'opens in your browser'),
                             style: const TextStyle(
                               fontFamily: Face.body,
+                              fontFamilyFallback: [Face.glyph],
                               fontSize: Type.caption,
                               height: 1,
                               color: Tone.faint,
@@ -623,6 +642,7 @@ class Prose extends StatelessWidget {
         .toList();
     final base = TextStyle(
       fontFamily: Face.display,
+      fontFamilyFallback: [Face.glyph],
       fontSize: small ? 15 : Type.prose,
       height: 1.65,
       color: Tone.ink,
@@ -646,6 +666,7 @@ class Prose extends StatelessWidget {
         block.substring(3),
         style: const TextStyle(
           fontFamily: Face.display,
+          fontFamilyFallback: [Face.glyph],
           fontSize: 22,
           height: 1.3,
           fontWeight: FontWeight.w600,

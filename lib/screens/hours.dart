@@ -150,6 +150,7 @@ class _HoursScreenState extends State<HoursScreen> {
                       ' — change',
                       style: const TextStyle(
                         fontFamily: Face.body,
+                        fontFamilyFallback: [Face.glyph],
                         fontSize: Type.caption,
                         height: 1,
                         fontWeight: FontWeight.w500,

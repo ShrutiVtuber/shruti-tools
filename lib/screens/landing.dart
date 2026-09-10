@@ -208,6 +208,7 @@ class _LandingScreenState extends State<LandingScreen> {
                       phaseName(lit, waxing),
                       style: const TextStyle(
                         fontFamily: Face.body,
+                        fontFamilyFallback: [Face.glyph],
                         fontSize: Type.caption,
                         color: Tone.soft,
                       ),
@@ -364,6 +365,7 @@ class _LandingScreenState extends State<LandingScreen> {
                 'address bar says whose they are.',
                 style: TextStyle(
                   fontFamily: Face.body,
+                  fontFamilyFallback: [Face.glyph],
                   fontSize: Type.caption,
                   height: 1.5,
                   color: Tone.faint,
@@ -463,6 +465,7 @@ class _OfferState extends State<_Offer> {
                         o.code,
                         style: const TextStyle(
                           fontFamily: Face.body,
+                          fontFamilyFallback: [Face.glyph],
                           fontSize: Type.label,
                           letterSpacing: 1.2,
                           color: Tone.ink,

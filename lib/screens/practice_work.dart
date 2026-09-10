@@ -118,6 +118,7 @@ class _WorkScreenState extends State<WorkScreen> {
                   'PRACTICE · ${w.series ? "${w.signs.length} SIGNS" : (w.signs.isEmpty ? periodLabel(w.period, w.covers).toUpperCase() : titled(w.signs.first).toUpperCase())}',
                   style: const TextStyle(
                     fontFamily: Face.body,
+                    fontFamilyFallback: [Face.glyph],
                     fontSize: Type.eyebrow,
                     height: 1,
                     fontWeight: FontWeight.w600,
@@ -130,6 +131,7 @@ class _WorkScreenState extends State<WorkScreen> {
                   w.shownTitle,
                   style: const TextStyle(
                     fontFamily: Face.display,
+                    fontFamilyFallback: [Face.glyph],
                     fontSize: 26,
                     height: 1.22,
                     fontWeight: FontWeight.w500,
@@ -153,6 +155,7 @@ class _WorkScreenState extends State<WorkScreen> {
                       w.author,
                       style: const TextStyle(
                         fontFamily: Face.body,
+                        fontFamilyFallback: [Face.glyph],
                         fontSize: Type.caption,
                         color: Tone.soft,
                       ),
@@ -162,6 +165,7 @@ class _WorkScreenState extends State<WorkScreen> {
                       periodLabel(w.period, w.covers),
                       style: const TextStyle(
                         fontFamily: Face.body,
+                        fontFamilyFallback: [Face.glyph],
                         fontSize: Type.caption,
                         color: Tone.faint,
                         fontFeatures: [FontFeature.tabularFigures()],
@@ -203,6 +207,7 @@ class _WorkScreenState extends State<WorkScreen> {
                               : 'Sign in to vote or comment.',
                           style: const TextStyle(
                             fontFamily: Face.body,
+                            fontFamilyFallback: [Face.glyph],
                             fontSize: Type.caption,
                             height: 1.5,
                             color: Tone.soft,
@@ -227,6 +232,7 @@ class _WorkScreenState extends State<WorkScreen> {
                         r.signName.toUpperCase(),
                         style: const TextStyle(
                           fontFamily: Face.body,
+                          fontFamilyFallback: [Face.glyph],
                           fontSize: Type.eyebrow,
                           height: 1,
                           fontWeight: FontWeight.w600,
@@ -278,6 +284,7 @@ class _WorkScreenState extends State<WorkScreen> {
                                 c.author,
                                 style: const TextStyle(
                                   fontFamily: Face.body,
+                                  fontFamilyFallback: [Face.glyph],
                                   fontSize: Type.caption,
                                   color: Tone.soft,
                                   fontWeight: FontWeight.w500,
@@ -288,6 +295,7 @@ class _WorkScreenState extends State<WorkScreen> {
                                 c.bodyMd,
                                 style: const TextStyle(
                                   fontFamily: Face.body,
+                                  fontFamilyFallback: [Face.glyph],
                                   fontSize: 15,
                                   height: 1.6,
                                   color: Tone.soft,
@@ -324,6 +332,7 @@ class _WorkScreenState extends State<WorkScreen> {
                       'and worth reading.',
                       style: TextStyle(
                         fontFamily: Face.body,
+                        fontFamilyFallback: [Face.glyph],
                         fontSize: Type.caption,
                         height: 1.6,
                         color: Tone.faint,

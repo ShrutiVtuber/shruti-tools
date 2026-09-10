@@ -209,6 +209,7 @@ class _Tab extends StatelessWidget {
                   label,
                   style: TextStyle(
                     fontFamily: Face.body,
+                    fontFamilyFallback: [Face.glyph],
                     fontSize: 11.5,
                     fontWeight: chosen ? FontWeight.w600 : FontWeight.w400,
                     color: chosen ? Tone.ink : Tone.faint,

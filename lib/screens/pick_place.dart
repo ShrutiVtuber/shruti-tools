@@ -127,6 +127,7 @@ class _PickPlaceScreenState extends State<PickPlaceScreen> {
             'stored on this phone and never sent anywhere.',
             style: TextStyle(
               fontFamily: Face.body,
+              fontFamilyFallback: [Face.glyph],
               fontSize: Type.caption,
               height: 1.6,
               color: Tone.faint,

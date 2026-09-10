@@ -53,6 +53,7 @@ class Fact extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
               fontFamily: Face.body,
+              fontFamilyFallback: [Face.glyph],
               fontSize: small ? Type.caption : Type.label,
               height: 1.4,
               color: Tone.faint,
@@ -79,6 +80,7 @@ class Fact extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
               fontFamily: Face.body,
+              fontFamilyFallback: [Face.glyph],
               fontSize: small ? Type.caption : Type.data,
               height: 1.4,
               fontWeight: small ? FontWeight.w400 : FontWeight.w500,
@@ -197,6 +199,7 @@ class Reference extends StatelessWidget {
               caption!,
               style: const TextStyle(
                 fontFamily: Face.body,
+                fontFamilyFallback: [Face.glyph],
                 fontSize: Type.caption,
                 height: 1.5,
                 color: Tone.faint,
@@ -228,6 +231,7 @@ class Reference extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           fontFamily: Face.body,
+                          fontFamilyFallback: [Face.glyph],
                           fontSize: 9,
                           height: 1.15,
                           fontWeight: FontWeight.w600,
@@ -280,6 +284,7 @@ class Reference extends StatelessWidget {
             textAlign: column.numeric ? TextAlign.right : TextAlign.left,
             style: TextStyle(
               fontFamily: Face.body,
+              fontFamilyFallback: [Face.glyph],
               fontSize: Type.dataDense,
               height: 1.35,
               fontWeight: bold ? FontWeight.w600 : FontWeight.w400,
@@ -307,6 +312,7 @@ class Reference extends StatelessWidget {
             'NOW',
             style: TextStyle(
               fontFamily: Face.body,
+              fontFamilyFallback: [Face.glyph],
               fontSize: 8,
               height: 1,
               fontWeight: FontWeight.w600,
@@ -352,6 +358,7 @@ class Figures extends StatelessWidget {
             label!.toUpperCase(),
             style: const TextStyle(
               fontFamily: Face.body,
+              fontFamilyFallback: [Face.glyph],
               fontSize: Type.eyebrow,
               height: 1,
               fontWeight: FontWeight.w600,
@@ -366,6 +373,7 @@ class Figures extends StatelessWidget {
           textAlign: right ? TextAlign.right : TextAlign.left,
           style: const TextStyle(
             fontFamily: Face.body,
+            fontFamilyFallback: [Face.glyph],
             fontSize: Type.dataDense,
             height: 1.65,
             color: Tone.ink,

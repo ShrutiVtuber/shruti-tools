@@ -157,6 +157,7 @@ class _Coming extends StatelessWidget {
                       .toUpperCase(),
                   style: TextStyle(
                     fontFamily: Face.body,
+                    fontFamilyFallback: [Face.glyph],
                     fontSize: Type.eyebrow,
                     height: 1,
                     fontWeight: FontWeight.w600,
@@ -169,6 +170,7 @@ class _Coming extends StatelessWidget {
                   event.title,
                   style: const TextStyle(
                     fontFamily: Face.display,
+                    fontFamilyFallback: [Face.glyph],
                     fontSize: 17,
                     height: 1.3,
                     fontWeight: FontWeight.w500,
@@ -181,6 +183,7 @@ class _Coming extends StatelessWidget {
                   '${there.minute.toString().padLeft(2, "0")} ${place.shortName}',
                   style: const TextStyle(
                     fontFamily: Face.body,
+                    fontFamilyFallback: [Face.glyph],
                     fontSize: Type.caption,
                     height: 1.4,
                     color: Tone.faint,

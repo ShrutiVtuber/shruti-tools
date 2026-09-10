@@ -223,6 +223,7 @@ class _WriteScreenState extends State<WriteScreen> {
               periodLabel(_period, _covers),
               style: const TextStyle(
                 fontFamily: Face.body,
+                fontFamilyFallback: [Face.glyph],
                 fontSize: Type.caption,
                 color: Tone.faint,
               ),
@@ -297,6 +298,7 @@ class _WriteScreenState extends State<WriteScreen> {
                 "period day by day — the Moon's phase, not its position.",
                 style: TextStyle(
                   fontFamily: Face.body,
+                  fontFamilyFallback: [Face.glyph],
                   fontSize: Type.caption,
                   height: 1.5,
                   color: Tone.faint,
@@ -361,6 +363,7 @@ class _WriteScreenState extends State<WriteScreen> {
               'one piece of work. Signs you left blank are not sent.',
               style: TextStyle(
                 fontFamily: Face.body,
+                fontFamilyFallback: [Face.glyph],
                 fontSize: Type.caption,
                 height: 1.5,
                 color: Tone.faint,

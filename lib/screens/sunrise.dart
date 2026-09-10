@@ -37,6 +37,7 @@ Future<void> showSunriseSheet(BuildContext context) {
               'Neither is the correct one. Pick the one your tradition uses.',
               style: TextStyle(
                 fontFamily: Face.body,
+                fontFamilyFallback: [Face.glyph],
                 fontSize: Type.caption,
                 height: 1.5,
                 color: Tone.faint,

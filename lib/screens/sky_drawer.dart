@@ -134,6 +134,7 @@ class _SkyDrawerState extends State<SkyDrawer> {
               'Ephemeris · ${_months[_month.month - 1]} ${_month.year}',
               style: const TextStyle(
                 fontFamily: Face.body,
+                fontFamilyFallback: [Face.glyph],
                 fontSize: 12,
                 height: 1.3,
                 color: Tone.faint,
@@ -197,7 +198,7 @@ class _SkyDrawerState extends State<SkyDrawer> {
               zebra: true,
               caption: 'Geocentric, apparent · midnight UT · tropical',
               columns: const [
-                Heading(label: 'Day', flex: 5),
+                Heading(label: 'Day', flex: 6),
                 Heading(label: 'Sun', mark: '☉', numeric: true, flex: 5),
                 Heading(label: 'Moon', mark: '☾', numeric: true, flex: 5),
                 Heading(label: 'Mercury', mark: '☿', numeric: true, flex: 5),

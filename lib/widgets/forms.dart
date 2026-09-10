@@ -109,6 +109,7 @@ class _PushState extends State<Push> {
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontFamily: Face.body,
+                    fontFamilyFallback: [Face.glyph],
                     fontWeight: FontWeight.w600,
                     fontSize: textSize,
                     height: 1,
@@ -199,6 +200,7 @@ class Tap extends StatelessWidget {
                     '$badge',
                     style: const TextStyle(
                       fontFamily: Face.body,
+                      fontFamilyFallback: [Face.glyph],
                       fontSize: 9,
                       height: 1,
                       fontWeight: FontWeight.w700,
@@ -274,6 +276,7 @@ class Tag extends StatelessWidget {
                   '✓',
                   style: TextStyle(
                     fontFamily: Face.body,
+                    fontFamilyFallback: [Face.glyph],
                     fontSize: 12,
                     height: 1,
                     fontWeight: FontWeight.w600,
@@ -287,6 +290,7 @@ class Tag extends StatelessWidget {
                 label,
                 style: TextStyle(
                   fontFamily: Face.body,
+                  fontFamilyFallback: [Face.glyph],
                   fontSize: Type.caption,
                   height: 1,
                   fontWeight: FontWeight.w500,
@@ -303,6 +307,7 @@ class Tag extends StatelessWidget {
                   meta!,
                   style: const TextStyle(
                     fontFamily: Face.body,
+                    fontFamilyFallback: [Face.glyph],
                     fontSize: Type.caption,
                     height: 1,
                     color: Tone.faint,
@@ -383,6 +388,7 @@ class Field extends StatelessWidget {
             label!,
             style: const TextStyle(
               fontFamily: Face.body,
+              fontFamilyFallback: [Face.glyph],
               fontSize: Type.caption,
               height: 1.3,
               fontWeight: FontWeight.w600,
@@ -421,6 +427,7 @@ class Field extends StatelessWidget {
                     cursorColor: Tone.accent,
                     style: TextStyle(
                       fontFamily: Face.body,
+                      fontFamilyFallback: [Face.glyph],
                       fontSize: Type.body,
                       height: 1.5,
                       color: Tone.ink,
@@ -439,6 +446,7 @@ class Field extends StatelessWidget {
                       hintText: hint,
                       hintStyle: const TextStyle(
                         fontFamily: Face.body,
+                        fontFamilyFallback: [Face.glyph],
                         fontSize: Type.body,
                         color: Tone.faint,
                       ),
@@ -462,6 +470,7 @@ class Field extends StatelessWidget {
                   error != null ? 'Error · $error' : (helper ?? ''),
                   style: TextStyle(
                     fontFamily: Face.body,
+                    fontFamilyFallback: [Face.glyph],
                     fontSize: Type.caption,
                     height: 1.45,
                     color: wrong ? Tone.live : Tone.faint,
@@ -475,6 +484,7 @@ class Field extends StatelessWidget {
                     '${value.text.characters.length}/$maxLength',
                     style: const TextStyle(
                       fontFamily: Face.body,
+                      fontFamilyFallback: [Face.glyph],
                       fontSize: Type.caption,
                       color: Tone.faint,
                       fontFeatures: [FontFeature.tabularFigures()],
@@ -531,6 +541,7 @@ class Switcher extends StatelessWidget {
                       label,
                       style: const TextStyle(
                         fontFamily: Face.body,
+                        fontFamilyFallback: [Face.glyph],
                         fontSize: Type.body,
                         height: 1.35,
                         color: Tone.ink,
@@ -542,6 +553,7 @@ class Switcher extends StatelessWidget {
                         description!,
                         style: const TextStyle(
                           fontFamily: Face.body,
+                          fontFamilyFallback: [Face.glyph],
                           fontSize: Type.caption,
                           height: 1.4,
                           color: Tone.faint,
@@ -598,6 +610,7 @@ class _Track extends StatelessWidget {
                       '✓',
                       style: TextStyle(
                         fontFamily: Face.body,
+                        fontFamilyFallback: [Face.glyph],
                         fontSize: 11,
                         height: 1,
                         fontWeight: FontWeight.w700,
@@ -676,6 +689,7 @@ class ChoiceRow extends StatelessWidget {
                       '✓',
                       style: TextStyle(
                         fontFamily: Face.body,
+                        fontFamilyFallback: [Face.glyph],
                         fontSize: 13,
                         height: 1,
                         fontWeight: FontWeight.w700,
@@ -692,6 +706,7 @@ class ChoiceRow extends StatelessWidget {
                     label,
                     style: TextStyle(
                       fontFamily: Face.body,
+                      fontFamilyFallback: [Face.glyph],
                       fontSize: Type.body,
                       height: 1.35,
                       fontWeight: checked ? FontWeight.w500 : FontWeight.w400,
@@ -704,6 +719,7 @@ class ChoiceRow extends StatelessWidget {
                       rule!,
                       style: const TextStyle(
                         fontFamily: Face.body,
+                        fontFamilyFallback: [Face.glyph],
                         fontSize: Type.caption,
                         height: 1.5,
                         color: Tone.faint,

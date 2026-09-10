@@ -132,6 +132,7 @@ class _StationsScreenState extends State<StationsScreen> {
                                   'and ${retrograde.last} are retrograde',
                         style: const TextStyle(
                           fontFamily: Face.body,
+                          fontFamilyFallback: [Face.glyph],
                           fontSize: Type.label,
                           height: 1.35,
                           fontWeight: FontWeight.w600,
@@ -143,6 +144,7 @@ class _StationsScreenState extends State<StationsScreen> {
                         'Every affected figure carries ℞ as well as the tint.',
                         style: TextStyle(
                           fontFamily: Face.body,
+                          fontFamilyFallback: [Face.glyph],
                           fontSize: Type.caption,
                           height: 1.5,
                           color: Tone.soft,
@@ -233,6 +235,7 @@ class _NextStation extends StatelessWidget {
                   'NEXT STATION · ${place.shortName.toUpperCase()}',
                   style: const TextStyle(
                     fontFamily: Face.body,
+                    fontFamilyFallback: [Face.glyph],
                     fontSize: Type.eyebrow,
                     height: 1,
                     fontWeight: FontWeight.w600,
@@ -266,6 +269,7 @@ class _NextStation extends StatelessWidget {
                   '${at.minute.toString().padLeft(2, "0")}',
                   style: const TextStyle(
                     fontFamily: Face.body,
+                    fontFamilyFallback: [Face.glyph],
                     fontSize: 20,
                     fontWeight: FontWeight.w500,
                     color: Tone.accent,
@@ -280,6 +284,7 @@ class _NextStation extends StatelessWidget {
               'in ${_away(away!)} · ${station!.kind.godform}',
               style: const TextStyle(
                 fontFamily: Face.body,
+                fontFamilyFallback: [Face.glyph],
                 fontSize: Type.caption,
                 height: 1.4,
                 color: Tone.faint,
