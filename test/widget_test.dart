@@ -8,7 +8,7 @@
 // "0h 14m" is a rendering the site had to fix, and reading `/api/videos` as a
 // bare list would return nothing at all while looking like it worked.
 import 'package:flutter_test/flutter_test.dart';
-import 'package:shruti_tools/services/site.dart';
+import 'package:astrolabe/services/site.dart';
 
 void main() {
   group('the videos endpoint answers with an object, not a list', () {

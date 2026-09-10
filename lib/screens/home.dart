@@ -10,11 +10,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../models/place.dart';
 import '../services/settings.dart';
-import '../services/site.dart';
 import '../services/stations.dart';
 import '../theme/tokens.dart';
 import '../widgets/eyebrow.dart';
@@ -28,13 +26,11 @@ class StationsScreen extends StatefulWidget {
 }
 
 class _StationsScreenState extends State<StationsScreen> {
-  LiveStatus _live = LiveStatus.offline;
   Timer? _tick;
 
   @override
   void initState() {
     super.initState();
-    _refreshLive();
     // The countdown is only useful if it counts.
     _tick = Timer.periodic(const Duration(seconds: 30), (_) {
       if (mounted) setState(() {});
@@ -45,11 +41,6 @@ class _StationsScreenState extends State<StationsScreen> {
   void dispose() {
     _tick?.cancel();
     super.dispose();
-  }
-
-  Future<void> _refreshLive() async {
-    final status = await liveStatus();
-    if (mounted) setState(() => _live = status);
   }
 
   @override
@@ -69,17 +60,20 @@ class _StationsScreenState extends State<StationsScreen> {
     return RefreshIndicator(
       color: Tone.accent,
       backgroundColor: Tone.card,
-      onRefresh: _refreshLive,
+      // Pulling down recomputes the day for the chosen place. It is
+      // arithmetic, so it is instant and needs no network.
+      onRefresh: () async => setState(() {}),
       child: ListView(
         padding: const EdgeInsets.fromLTRB(Gap.lg, Gap.xl, Gap.lg, Gap.huge),
         children: [
-          Text(
-            "Shruti's Tools",
-            style: Theme.of(context).textTheme.displaySmall,
-          ),
+          // ⚠ The page's own name, not the app's. This said "Astrolabe" and
+          // carried the live card, which made the stations table look like a
+          // home screen and buried the one urgent thing in the app inside an
+          // astronomical table. Both moved to Home.
+          Text('Stations', style: Theme.of(context).textTheme.displaySmall),
           const SizedBox(height: Gap.xs),
           Text(
-            'Instruments for magick',
+            'Sunrise, noon, sunset and midnight, computed here',
             style: Theme.of(context).textTheme.bodyMedium,
           ),
           const SizedBox(height: Gap.xl),
@@ -88,8 +82,6 @@ class _StationsScreenState extends State<StationsScreen> {
             place: place,
             onChangePlace: () => pickPlaceInto(context),
           ),
-          const SizedBox(height: Gap.md),
-          _LiveCard(live: _live),
           const SizedBox(height: Gap.xl),
           const Eyebrow('Today'),
           const SizedBox(height: Gap.sm),
@@ -201,54 +193,6 @@ class _PlaceLine extends StatelessWidget {
   );
 }
 
-class _LiveCard extends StatelessWidget {
-  const _LiveCard({required this.live});
-
-  final LiveStatus live;
-
-  @override
-  Widget build(BuildContext context) {
-    return _Card(
-      onTap: live.isLive ? () => launchUrl(Uri.parse(live.url)) : null,
-      child: Row(
-        children: [
-          Container(
-            width: 9,
-            height: 9,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: live.isLive ? Tone.live : Tone.faint,
-            ),
-          ),
-          const SizedBox(width: Gap.md),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  live.isLive ? 'Live now' : 'Offline',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  live.isLive && live.title.isNotEmpty
-                      ? live.title
-                      : 'Streams are announced on Discord first.',
-                  style: Theme.of(context).textTheme.bodySmall,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
-          ),
-          if (live.isLive)
-            const Icon(Icons.arrow_outward, size: 18, color: Tone.accent),
-        ],
-      ),
-    );
-  }
-}
-
 class _StationTable extends StatelessWidget {
   const _StationTable({
     required this.stations,
@@ -335,10 +279,9 @@ class _StationRow extends StatelessWidget {
 }
 
 class _Card extends StatelessWidget {
-  const _Card({required this.child, this.onTap, this.padding});
+  const _Card({required this.child, this.padding});
 
   final Widget child;
-  final VoidCallback? onTap;
   final EdgeInsets? padding;
 
   @override
@@ -353,12 +296,7 @@ class _Card extends StatelessWidget {
       ),
       child: child,
     );
-    if (onTap == null) return card;
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(Corner.md),
-      child: card,
-    );
+    return card;
   }
 }
 

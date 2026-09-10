@@ -2,7 +2,7 @@
 
 Written before a compaction. Read this and `CLAUDE.md` and you have the state.
 
-## The app — https://github.com/ShrutiVtuber/shruti-tools
+## The app — https://github.com/ShrutiVtuber/astrolabe
 
 AGPL-3.0, public, under her account. Flutter, Android + iOS, everything
 computed on the device against a bundled Swiss Ephemeris.

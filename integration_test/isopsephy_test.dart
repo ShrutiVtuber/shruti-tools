@@ -22,8 +22,8 @@
 // rather than anything about isopsephy.
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:shruti_tools/services/isopsephy.dart';
-import 'package:shruti_tools/services/packs.dart';
+import 'package:astrolabe/services/isopsephy.dart';
+import 'package:astrolabe/services/packs.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();

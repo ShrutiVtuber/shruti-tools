@@ -1,4 +1,4 @@
-package com.shrutivtuber.shruti_tools
+package com.shrutivtuber.astrolabe
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -10,9 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shruti_tools/screens/letters.dart';
-import 'package:shruti_tools/screens/sigil.dart';
-import 'package:shruti_tools/theme/theme.dart';
+import 'package:astrolabe/screens/letters.dart';
+import 'package:astrolabe/screens/sigil.dart';
+import 'package:astrolabe/theme/theme.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();

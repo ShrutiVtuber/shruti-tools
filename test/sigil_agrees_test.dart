@@ -20,7 +20,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:shruti_tools/services/sigil.dart';
+import 'package:astrolabe/services/sigil.dart';
 
 void main() {
   final cases =

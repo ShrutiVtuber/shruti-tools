@@ -1,4 +1,4 @@
-# shruti_tools
+# astrolabe
 
 Instruments for magick — a lite companion to shrutivtuber.com
 

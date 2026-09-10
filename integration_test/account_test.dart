@@ -17,10 +17,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:integration_test/integration_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shruti_tools/screens/account.dart';
-import 'package:shruti_tools/services/account.dart';
-import 'package:shruti_tools/services/site.dart' show siteOrigin;
-import 'package:shruti_tools/theme/theme.dart';
+import 'package:astrolabe/screens/account.dart';
+import 'package:astrolabe/services/account.dart';
+import 'package:astrolabe/services/site.dart' show siteOrigin;
+import 'package:astrolabe/theme/theme.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();

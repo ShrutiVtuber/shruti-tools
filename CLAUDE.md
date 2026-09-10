@@ -1,4 +1,4 @@
-# Working on Shruti's Tools
+# Working on Astrolabe
 
 A lite companion to shrutivtuber.com: the instruments, her writing and her
 videos, and a notification when she goes live. AGPL-3.0.
@@ -64,7 +64,7 @@ against whatever the code returns today.
 ## The device
 
 ```bash
-adb uninstall com.shrutivtuber.shruti_tools     # ⚠ ALWAYS first
+adb uninstall com.shrutivtuber.astrolabe     # ⚠ ALWAYS first
 adb install build/app/outputs/flutter-apk/app-release.apk
 ```
 

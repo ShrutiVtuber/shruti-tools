@@ -8,9 +8,9 @@
 // rather than assumed.
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:shruti_tools/services/ephemeris.dart';
-import 'package:shruti_tools/services/hours.dart';
-import 'package:shruti_tools/services/stations.dart';
+import 'package:astrolabe/services/ephemeris.dart';
+import 'package:astrolabe/services/hours.dart';
+import 'package:astrolabe/services/stations.dart';
 
 const _lat = 37.9838;
 const _lon = 23.7275;

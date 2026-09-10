@@ -10,9 +10,9 @@
 // anything bigger than a minute is a real disagreement rather than rounding.
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:shruti_tools/services/chart.dart';
-import 'package:shruti_tools/services/ephemeris.dart';
-import 'package:shruti_tools/services/events.dart';
+import 'package:astrolabe/services/chart.dart';
+import 'package:astrolabe/services/ephemeris.dart';
+import 'package:astrolabe/services/events.dart';
 
 DateTime _utc(String iso) => DateTime.parse('${iso}Z').toUtc();
 

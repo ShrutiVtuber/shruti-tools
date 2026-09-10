@@ -33,12 +33,18 @@ const siteOrigin = String.fromEnvironment(
 /// for — it decorates a screen that already works without it.
 const _timeout = Duration(seconds: 8);
 
-Future<dynamic> _get(String path) async {
+Future<dynamic> _get(
+  String path, {
+  Map<String, String> headers = const {},
+}) async {
   try {
     final r = await http
         .get(
           Uri.parse('$siteOrigin$path'),
-          headers: const {'Accept': 'application/json'},
+          // ⚠ The account's bearer token where one is given. Some answers
+          // depend on who is asking — an offer only for members is not in the
+          // list at all for anybody else.
+          headers: {'Accept': 'application/json', ...headers},
         )
         .timeout(_timeout);
     if (r.statusCode != 200) return null;
@@ -207,6 +213,130 @@ Future<List<Writing>> writing() async {
           title: (w['subject'] ?? w['slug'] ?? '') as String,
           slug: (w['slug'] ?? '') as String,
           sentAt: w['sentAt'] as String?,
+        ),
+  ];
+}
+
+/// One of her published readings, newest first.
+class Reading {
+  const Reading({
+    required this.sign,
+    required this.period,
+    required this.covers,
+    required this.opening,
+    required this.publishedAt,
+  });
+
+  final String sign;
+  final String period;
+  final String covers;
+  final String opening;
+  final String publishedAt;
+
+  String get path => '/horoscopes/$sign/$period/$covers';
+}
+
+/// The readings she has published, newest first.
+///
+/// ⚠ `/published` and not `/archive`. The archive groups by period and carries
+/// no timestamp, so a list built on it comes out in an order that has nothing
+/// to do with when anything was published — which was shipped once already, in
+/// a feed and a sitemap.
+Future<List<Reading>> publishedReadings({int limit = 12}) async {
+  final body = await _get('/api/horoscopes/published?limit=$limit');
+  if (body is! List) return const [];
+  return [
+    for (final r in body)
+      if (r is Map)
+        Reading(
+          sign: (r['sign'] ?? '') as String,
+          period: (r['period'] ?? '') as String,
+          covers: (r['covers'] ?? '') as String,
+          opening: (r['opening'] ?? '') as String,
+          publishedAt: (r['publishedAt'] ?? '') as String,
+        ),
+  ];
+}
+
+/// An article from the journal.
+class Article {
+  const Article({
+    required this.title,
+    required this.opening,
+    required this.url,
+    required this.publishedAt,
+  });
+
+  final String title;
+  final String opening;
+  final String url;
+  final String publishedAt;
+}
+
+/// Her latest writing.
+///
+/// ⚠ Over the API, not the RSS feed. The feed is a PAGE, and pages are behind
+/// the holding gate — the app has no session for that and would silently get
+/// the "site is being built" placeholder instead of her articles.
+Future<List<Article>> articles({int limit = 6}) async {
+  final body = await _get('/api/journal/recent?limit=$limit');
+  if (body is! List) return const [];
+  return [
+    for (final a in body)
+      if (a is Map)
+        Article(
+          title: (a['title'] ?? '') as String,
+          opening: (a['opening'] ?? '') as String,
+          url: (a['url'] ?? '') as String,
+          publishedAt: (a['publishedAt'] ?? '') as String,
+        ),
+  ];
+}
+
+/// Something worth having, offered in the app.
+class Offer {
+  const Offer({
+    required this.title,
+    required this.blurb,
+    required this.kind,
+    required this.code,
+    required this.url,
+    required this.from,
+    required this.endsAt,
+  });
+
+  final String title;
+  final String blurb;
+  final String kind;
+
+  /// The code to type at the till. Empty where the offer is just a link.
+  final String code;
+  final String url;
+
+  /// Whose deal it is, for a sponsor's. Empty for hers.
+  final String from;
+  final String? endsAt;
+}
+
+/// What is on right now.
+///
+/// ⚠ The site decides what this person may see — an offer only for members
+/// never arrives here at all, rather than arriving and being hidden. A code on
+/// the phone is a code that can be read off it.
+Future<List<Offer>> offers({Map<String, String> headers = const {}}) async {
+  final body = await _get('/api/offers', headers: headers);
+  if (body is! List) return const [];
+  return [
+    for (final o in body)
+      if (o is Map)
+        Offer(
+          title: (o['title'] ?? '') as String,
+          blurb: (o['blurb'] ?? '') as String,
+          kind: (o['kind'] ?? 'shop') as String,
+          code: (o['code'] ?? '') as String,
+          url: (o['url'] ?? '') as String,
+          from: (o['from'] ?? '') as String,
+          endsAt: o['endsAt'] as String?,
         ),
   ];
 }

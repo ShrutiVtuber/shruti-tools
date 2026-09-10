@@ -24,8 +24,8 @@
 // because the suite was testing a fake.
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:shruti_tools/services/ephemeris.dart';
-import 'package:shruti_tools/services/stations.dart';
+import 'package:astrolabe/services/ephemeris.dart';
+import 'package:astrolabe/services/stations.dart';
 
 void main() {
   setUpAll(() async {

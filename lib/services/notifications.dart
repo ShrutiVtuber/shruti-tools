@@ -165,7 +165,7 @@ class Notifications extends ChangeNotifier {
   ///
   /// To finish it:
   ///   1. Make a Firebase project and add an Android app with this
-  ///      application id (com.shrutivtuber.shruti_tools).
+  ///      application id (com.shrutivtuber.astrolabe).
   ///   2. Put `google-services.json` in `android/app/`.
   ///   3. Add `firebase_core` and `firebase_messaging` to pubspec.yaml.
   ///   4. Replace the body here with:

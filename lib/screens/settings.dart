@@ -212,7 +212,7 @@ class SettingsScreen extends StatelessWidget {
         const Eyebrow('About'),
         const SizedBox(height: Gap.sm),
         _Note(
-          "Shruti's Tools computes on this phone. The ephemeris is bundled, "
+          "Astrolabe computes on this phone. The ephemeris is bundled, "
           'so the stations, the hours, the chart and what the sky does next '
           'all work with no signal and send nothing anywhere. The site is '
           'asked only for what only she knows — whether she is streaming, and '
@@ -222,7 +222,7 @@ class SettingsScreen extends StatelessWidget {
         _Link(
           label: 'Source, and the licence',
           detail: 'AGPL-3.0 — yours to read, change and run',
-          url: 'https://github.com/ShrutiVtuber/shruti-tools',
+          url: 'https://github.com/ShrutiVtuber/astrolabe',
         ),
       ],
     );

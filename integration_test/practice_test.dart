@@ -13,9 +13,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shruti_tools/services/account.dart';
-import 'package:shruti_tools/services/practice.dart';
-import 'package:shruti_tools/services/site.dart' show siteOrigin;
+import 'package:astrolabe/services/account.dart';
+import 'package:astrolabe/services/practice.dart';
+import 'package:astrolabe/services/site.dart' show siteOrigin;
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();

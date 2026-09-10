@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 //
-// Shruti's Tools — a lite companion to shrutivtuber.com.
+// Astrolabe — a lite companion to shrutivtuber.com.
 //
 // What this app is for, in the order it matters:
 //
@@ -60,7 +60,7 @@ class ShrutiTools extends StatelessWidget {
         child: NoticeScope(
           notifier: notices,
           child: MaterialApp(
-            title: "Shruti's Tools",
+            title: "Astrolabe",
             debugShowCheckedModeBanner: false,
             theme: shrutiTheme(),
             home: const Shell(),

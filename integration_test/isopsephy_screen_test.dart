@@ -14,9 +14,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:shruti_tools/screens/isopsephy.dart';
-import 'package:shruti_tools/services/packs.dart';
-import 'package:shruti_tools/theme/theme.dart';
+import 'package:astrolabe/screens/isopsephy.dart';
+import 'package:astrolabe/services/packs.dart';
+import 'package:astrolabe/theme/theme.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();

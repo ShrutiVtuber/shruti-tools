@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 //
-// The day, divided: its stations and its hours.
+// The sky over time: the day's stations, its hours, and what is coming.
 //
-// Two instruments under one tab, the same arrangement as Letters. They belong
-// together — both answer "where is the day now" and both are read from the same
-// sunrise — and pairing them leaves a slot in a bar that only holds six before
-// nobody can read the labels.
+// Three instruments under one tab. They belong together — each answers "where
+// are we in something", and the first two are read from the same sunrise — and
+// grouping them leaves room in a bar that holds about six before nobody can
+// read the labels.
 //
 // ⚠ They share the sunrise convention through Settings, not through here. The
 // two disagreeing about when the day starts is the bug `tabs_agree_test.dart`
@@ -13,17 +13,18 @@
 import 'package:flutter/material.dart';
 
 import '../theme/tokens.dart';
+import 'events.dart';
 import 'home.dart';
 import 'hours.dart';
 
-class DayScreen extends StatefulWidget {
-  const DayScreen({super.key});
+class SkyScreen extends StatefulWidget {
+  const SkyScreen({super.key});
 
   @override
-  State<DayScreen> createState() => _DayScreenState();
+  State<SkyScreen> createState() => _SkyScreenState();
 }
 
-class _DayScreenState extends State<DayScreen> {
+class _SkyScreenState extends State<SkyScreen> {
   int _which = 0;
 
   @override
@@ -43,6 +44,11 @@ class _DayScreenState extends State<DayScreen> {
               label: Text('Hours'),
               icon: Icon(Icons.schedule_outlined, size: 18),
             ),
+            ButtonSegment(
+              value: 2,
+              label: Text('Coming'),
+              icon: Icon(Icons.auto_awesome_outlined, size: 18),
+            ),
           ],
           selected: {_which},
           onSelectionChanged: (s) => setState(() => _which = s.first),
@@ -54,7 +60,7 @@ class _DayScreenState extends State<DayScreen> {
         // that was right a second ago.
         child: IndexedStack(
           index: _which,
-          children: const [StationsScreen(), HoursScreen()],
+          children: const [StationsScreen(), HoursScreen(), EventsScreen()],
         ),
       ),
     ],

@@ -13,8 +13,8 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:shruti_tools/services/sigil.dart';
-import 'package:shruti_tools/widgets/sigil_figure.dart';
+import 'package:astrolabe/services/sigil.dart';
+import 'package:astrolabe/widgets/sigil_figure.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();

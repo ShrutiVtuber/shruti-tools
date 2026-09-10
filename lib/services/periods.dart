@@ -52,18 +52,46 @@ String currentCovers(String period, [DateTime? at]) {
   }
 }
 
+const _months = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
+
 /// What to call a period out loud.
+///
+/// ⚠ Never the raw id. "2026-08" and "2026-W37" are what the DATABASE is keyed
+/// on; a person reads "August 2026" and "Week of 7 September". Showing the id
+/// on the home screen made a month of her readings look like a file name.
 String periodLabel(String period, String covers) {
-  switch (period) {
-    case 'daily':
-      return covers;
-    case 'weekly':
-      final (start, _) = weekDays(covers);
-      return 'Week of $start';
-    case 'yearly':
-      return covers;
-    default:
-      return covers;
+  try {
+    switch (period) {
+      case 'daily':
+        final d = DateTime.parse(covers);
+        return '${d.day} ${_months[d.month - 1]} ${d.year}';
+      case 'weekly':
+        final (start, _) = weekDays(covers);
+        final d = DateTime.parse(start);
+        return 'Week of ${d.day} ${_months[d.month - 1]}';
+      case 'monthly':
+        final parts = covers.split('-');
+        return '${_months[int.parse(parts[1]) - 1]} ${parts[0]}';
+      default:
+        return covers;
+    }
+  } catch (_) {
+    // A malformed id is somebody else's problem to fix; showing it raw is
+    // better than showing nothing where a heading should be.
+    return covers;
   }
 }
 

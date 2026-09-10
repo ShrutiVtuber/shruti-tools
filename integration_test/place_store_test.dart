@@ -12,10 +12,10 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shruti_tools/models/place.dart';
-import 'package:shruti_tools/services/ephemeris.dart';
-import 'package:shruti_tools/services/settings.dart';
-import 'package:shruti_tools/services/stations.dart';
+import 'package:astrolabe/models/place.dart';
+import 'package:astrolabe/services/ephemeris.dart';
+import 'package:astrolabe/services/settings.dart';
+import 'package:astrolabe/services/stations.dart';
 
 const _athens = Place(
   name: 'Athens, Attica, Greece',

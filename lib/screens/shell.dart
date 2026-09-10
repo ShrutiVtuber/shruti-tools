@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 
 import 'chart.dart';
 import 'day.dart';
-import 'events.dart';
+import 'landing.dart';
 import 'practice.dart';
 import 'letters.dart';
 import 'settings.dart';
@@ -38,8 +38,8 @@ class _ShellState extends State<Shell> {
         child: IndexedStack(
           index: _tab,
           children: const [
-            DayScreen(),
-            EventsScreen(),
+            LandingScreen(),
+            SkyScreen(),
             ChartScreen(),
             LettersScreen(),
             PracticeScreen(),
@@ -52,14 +52,14 @@ class _ShellState extends State<Shell> {
         onDestinationSelected: (i) => setState(() => _tab = i),
         destinations: const [
           NavigationDestination(
-            icon: Icon(Icons.wb_twilight_outlined),
-            selectedIcon: Icon(Icons.wb_twilight),
-            label: 'Day',
+            icon: Icon(Icons.home_outlined),
+            selectedIcon: Icon(Icons.home),
+            label: 'Home',
           ),
           NavigationDestination(
-            icon: Icon(Icons.auto_awesome_outlined),
-            selectedIcon: Icon(Icons.auto_awesome),
-            label: 'What next',
+            icon: Icon(Icons.wb_twilight_outlined),
+            selectedIcon: Icon(Icons.wb_twilight),
+            label: 'Sky',
           ),
           NavigationDestination(
             icon: Icon(Icons.brightness_3_outlined),

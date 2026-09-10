@@ -8,9 +8,9 @@
 // entirely normal — which is why it survived a build, an install and a look.
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:shruti_tools/models/place.dart';
-import 'package:shruti_tools/services/ephemeris.dart';
-import 'package:shruti_tools/services/stations.dart';
+import 'package:astrolabe/models/place.dart';
+import 'package:astrolabe/services/ephemeris.dart';
+import 'package:astrolabe/services/stations.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();

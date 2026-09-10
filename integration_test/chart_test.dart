@@ -12,9 +12,9 @@
 // a dropped leap second moves things by degrees, not by hundredths.
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:shruti_tools/models/place.dart';
-import 'package:shruti_tools/services/chart.dart';
-import 'package:shruti_tools/services/ephemeris.dart';
+import 'package:astrolabe/models/place.dart';
+import 'package:astrolabe/services/chart.dart';
+import 'package:astrolabe/services/ephemeris.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();

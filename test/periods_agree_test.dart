@@ -20,7 +20,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:shruti_tools/services/periods.dart';
+import 'package:astrolabe/services/periods.dart';
 
 void main() {
   final fixture =
@@ -93,5 +93,16 @@ void main() {
     expect(currentCovers('monthly', when), '2026-09');
     expect(currentCovers('yearly', when), '2026');
     expect(currentCovers('weekly', when), isoWeek(when));
+  });
+
+  test('a period reads as words, never as its database key', () {
+    // ⚠ The ids are what the database is keyed on. A month of her readings
+    // showing as "2026-08" on the home screen looked like a file name.
+    expect(periodLabel('monthly', '2026-08'), 'August 2026');
+    expect(periodLabel('daily', '2026-09-10'), '10 September 2026');
+    expect(periodLabel('weekly', '2026-W37'), 'Week of 7 September');
+    expect(periodLabel('yearly', '2026'), '2026');
+    // Malformed is shown raw rather than crashing a heading.
+    expect(periodLabel('monthly', 'nonsense'), 'nonsense');
   });
 }

@@ -15,16 +15,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shruti_tools/models/place.dart';
-import 'package:shruti_tools/screens/account.dart';
-import 'package:shruti_tools/screens/notifications.dart';
-import 'package:shruti_tools/screens/shell.dart';
-import 'package:shruti_tools/services/ephemeris.dart';
-import 'package:shruti_tools/services/account.dart';
-import 'package:shruti_tools/services/notifications.dart';
-import 'package:shruti_tools/services/settings.dart';
-import 'package:shruti_tools/services/stations.dart';
-import 'package:shruti_tools/theme/theme.dart';
+import 'package:astrolabe/models/place.dart';
+import 'package:astrolabe/screens/account.dart';
+import 'package:astrolabe/screens/notifications.dart';
+import 'package:astrolabe/screens/shell.dart';
+import 'package:astrolabe/services/ephemeris.dart';
+import 'package:astrolabe/services/account.dart';
+import 'package:astrolabe/services/notifications.dart';
+import 'package:astrolabe/services/settings.dart';
+import 'package:astrolabe/services/stations.dart';
+import 'package:astrolabe/theme/theme.dart';
 
 const _athens = Place(
   name: 'Athens, Attica, Greece',
@@ -62,6 +62,11 @@ void main() {
         ),
       ),
     );
+    await tester.pumpAndSettle(const Duration(seconds: 2));
+
+    // ⚠ The app opens on HOME now, not on an instrument. The stations are
+    // behind the Sky tab, which is where this test's subject lives.
+    await tester.tap(find.text('Sky'));
     await tester.pumpAndSettle(const Duration(seconds: 2));
 
     // Stations opens on the default.
@@ -112,6 +117,8 @@ void main() {
         ),
       ),
     );
+    await tester.pumpAndSettle(const Duration(seconds: 2));
+    await tester.tap(find.text('Sky'));
     await tester.pumpAndSettle(const Duration(seconds: 2));
 
     /// Every clock time on screen, in the order they are drawn.
