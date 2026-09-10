@@ -15,6 +15,7 @@ import '../services/site.dart';
 import '../services/stations.dart';
 import '../theme/tokens.dart';
 import 'account.dart';
+import 'licences.dart';
 import 'notifications.dart';
 import '../widgets/eyebrow.dart';
 import 'pick_place.dart';
@@ -223,6 +224,38 @@ class SettingsScreen extends StatelessWidget {
           label: 'Source, and the licence',
           detail: 'AGPL-3.0 — yours to read, change and run',
           url: 'https://github.com/ShrutiVtuber/astrolabe',
+        ),
+
+        const SizedBox(height: Gap.xl),
+        const Eyebrow('About'),
+        const SizedBox(height: Gap.sm),
+        Builder(
+          builder: (context) => _Card(
+            onTap: () => Navigator.of(
+              context,
+            ).push(MaterialPageRoute(builder: (_) => const LicencesScreen())),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Licences and source',
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        'Free software, and the ephemeris it computes with',
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                    ],
+                  ),
+                ),
+                const Icon(Icons.chevron_right, size: 18, color: Tone.faint),
+              ],
+            ),
+          ),
         ),
       ],
     );
