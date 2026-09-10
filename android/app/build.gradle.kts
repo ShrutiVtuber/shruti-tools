@@ -2,6 +2,10 @@ plugins {
     id("com.android.application")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
+    // ⚠ Must come AFTER the Flutter plugin. It needs google-services.json to
+    // be present at build time — the file is gitignored, so a clean checkout
+    // without it fails here rather than shipping an app that cannot register.
+    id("com.google.gms.google-services")
 }
 
 android {

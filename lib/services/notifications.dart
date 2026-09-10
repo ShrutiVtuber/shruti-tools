@@ -2,16 +2,14 @@
 //
 // What this phone wants to be told, and telling the site so.
 //
-// ⚠ **The registration token is not here yet.** Getting one needs
-// `firebase_messaging` and a `google-services.json` from a Firebase project,
-// and only she can create that project. Everything else — the switches, where
-// they are kept, sending them to the site, taking the phone off the list — is
-// built and works, so plugging Firebase in is one dependency, one config file,
-// and filling in `_registrationToken` below.
+// ⚠ **`android/app/google-services.json` is required to BUILD this.** It is
+// gitignored — it identifies her Firebase project — so a fresh checkout fails
+// in Gradle with a message about the Google Services plugin rather than
+// anything mentioning notifications. Download it from the Firebase console for
+// the Android app `com.shrutivtuber.astrolabe` and drop it there.
 //
-// It is written this way round on purpose. The alternative was to add the
-// plugin now against a project that does not exist, which does not compile, and
-// leave the app un-buildable until she has time to do the Firebase setup.
+// The seam below degrades to null rather than throwing, so an app built
+// without it still runs; the notification switch simply says it is not set up.
 //
 // ⚠ **No account is required.** Somebody who installed this to know when a
 // stream starts should be told whether or not they ever sign up. Only
@@ -19,6 +17,8 @@
 // screen says so rather than showing a switch that quietly does nothing.
 import 'dart:convert';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -161,21 +161,30 @@ class Notifications extends ChangeNotifier {
     }
   }
 
-  /// ⚠ **The Firebase seam.** Returns null until this is filled in.
+  /// This device's address at Firebase, or null if we may not have one.
   ///
-  /// To finish it:
-  ///   1. Make a Firebase project and add an Android app with this
-  ///      application id (com.shrutivtuber.astrolabe).
-  ///   2. Put `google-services.json` in `android/app/`.
-  ///   3. Add `firebase_core` and `firebase_messaging` to pubspec.yaml.
-  ///   4. Replace the body here with:
-  ///        await Firebase.initializeApp();
-  ///        final settings = await FirebaseMessaging.instance.requestPermission();
-  ///        if (settings.authorizationStatus != AuthorizationStatus.authorized) {
-  ///          return null;
-  ///        }
-  ///        return FirebaseMessaging.instance.getToken();
-  ///   5. On the SITE, set SHRUTI_FCM_SERVICE_ACCOUNT to the service account
-  ///      JSON from the same project.
-  Future<String?> _registrationToken() async => null;
+  /// Null is a normal answer, not a failure: somebody who declines the
+  /// permission prompt gets null, and so does a device with no Play Services
+  /// at all. Both are told "not set up in this build yet" rather than shown an
+  /// error, because neither is anything they did wrong.
+  ///
+  /// ⚠ Every call is wrapped. `Firebase.initializeApp()` throws if
+  /// `google-services.json` was missing at BUILD time — the file is gitignored,
+  /// so a clean checkout produces an app that compiles and then throws here,
+  /// on a screen the user opened deliberately. A throw would take the settings
+  /// screen down with it; null just leaves the switch off.
+  Future<String?> _registrationToken() async {
+    try {
+      /// Safe to call more than once — it returns the existing app.
+      await Firebase.initializeApp();
+      final settings = await FirebaseMessaging.instance.requestPermission();
+      if (settings.authorizationStatus != AuthorizationStatus.authorized) {
+        return null;
+      }
+      return await FirebaseMessaging.instance.getToken();
+    } catch (error) {
+      debugPrint('notifications: no Firebase token ($error)');
+      return null;
+    }
+  }
 }
