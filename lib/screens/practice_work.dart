@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import '../services/periods.dart';
 import '../services/practice.dart';
 import '../theme/tokens.dart';
+import '../widgets/brand.dart';
 import '../widgets/eyebrow.dart';
 import 'account.dart';
 
@@ -73,7 +74,7 @@ class _WorkScreenState extends State<WorkScreen> {
   Widget build(BuildContext context) {
     final signedIn = AccountScope.of(context).signedIn;
     return Scaffold(
-      appBar: AppBar(title: const Text('A reading')),
+      appBar: const Bar(title: 'A reading'),
       body: SafeArea(
         child: FutureBuilder<Work>(
           future: _work,

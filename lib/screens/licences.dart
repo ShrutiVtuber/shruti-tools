@@ -23,6 +23,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../theme/tokens.dart';
+import '../widgets/brand.dart';
 import '../widgets/eyebrow.dart';
 
 const sourceUrl = 'https://github.com/ShrutiVtuber/astrolabe';
@@ -72,7 +73,7 @@ class LicencesScreen extends StatelessWidget {
         launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Licences')),
+      appBar: const Bar(title: 'Licences'),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.fromLTRB(Gap.lg, Gap.lg, Gap.lg, Gap.huge),

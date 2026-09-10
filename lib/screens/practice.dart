@@ -19,6 +19,8 @@ import '../services/account.dart';
 import '../services/periods.dart';
 import '../services/practice.dart';
 import '../theme/tokens.dart';
+import '../widgets/brand.dart';
+import '../widgets/parts.dart';
 import 'account.dart';
 import 'practice_work.dart';
 import 'practice_write.dart';
@@ -54,35 +56,26 @@ class _PracticeScreenState extends State<PracticeScreen> {
   @override
   Widget build(BuildContext context) {
     final account = AccountScope.of(context);
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(Gap.lg, Gap.lg, Gap.lg, 0),
-          child: SegmentedButton<int>(
-            segments: const [
-              ButtonSegment(
-                value: 0,
-                label: Text('Read'),
-                icon: Icon(Icons.menu_book_outlined, size: 18),
-              ),
-              ButtonSegment(
-                value: 1,
-                label: Text('Mine'),
-                icon: Icon(Icons.edit_outlined, size: 18),
-              ),
-            ],
-            selected: {_tab},
-            showSelectedIcon: false,
-            onSelectionChanged: (s) {
-              setState(() => _tab = s.first);
-              if (_tab == 1 && _mine == null && account.signedIn) {
-                setState(() => _mine = _room(context).mine());
-              }
-            },
+    return Scaffold(
+      appBar: const Bar(title: 'Practice'),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(Gap.lg, Gap.md, Gap.lg, Gap.sm),
+            child: Segmented<int>(
+              options: const [(0, 'Read'), (1, 'Mine')],
+              chosen: _tab,
+              onChosen: (i) {
+                setState(() => _tab = i);
+                if (_tab == 1 && _mine == null && account.signedIn) {
+                  setState(() => _mine = _room(context).mine());
+                }
+              },
+            ),
           ),
-        ),
-        Expanded(child: _tab == 0 ? _read(account) : _own(account)),
-      ],
+          Expanded(child: _tab == 0 ? _read(account) : _own(account)),
+        ],
+      ),
     );
   }
 
@@ -93,8 +86,6 @@ class _PracticeScreenState extends State<PracticeScreen> {
       builder: (context, snap) => ListView(
         padding: const EdgeInsets.fromLTRB(Gap.lg, Gap.lg, Gap.lg, Gap.huge),
         children: [
-          Text('Practice', style: Theme.of(context).textTheme.displaySmall),
-          const SizedBox(height: Gap.xs),
           const Text(
             'Readings people wrote for practice. Say what you think, and '
             'vote for the ones worth reading — she picks from the top of '

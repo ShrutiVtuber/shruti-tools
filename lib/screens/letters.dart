@@ -13,6 +13,8 @@
 import 'package:flutter/material.dart';
 
 import '../theme/tokens.dart';
+import '../widgets/brand.dart';
+import '../widgets/parts.dart';
 import 'isopsephy.dart';
 import 'sigil.dart';
 
@@ -27,36 +29,27 @@ class _LettersScreenState extends State<LettersScreen> {
   int _which = 0;
 
   @override
-  Widget build(BuildContext context) => Column(
-    children: [
-      Padding(
-        padding: const EdgeInsets.fromLTRB(Gap.lg, Gap.lg, Gap.lg, 0),
-        child: SegmentedButton<int>(
-          segments: const [
-            ButtonSegment(
-              value: 0,
-              label: Text('Reckoning'),
-              icon: Icon(Icons.tag_outlined, size: 18),
-            ),
-            ButtonSegment(
-              value: 1,
-              label: Text('Sigil'),
-              icon: Icon(Icons.gesture_outlined, size: 18),
-            ),
-          ],
-          selected: {_which},
-          onSelectionChanged: (s) => setState(() => _which = s.first),
-          showSelectedIcon: false,
+  Widget build(BuildContext context) => Scaffold(
+    appBar: const Bar(title: 'Letters'),
+    body: Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(Gap.lg, Gap.md, Gap.lg, Gap.sm),
+          child: Segmented<int>(
+            options: const [(0, 'Reckoning'), (1, 'Sigil')],
+            chosen: _which,
+            onChosen: (i) => setState(() => _which = i),
+          ),
         ),
-      ),
-      Expanded(
-        // IndexedStack, not a swap: an installed pack list and a typed
-        // statement both survive flipping between the two.
-        child: IndexedStack(
-          index: _which,
-          children: const [IsopsephyScreen(), SigilScreen()],
+        Expanded(
+          // IndexedStack, not a swap: an installed pack list and a typed
+          // statement both survive flipping between the two.
+          child: IndexedStack(
+            index: _which,
+            children: const [IsopsephyScreen(), SigilScreen()],
+          ),
         ),
-      ),
-    ],
+      ],
+    ),
   );
 }

@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 
 import '../models/place.dart';
 import '../services/events.dart';
+import '../services/ephemeris.dart';
 import '../services/settings.dart';
 import '../theme/tokens.dart';
 import '../widgets/eyebrow.dart';
+import '../widgets/parts.dart';
 
 class EventsScreen extends StatefulWidget {
   const EventsScreen({super.key});
@@ -58,25 +60,13 @@ class _EventsScreenState extends State<EventsScreen> {
         ),
         const SizedBox(height: Gap.lg),
 
-        SegmentedButton<int>(
-          segments: const [
-            ButtonSegment(value: 7, label: Text('Week')),
-            ButtonSegment(value: 30, label: Text('Month')),
-            ButtonSegment(value: 90, label: Text('Season')),
-          ],
-          selected: {_days},
-          showSelectedIcon: false,
-          onSelectionChanged: (s) {
-            setState(() => _days = s.first);
+        Segmented<int>(
+          options: const [(7, 'Week'), (30, 'Month'), (90, 'Season')],
+          chosen: _days,
+          onChosen: (d) {
+            setState(() => _days = d);
             _compute();
           },
-          style: SegmentedButton.styleFrom(
-            backgroundColor: Tone.card,
-            foregroundColor: Tone.soft,
-            selectedBackgroundColor: Tone.accentWash,
-            selectedForegroundColor: Tone.accent,
-            side: const BorderSide(color: Tone.line),
-          ),
         ),
         const SizedBox(height: Gap.xl),
 
@@ -85,13 +75,32 @@ class _EventsScreenState extends State<EventsScreen> {
             padding: EdgeInsets.symmetric(vertical: Gap.xxl),
             child: Center(child: CircularProgressIndicator(color: Tone.accent)),
           )
+        // ⚠ Authored, not "No data". A quiet sky is a fact about the sky,
+        // and a reader should be told which quiet they are looking at.
         else if (_events.isEmpty)
-          Text(
-            'Nothing in this window.',
-            style: Theme.of(context).textTheme.bodyMedium,
+          EmptyState(
+            mark: '♄',
+            title: 'The sky is quiet',
+            body:
+                'Nothing ingresses, stations or lunates in the next '
+                '$_days days. That is not an error — some stretches are '
+                'simply uneventful, and that is worth knowing too.',
           )
         else
           ..._grouped(context, place),
+
+        const SizedBox(height: Gap.xxl),
+        Provenance(
+          facts: [
+            ('engine', engineVersion),
+            ('computed', 'on this phone · nothing sent, nothing stored'),
+            (
+              'found by',
+              'a coarse scan for the crossing, then bisection to the minute',
+            ),
+            ('told in', place.zone),
+          ],
+        ),
       ],
     );
   }

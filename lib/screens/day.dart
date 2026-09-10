@@ -12,7 +12,12 @@
 // exists to catch.
 import 'package:flutter/material.dart';
 
+import '../services/period_sky.dart';
+import '../services/settings.dart';
+import '../services/stations.dart';
 import '../theme/tokens.dart';
+import '../widgets/brand.dart';
+import '../widgets/parts.dart';
 import 'events.dart';
 import 'home.dart';
 import 'hours.dart';
@@ -28,41 +33,92 @@ class _SkyScreenState extends State<SkyScreen> {
   int _which = 0;
 
   @override
-  Widget build(BuildContext context) => Column(
-    children: [
-      Padding(
-        padding: const EdgeInsets.fromLTRB(Gap.lg, Gap.lg, Gap.lg, 0),
-        child: SegmentedButton<int>(
-          segments: const [
-            ButtonSegment(
-              value: 0,
-              label: Text('Stations'),
-              icon: Icon(Icons.wb_twilight_outlined, size: 18),
-            ),
-            ButtonSegment(
-              value: 1,
-              label: Text('Hours'),
-              icon: Icon(Icons.schedule_outlined, size: 18),
-            ),
-            ButtonSegment(
-              value: 2,
-              label: Text('Coming'),
-              icon: Icon(Icons.auto_awesome_outlined, size: 18),
-            ),
-          ],
-          selected: {_which},
-          onSelectionChanged: (s) => setState(() => _which = s.first),
-          showSelectedIcon: false,
+  Widget build(BuildContext context) => Scaffold(
+    appBar: Bar(title: 'Sky', subtitle: SettingsScope.of(context).place.name),
+    body: Column(
+      children: [
+        // Sky's own surface: the day as an arc, the counterpart to Home's plate.
+        // ⚠ Each tab gets one surface of its own and they are never the same
+        // surface — repeat the plate here and six tabs read as one stack of
+        // cards.
+        const Padding(
+          padding: EdgeInsets.fromLTRB(
+            Gap.gutterDense,
+            Gap.md,
+            Gap.gutterDense,
+            0,
+          ),
+          child: _TodayArc(),
         ),
-      ),
-      Expanded(
-        // IndexedStack: flipping between them must not recompute a table
-        // that was right a second ago.
-        child: IndexedStack(
-          index: _which,
-          children: const [StationsScreen(), HoursScreen(), EventsScreen()],
+        Padding(
+          padding: const EdgeInsets.fromLTRB(
+            Gap.gutterDense,
+            Gap.md,
+            Gap.gutterDense,
+            Gap.sm,
+          ),
+          child: Segmented<int>(
+            options: const [(0, 'Stations'), (1, 'Hours'), (2, 'Coming')],
+            chosen: _which,
+            onChosen: (i) => setState(() => _which = i),
+          ),
         ),
-      ),
-    ],
+        Expanded(
+          // IndexedStack: flipping between them must not recompute a table
+          // that was right a second ago.
+          child: IndexedStack(
+            index: _which,
+            children: const [StationsScreen(), HoursScreen(), EventsScreen()],
+          ),
+        ),
+      ],
+    ),
   );
+}
+
+/// The arc for today, at this place — computed here, so it is right in a
+/// tunnel.
+class _TodayArc extends StatelessWidget {
+  const _TodayArc();
+
+  @override
+  Widget build(BuildContext context) {
+    final settings = SettingsScope.of(context);
+    final place = settings.place;
+    final now = DateTime.now().toUtc();
+    final today = stationsFor(
+      now,
+      place.lat,
+      place.lon,
+      convention: settings.convention,
+    );
+
+    final rise = today.firstWhere(
+      (s) => s.kind == StationKind.dawn,
+      orElse: () => today.first,
+    );
+    final set = today.lastWhere(
+      (s) => s.kind == StationKind.dusk,
+      orElse: () => today.last,
+    );
+
+    // ⚠ Both from the same day's table. Taking sunrise from today and sunset
+    // from a table computed a moment later at a different convention would put
+    // the Sun somewhere it is not, which is the one thing an arc must not do.
+    final sky = skyAcross(now, now);
+    final yesterday = skyAcross(
+      now.subtract(const Duration(days: 1)),
+      now.subtract(const Duration(days: 1)),
+    );
+    final lit = sky.isEmpty ? 0.0 : sky.first.lit;
+    final waxing = yesterday.isEmpty || lit >= yesterday.first.lit;
+
+    return DayArc(
+      sunrise: place.tell(rise.at),
+      sunset: place.tell(set.at),
+      now: place.tell(now),
+      lit: lit,
+      waxing: waxing,
+    );
+  }
 }

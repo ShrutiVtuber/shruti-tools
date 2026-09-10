@@ -26,6 +26,14 @@ const _assets = [
 
 bool _ready = false;
 
+/// What the arithmetic was done by, named once.
+///
+/// ⚠ This string appears on every instrument screen, and the licence requires
+/// the notice be preserved on all copies — so it is a constant, not a sentence
+/// re-typed on six screens where one of them will eventually say the wrong
+/// version.
+const engineVersion = 'Swiss Ephemeris 2.10.03';
+
 /// Unpack the ephemeris and point the library at it.
 ///
 /// ⚠ **`epheFilesPath` must be ABSOLUTE.**

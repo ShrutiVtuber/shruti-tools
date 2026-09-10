@@ -16,6 +16,7 @@ import '../services/period_sky.dart';
 import '../services/periods.dart';
 import '../services/practice.dart';
 import '../theme/tokens.dart';
+import '../widgets/brand.dart';
 import '../models/place.dart';
 import '../services/chart.dart';
 import '../widgets/period_events.dart';
@@ -173,7 +174,7 @@ class _WriteScreenState extends State<WriteScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Write a reading')),
+      appBar: const Bar(title: 'Write a reading', hour: false),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.fromLTRB(Gap.lg, Gap.lg, Gap.lg, Gap.huge),

@@ -101,8 +101,12 @@ class LiveStatus {
   }
 }
 
-Future<LiveStatus> liveStatus() async =>
-    LiveStatus.parse(await _get('/api/live')) ?? LiveStatus.offline;
+/// ⚠ Null when the site could not be reached — NOT `offline`.
+///
+/// "She is not streaming" and "we could not find out" are different facts, and
+/// rendering the second as the first is a small lie told several times a week
+/// to exactly the people who care most. The screen has a third state for it.
+Future<LiveStatus?> liveStatus() async => LiveStatus.parse(await _get('/api/live'));
 
 /// One of her videos.
 class Video {

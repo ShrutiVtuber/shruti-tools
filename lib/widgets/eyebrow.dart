@@ -15,10 +15,16 @@ class Eyebrow extends StatelessWidget {
   final Color? tone;
 
   @override
-  Widget build(BuildContext context) => Text(
-    text.toUpperCase(),
-    style: Theme.of(
-      context,
-    ).textTheme.labelSmall!.copyWith(color: tone ?? Tone.faint),
+  Widget build(BuildContext context) => Semantics(
+    header: true,
+    label: text,
+    child: ExcludeSemantics(
+      child: Text(
+        text.toUpperCase(),
+        style: Theme.of(
+          context,
+        ).textTheme.labelSmall!.copyWith(color: tone ?? Tone.faint),
+      ),
+    ),
   );
 }

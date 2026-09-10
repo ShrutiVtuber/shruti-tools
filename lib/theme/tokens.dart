@@ -104,6 +104,11 @@ abstract final class Face {
 
   /// Everything read at length.
   static const body = 'Commissioner';
+
+  /// The bundled cut of twenty-nine astronomical marks. ⚠ Never named
+  /// directly — go through `glyph.dart`, which also emits U+FE0E. Half the
+  /// rule applied is a glyph that still arrives as emoji.
+  static const glyph = 'AstroSymbols';
 }
 
 /// A four-point spacing scale. Anything between these is a decision to argue

@@ -7,6 +7,7 @@ import '../models/place.dart';
 import '../services/chart.dart';
 import '../services/settings.dart';
 import '../theme/tokens.dart';
+import '../widgets/brand.dart';
 import '../widgets/eyebrow.dart';
 import '../widgets/wheel.dart';
 import 'pick_place.dart';
@@ -52,93 +53,97 @@ class _ChartScreenState extends State<ChartScreen> {
     // Defaults to where the reader is, then stays where they put it.
     final place = _born ?? SettingsScope.of(context).place;
     final chart = _chart;
-    return ListView(
-      padding: const EdgeInsets.fromLTRB(Gap.lg, Gap.xl, Gap.lg, Gap.huge),
-      children: [
-        Text('Cast a chart', style: Theme.of(context).textTheme.displaySmall),
-        const SizedBox(height: Gap.xs),
-        Text(
-          'Computed here, on the phone. Nothing is sent anywhere.',
-          style: Theme.of(context).textTheme.bodyMedium,
-        ),
-        const SizedBox(height: Gap.xl),
-
-        _Field(
-          label: 'Born',
-          value: '${_date.day} ${_month(_date.month)} ${_date.year}',
-          onTap: () async {
-            final picked = await showDatePicker(
-              context: context,
-              initialDate: _date,
-              firstDate: DateTime(1800),
-              lastDate: DateTime(2100),
-            );
-            if (picked != null) setState(() => _date = picked);
-          },
-        ),
-        const SizedBox(height: Gap.sm),
-        _Field(
-          label: 'At',
-          value: _timeKnown
-              ? '${_time.hour.toString().padLeft(2, '0')}:'
-                    '${_time.minute.toString().padLeft(2, '0')}'
-              : 'not known',
-          enabled: _timeKnown,
-          onTap: !_timeKnown
-              ? null
-              : () async {
-                  final picked = await showTimePicker(
-                    context: context,
-                    initialTime: _time,
-                  );
-                  if (picked != null) setState(() => _time = picked);
-                },
-        ),
-        const SizedBox(height: Gap.sm),
-        _Field(
-          label: 'In',
-          value: place.shortName,
-          onTap: () async {
-            final picked = await Navigator.of(context).push<Place>(
-              MaterialPageRoute(builder: (_) => const PickPlaceScreen()),
-            );
-            if (picked != null && mounted) setState(() => _born = picked);
-          },
-        ),
-        const SizedBox(height: Gap.md),
-
-        // Not a checkbox tucked in a corner: an unknown birth time changes
-        // what the chart can say, and the page says what it costs before
-        // anybody wonders why the houses are missing.
-        SwitchListTile(
-          value: !_timeKnown,
-          onChanged: (v) => setState(() => _timeKnown = !v),
-          contentPadding: EdgeInsets.zero,
-          activeThumbColor: Tone.accent,
-          title: Text(
-            "I don't know the time",
-            style: Theme.of(context).textTheme.titleMedium,
+    return Scaffold(
+      appBar: const Bar(title: 'Chart', hour: false),
+      body: ListView(
+        padding: const EdgeInsets.fromLTRB(Gap.lg, Gap.lg, Gap.lg, Gap.huge),
+        children: [
+          Text(
+            'Computed here, on the phone. Nothing is sent anywhere.',
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
-          subtitle: Text(
-            'The ascendant moves a degree every four minutes, so the angles, '
-            'houses and sect are left undefined rather than guessed.',
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
-        ),
-        const SizedBox(height: Gap.md),
-        FilledButton(onPressed: () => _cast(place), child: const Text('Cast')),
+          const SizedBox(height: Gap.xl),
 
-        if (chart != null) ...[
-          const SizedBox(height: Gap.xxl),
-          Wheel(chart: chart),
-          const SizedBox(height: Gap.lg),
-          if (chart.timeKnown) _Angles(chart: chart) else _NoTimeNote(),
-          const SizedBox(height: Gap.lg),
-          const Eyebrow('Positions'),
+          _Field(
+            label: 'Born',
+            value: '${_date.day} ${_month(_date.month)} ${_date.year}',
+            onTap: () async {
+              final picked = await showDatePicker(
+                context: context,
+                initialDate: _date,
+                firstDate: DateTime(1800),
+                lastDate: DateTime(2100),
+              );
+              if (picked != null) setState(() => _date = picked);
+            },
+          ),
           const SizedBox(height: Gap.sm),
-          _Positions(chart: chart),
+          _Field(
+            label: 'At',
+            value: _timeKnown
+                ? '${_time.hour.toString().padLeft(2, '0')}:'
+                      '${_time.minute.toString().padLeft(2, '0')}'
+                : 'not known',
+            enabled: _timeKnown,
+            onTap: !_timeKnown
+                ? null
+                : () async {
+                    final picked = await showTimePicker(
+                      context: context,
+                      initialTime: _time,
+                    );
+                    if (picked != null) setState(() => _time = picked);
+                  },
+          ),
+          const SizedBox(height: Gap.sm),
+          _Field(
+            label: 'In',
+            value: place.shortName,
+            onTap: () async {
+              final picked = await Navigator.of(context).push<Place>(
+                MaterialPageRoute(builder: (_) => const PickPlaceScreen()),
+              );
+              if (picked != null && mounted) setState(() => _born = picked);
+            },
+          ),
+          const SizedBox(height: Gap.md),
+
+          // Not a checkbox tucked in a corner: an unknown birth time changes
+          // what the chart can say, and the page says what it costs before
+          // anybody wonders why the houses are missing.
+          SwitchListTile(
+            value: !_timeKnown,
+            onChanged: (v) => setState(() => _timeKnown = !v),
+            contentPadding: EdgeInsets.zero,
+            activeThumbColor: Tone.accent,
+            title: Text(
+              "I don't know the time",
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            subtitle: Text(
+              'The ascendant moves a degree every four minutes, so the angles, '
+              'houses and sect are left undefined rather than guessed.',
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ),
+          const SizedBox(height: Gap.md),
+          FilledButton(
+            onPressed: () => _cast(place),
+            child: const Text('Cast'),
+          ),
+
+          if (chart != null) ...[
+            const SizedBox(height: Gap.xxl),
+            Wheel(chart: chart),
+            const SizedBox(height: Gap.lg),
+            if (chart.timeKnown) _Angles(chart: chart) else _NoTimeNote(),
+            const SizedBox(height: Gap.lg),
+            const Eyebrow('Positions'),
+            const SizedBox(height: Gap.sm),
+            _Positions(chart: chart),
+          ],
         ],
-      ],
+      ),
     );
   }
 }

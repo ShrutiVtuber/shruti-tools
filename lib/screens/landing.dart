@@ -18,10 +18,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../services/chart.dart' show signNames;
+import '../services/period_sky.dart';
 import '../services/periods.dart';
+import '../services/shell_state.dart';
 import '../services/site.dart';
 import '../theme/tokens.dart';
-import '../widgets/eyebrow.dart';
+import '../widgets/brand.dart';
+import '../widgets/parts.dart';
 import 'account.dart';
 
 class LandingScreen extends StatefulWidget {
@@ -32,7 +36,9 @@ class LandingScreen extends StatefulWidget {
 }
 
 class _LandingScreenState extends State<LandingScreen> {
-  LiveStatus _live = LiveStatus.offline;
+  /// ⚠ Null until the site answers, and null again if it cannot be reached —
+  /// which the banner renders as "status unavailable", not as "not live".
+  LiveStatus? _live;
   List<Reading> _readings = const [];
   List<Article> _articles = const [];
   List<Offer> _offers = const [];
@@ -66,7 +72,7 @@ class _LandingScreenState extends State<LandingScreen> {
     ]);
     if (!mounted) return;
     setState(() {
-      _live = results[0] as LiveStatus;
+      _live = results[0] as LiveStatus?;
       _readings = results[1] as List<Reading>;
       _articles = results[2] as List<Article>;
       _offers = results[3] as List<Offer>;
@@ -79,66 +85,134 @@ class _LandingScreenState extends State<LandingScreen> {
     await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
   }
 
+  /// The hour of the day, in her voice rather than the clock's.
+  String _greeting() {
+    final hour = DateTime.now().hour;
+    if (hour < 5) return 'Still up';
+    if (hour < 12) return 'Good morning';
+    if (hour < 18) return 'Good afternoon';
+    return 'Good evening';
+  }
+
+  /// One sentence about the sky, computed here rather than fetched — so it is
+  /// there on a phone with no signal, which is the whole argument of the app.
+  String _skyLine() {
+    final now = DateTime.now().toUtc();
+    final sky = skyAcross(now, now);
+    if (sky.isEmpty) return 'The sky is where it is.';
+    final lit = sky.first.lit;
+    final yesterday = skyAcross(
+      now.subtract(const Duration(days: 1)),
+      now.subtract(const Duration(days: 1)),
+    );
+    final waxing = yesterday.isEmpty || lit >= yesterday.first.lit;
+    final moon = sky.first.longitudes['Moon'] ?? 0;
+    final sign = signNames[(moon ~/ 30) % 12];
+    final phase = switch (lit) {
+      < 0.03 => 'A new moon',
+      < 0.47 => waxing ? 'A waxing crescent' : 'A waning crescent',
+      < 0.53 => waxing ? 'A first-quarter moon' : 'A last-quarter moon',
+      < 0.97 => waxing ? 'A waxing gibbous moon' : 'A waning gibbous moon',
+      _ => 'A full moon',
+    };
+    return '$phase, in $sign.';
+  }
+
+  Liveness get _liveness => switch (_live) {
+    null => _looked ? Liveness.unknown : Liveness.unknown,
+    final l => l.isLive ? Liveness.live : Liveness.off,
+  };
+
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      color: Tone.accent,
-      backgroundColor: Tone.card,
-      onRefresh: _fetch,
-      child: ListView(
-        padding: const EdgeInsets.fromLTRB(Gap.lg, Gap.xl, Gap.lg, Gap.huge),
-        children: [
-          Text('Shruti', style: Theme.of(context).textTheme.displaySmall),
-          const SizedBox(height: Gap.xs),
-          Text(
-            'Instruments for magick, built live from Athens',
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-          const SizedBox(height: Gap.xl),
-
-          _Live(live: _live, onTap: _open),
-
-          if (_readings.isNotEmpty) ...[
-            const SizedBox(height: Gap.xl),
-            const Eyebrow('The readings'),
-            const SizedBox(height: Gap.sm),
-            for (final r in _grouped(_readings))
-              _ReadingRow(reading: r, onTap: () => _open(r.path)),
-            const SizedBox(height: Gap.sm),
-            _More(label: 'All the readings', onTap: () => _open('/horoscopes')),
-          ],
-
-          if (_articles.isNotEmpty) ...[
-            const SizedBox(height: Gap.xl),
-            const Eyebrow('Lately'),
-            const SizedBox(height: Gap.sm),
-            for (final a in _articles)
-              _ArticleRow(article: a, onTap: () => _open(a.url)),
-            const SizedBox(height: Gap.sm),
-            _More(label: 'The journal', onTap: () => _open('/journal')),
-          ],
-
-          if (_offers.isNotEmpty) ...[
-            const SizedBox(height: Gap.xl),
-            const Eyebrow('Worth having'),
-            const SizedBox(height: Gap.sm),
-            for (final o in _offers) _OfferCard(offer: o, onOpen: _open),
-          ],
-
-          const SizedBox(height: Gap.xl),
-          const Eyebrow('The site'),
-          const SizedBox(height: Gap.sm),
-          _SiteLinks(onTap: _open),
-
-          if (_looked && _readings.isEmpty && _articles.isEmpty) ...[
-            const SizedBox(height: Gap.xl),
-            const Text(
-              'Nothing from the site right now — you may be offline. Every '
-              'instrument still works; they are computed on this phone.',
-              style: TextStyle(color: Tone.faint, height: 1.5),
+    final shell = ShellScope.of(context);
+    // The shell's ornament follows the stream, so Home telling it what it
+    // found keeps the tab hem and the app bar hem honest.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      shell?.told(_liveness);
+    });
+    return Scaffold(
+      appBar: const Bar(title: 'Astrolabe'),
+      body: RefreshIndicator(
+        // Gilt, per the system: the refresh arc is ornament, not an action.
+        color: Gilt.gilt,
+        backgroundColor: Tone.card,
+        onRefresh: _fetch,
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(Gap.lg, Gap.xl, Gap.lg, Gap.huge),
+          children: [
+            // ⚠ The one brand surface in the app. Sky, Chart, Letters, Practice
+            // and Settings are page-coloured — a second plate and neither is
+            // special.
+            Masthead(
+              greeting: _greeting(),
+              line: _skyLine(),
+              child: shell?.ruler == null
+                  ? null
+                  : HourChip(ruler: shell!.ruler!),
             ),
+            const SizedBox(height: Gap.xl),
+
+            LiveBanner(
+              status: _liveness,
+              title: _live?.title.isNotEmpty ?? false ? _live!.title : null,
+              onOpen: () =>
+                  _open(_live?.url ?? 'https://twitch.tv/shrutivtuber'),
+            ),
+
+            if (_readings.isNotEmpty) ...[
+              const SizedBox(height: Gap.xl),
+              const SectionHeader(
+                eyebrow: 'From Shruti',
+                title: 'The readings',
+              ),
+              const SizedBox(height: Gap.md),
+              for (final r in _grouped(_readings))
+                _ReadingRow(reading: r, onTap: () => _open(r.path)),
+              const SizedBox(height: Gap.sm),
+              _More(
+                label: 'All the readings',
+                onTap: () => _open('/horoscopes'),
+              ),
+            ],
+
+            if (_articles.isNotEmpty) ...[
+              const SizedBox(height: Gap.xl),
+              const SectionHeader(title: 'Lately'),
+              const SizedBox(height: Gap.md),
+              for (final a in _articles)
+                _ArticleRow(article: a, onTap: () => _open(a.url)),
+              const SizedBox(height: Gap.sm),
+              _More(label: 'The journal', onTap: () => _open('/journal')),
+            ],
+
+            if (_offers.isNotEmpty) ...[
+              const SizedBox(height: Gap.xl),
+              const SectionHeader(title: 'Worth having', rule: true, mark: '♃'),
+              const SizedBox(height: Gap.md),
+              for (final o in _offers) _OfferCard(offer: o, onOpen: _open),
+            ],
+
+            const SizedBox(height: Gap.xl),
+            const SectionHeader(title: 'Her site'),
+            const SizedBox(height: Gap.md),
+            _SiteLinks(onTap: _open),
+
+            // ⚠ Offline is not broken, and the copy carries the distinction.
+            // Her half is out of reach; the instruments are not, because they
+            // are arithmetic done on this phone.
+            if (_looked && _readings.isEmpty && _articles.isEmpty) ...[
+              const SizedBox(height: Gap.xl),
+              const Notice(
+                tone: BannerTone.offline,
+                text:
+                    'Her half is out of reach. The instruments all still '
+                    'work — they compute on your phone. Readings, offers and '
+                    'the practice room will come back when you do.',
+              ),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }
@@ -156,62 +230,6 @@ class _LandingScreenState extends State<LandingScreen> {
     }
     return out.take(3).toList();
   }
-}
-
-class _Live extends StatelessWidget {
-  const _Live({required this.live, required this.onTap});
-
-  final LiveStatus live;
-  final void Function(String) onTap;
-
-  @override
-  Widget build(BuildContext context) => InkWell(
-    onTap: live.isLive && live.url.isNotEmpty ? () => onTap(live.url) : null,
-    borderRadius: BorderRadius.circular(Corner.md),
-    child: Container(
-      padding: const EdgeInsets.all(Gap.lg),
-      decoration: BoxDecoration(
-        color: live.isLive ? Tone.accentWash : Tone.card,
-        borderRadius: BorderRadius.circular(Corner.md),
-        border: Border.all(color: live.isLive ? Tone.live : Tone.line),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 10,
-            height: 10,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: live.isLive ? Tone.live : Tone.faint,
-            ),
-          ),
-          const SizedBox(width: Gap.md),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  live.isLive ? 'Live now' : 'Not streaming',
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  live.isLive && live.title.isNotEmpty
-                      ? live.title
-                      : 'The schedule is on the site.',
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(color: Tone.faint, fontSize: 13),
-                ),
-              ],
-            ),
-          ),
-          if (live.isLive)
-            const Icon(Icons.play_arrow, color: Tone.live, size: 22),
-        ],
-      ),
-    ),
-  );
 }
 
 class _ReadingRow extends StatelessWidget {
@@ -355,7 +373,7 @@ class _OfferCardState extends State<_OfferCard> {
       decoration: BoxDecoration(
         color: Tone.card,
         borderRadius: BorderRadius.circular(Corner.md),
-        border: Border.all(color: Tone.accent.withValues(alpha: 0.45)),
+        border: Border.all(color: Gilt.dim),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -364,7 +382,7 @@ class _OfferCardState extends State<_OfferCard> {
             Text(
               o.from.toUpperCase(),
               style: const TextStyle(
-                color: Tone.faint,
+                color: Gilt.gilt,
                 fontSize: 11,
                 fontWeight: FontWeight.w600,
                 letterSpacing: 1.1,
@@ -431,13 +449,26 @@ class _OfferCardState extends State<_OfferCard> {
                 ),
             ],
           ),
-          if (o.endsAt != null) ...[
-            const SizedBox(height: Gap.xs),
-            Text(
-              'Until ${o.endsAt!.substring(0, 10)}',
-              style: const TextStyle(color: Tone.faint, fontSize: 12),
-            ),
-          ],
+          const SizedBox(height: Gap.sm),
+          Row(
+            children: [
+              const Icon(
+                Icons.open_in_new_outlined,
+                size: 13,
+                color: Tone.faint,
+              ),
+              const SizedBox(width: 5),
+              Expanded(
+                child: Text(
+                  o.endsAt == null
+                      ? 'Opens in your browser'
+                      : 'Opens in your browser · until '
+                            '${o.endsAt!.substring(0, 10)}',
+                  style: const TextStyle(color: Tone.faint, fontSize: 12),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );

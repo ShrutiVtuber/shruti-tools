@@ -12,10 +12,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../models/place.dart';
+import '../services/ephemeris.dart';
 import '../services/settings.dart';
 import '../services/stations.dart';
 import '../theme/tokens.dart';
 import '../widgets/eyebrow.dart';
+import '../widgets/parts.dart';
 import 'pick_place.dart';
 
 class StationsScreen extends StatefulWidget {
@@ -86,6 +88,21 @@ class _StationsScreenState extends State<StationsScreen> {
           const Eyebrow('Today'),
           const SizedBox(height: Gap.sm),
           _StationTable(stations: today, next: next, place: place),
+
+          const SizedBox(height: Gap.xxl),
+          Provenance(
+            facts: [
+              ('engine', engineVersion),
+              ('computed', 'on this phone · nothing sent, nothing stored'),
+              (
+                'sunrise',
+                settings.convention == RiseConvention.visibleDisc
+                    ? "the Sun's upper limb clears the horizon, refracted"
+                    : 'the centre of the disc, no refraction',
+              ),
+              ('for', '${place.name} · ${place.zone}'),
+            ],
+          ),
         ],
       ),
     );

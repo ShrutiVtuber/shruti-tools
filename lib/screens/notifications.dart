@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 
 import '../services/notifications.dart';
 import '../theme/tokens.dart';
+import '../widgets/brand.dart';
 import 'account.dart';
 
 /// The notification preferences, offered down the tree.
@@ -40,7 +41,7 @@ class _NoticesScreenState extends State<NoticesScreen> {
     final signedIn = AccountScope.of(context).signedIn;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Notifications')),
+      appBar: const Bar(title: 'Notifications'),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.fromLTRB(Gap.lg, Gap.lg, Gap.lg, Gap.huge),

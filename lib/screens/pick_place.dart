@@ -9,6 +9,7 @@ import '../models/place.dart';
 import '../services/settings.dart';
 import '../services/site.dart';
 import '../theme/tokens.dart';
+import '../widgets/brand.dart';
 
 class PickPlaceScreen extends StatefulWidget {
   const PickPlaceScreen({super.key});
@@ -62,7 +63,7 @@ class _PickPlaceScreenState extends State<PickPlaceScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Where are you?')),
+      appBar: const Bar(title: 'Where are you?'),
       body: Column(
         children: [
           Padding(
