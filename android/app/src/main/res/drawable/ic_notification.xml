@@ -1,0 +1,27 @@
+<!-- The status-bar mark. A PLACEHOLDER until the clasp is drawn: see
+     design/astrolabe/guidelines/artwork-spec.md #2.
+
+     ⚠ White only, and shape only. Android throws away every colour in a
+     notification icon and renders the alpha channel as a flat silhouette, so a
+     gold icon arrives as a white blob and any interior detail becomes mud at
+     24dp. That is why this is a solid crescent and a solid star with nothing
+     inside either of them.
+
+     Without this the app has no notification icon at all and Android falls
+     back to the launcher icon — which, being full-colour and square, draws as
+     exactly that white blob. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24"
+    android:tint="#FFFFFF">
+    <!-- The crescent: a disc with a second disc taken out of it. -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M13.6,2.2 A9.8,9.8 0 1,0 13.6,21.8 A7.9,7.9 0 1,1 13.6,2.2 Z" />
+    <!-- One eight-pointed star, in the crescent's opening. -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M17.2,7.4 L18.1,10.3 L21,11.2 L18.1,12.1 L17.2,15 L16.3,12.1 L13.4,11.2 L16.3,10.3 Z" />
+</vector>

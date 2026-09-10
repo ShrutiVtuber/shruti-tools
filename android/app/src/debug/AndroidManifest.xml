@@ -4,4 +4,17 @@
          to allow setting breakpoints, to provide hot reload, etc.
     -->
     <uses-permission android:name="android.permission.INTERNET"/>
+
+    <!-- ⚠ Cleartext, in the DEBUG manifest only.
+         Android has blocked plain http since 9, which is right, and the
+         release build keeps that. But a debug build pointed at a laptop over
+         `adb reverse` talks to http://127.0.0.1, and without this the request
+         fails before it leaves the phone — with a CleartextNotPermitted error
+         that surfaces in this app as "could not reach shrutivtuber.com",
+         because every site call fails soft by design. That is a very long way
+         to walk from the symptom to the cause.
+
+         src/debug is merged only into debug builds; release and profile never
+         see it. -->
+    <application android:usesCleartextTraffic="true" />
 </manifest>

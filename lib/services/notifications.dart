@@ -15,10 +15,12 @@
 // stream starts should be told whether or not they ever sign up. Only
 // `wantsReplies` needs one, because it is about their own writing, and the
 // screen says so rather than showing a switch that quietly does nothing.
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -71,8 +73,17 @@ class Notifications extends ChangeNotifier {
   final SharedPreferences _prefs;
   final Account _account;
 
-  static Future<Notifications> load(Account account) async =>
-      Notifications._(await SharedPreferences.getInstance(), account);
+  static Future<Notifications> load(Account account) async {
+    final it = Notifications._(await SharedPreferences.getInstance(), account);
+    // ⚠ **At every start, not only when the switch is turned on.** The
+    // foreground listener lives in memory and dies with the process, so a
+    // phone that registered last week has a perfectly good token, receives
+    // every message, and draws none of them until the app is next backgrounded
+    // — which looks exactly like notifications being broken and is the same
+    // silent failure the listener was written to fix, one restart later.
+    if (it.on) unawaited(it._watchWhileOpen());
+    return it;
+  }
 
   bool wants(String key) => _prefs.getBool('notify.$key') ?? _byDefault(key);
 
@@ -161,6 +172,89 @@ class Notifications extends ChangeNotifier {
     }
   }
 
+  /// ⚠ **The channel, declared by US and not by FCM.**
+  ///
+  /// Left to itself, Firebase invents `fcm_fallback_notification_channel`,
+  /// which has no sound and no vibration. The notification then arrives
+  /// perfectly correctly and completely silently, which to the person holding
+  /// the phone is indistinguishable from it never arriving. The id here
+  /// matches the one named in AndroidManifest.xml.
+  static const _channel = AndroidNotificationChannel(
+    'live',
+    'When Shruti goes live',
+    description: 'A stream starting, and answers to your practice writing.',
+    importance: Importance.high,
+  );
+
+  final _local = FlutterLocalNotificationsPlugin();
+  bool _listening = false;
+
+  /// Draw the ones that arrive while the app is OPEN.
+  ///
+  /// ⚠ **This is the whole of the bug it was written for.** Android draws an
+  /// FCM notification by itself only when the app is in the background. In the
+  /// foreground it hands the message to the app and draws nothing, on the
+  /// reasonable theory that an app on screen can say so better than a banner.
+  /// An app that does not handle this shows NOTHING — and the first three test
+  /// notifications vanished exactly that way, with a 200 from Firebase and a
+  /// delivery logged on the phone, which is the most misleading shape a
+  /// failure can have.
+  Future<void> _watchWhileOpen() async {
+    if (_listening) return;
+    _listening = true;
+    try {
+      await _startWatching();
+    } catch (error) {
+      // ⚠ Said out loud. This runs from `unawaited` at startup, where a thrown
+      // error goes nowhere at all — and its only symptom would be
+      // notifications that arrive while the app is open and are never drawn,
+      // which is precisely the bug this method exists to fix.
+      _listening = false;
+      debugPrint('notifications: cannot watch while open ($error)');
+    }
+  }
+
+  Future<void> _startWatching() async {
+
+    // ⚠ **initialize() FIRST, then the channel.** The other way round,
+    // `resolvePlatformSpecificImplementation` has no platform to resolve and
+    // returns null — so the `?.` swallows the call, no channel is created, and
+    // Android quietly falls back to FCM's silent one. Nothing throws and
+    // nothing is logged; the only symptom is a notification with no sound,
+    // which reads as a phone setting rather than a bug.
+    await _local.initialize(const InitializationSettings(
+      android: AndroidInitializationSettings('ic_notification'),
+    ));
+
+    final android = _local.resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin>();
+    if (android == null) {
+      debugPrint('notifications: no Android plugin to make a channel with');
+      return;
+    }
+    await android.createNotificationChannel(_channel);
+
+    FirebaseMessaging.onMessage.listen((message) {
+      final note = message.notification;
+      if (note == null) return;
+      _local.show(
+        note.hashCode,
+        note.title,
+        note.body,
+        NotificationDetails(
+          android: AndroidNotificationDetails(
+            _channel.id, _channel.name,
+            channelDescription: _channel.description,
+            importance: Importance.high,
+            priority: Priority.high,
+            icon: 'ic_notification',
+          ),
+        ),
+        payload: message.data['url'] as String?,
+      );
+    });
+  }
+
   /// This device's address at Firebase, or null if we may not have one.
   ///
   /// Null is a normal answer, not a failure: somebody who declines the
@@ -181,6 +275,7 @@ class Notifications extends ChangeNotifier {
       if (settings.authorizationStatus != AuthorizationStatus.authorized) {
         return null;
       }
+      await _watchWhileOpen();
       return await FirebaseMessaging.instance.getToken();
     } catch (error) {
       debugPrint('notifications: no Firebase token ($error)');

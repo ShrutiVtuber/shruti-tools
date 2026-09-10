@@ -27,6 +27,16 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+        // ⚠ flutter_local_notifications refuses to build without this, and
+        // says so as "Dependency ':flutter_local_notifications' requires core
+        // library desugaring to be enabled" — a message that names the setting
+        // but not the file it goes in.
+        //
+        // What it does: back-ports the modern java.time classes to the older
+        // Androids this app still supports. The plugin schedules notifications
+        // against them, so without it there is no build at all rather than a
+        // runtime surprise.
+        isCoreLibraryDesugaringEnabled = true
     }
 
     defaultConfig {
@@ -57,4 +67,11 @@ kotlin {
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+    // The back-port itself. Its version is checked against the plugin's
+    // requirement at build time, so a too-old one fails loudly rather than
+    // silently dropping methods.
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
 }

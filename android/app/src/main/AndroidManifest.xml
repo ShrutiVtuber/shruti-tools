@@ -16,6 +16,20 @@
         android:label="Astrolabe"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <!-- ⚠ Which icon and which channel a notification from FCM uses when
+             the app is not running to say. Without the first, Android falls
+             back to the LAUNCHER icon, which is full-colour and square and
+             draws in the status bar as a white blob. Without the second, FCM
+             invents "fcm_fallback_notification_channel", which has no sound
+             and no vibration — the notification arrives silently and looks
+             like it did not arrive at all. -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_notification" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="live" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
