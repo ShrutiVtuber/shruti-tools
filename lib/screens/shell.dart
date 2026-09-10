@@ -81,15 +81,37 @@ class _ShellState extends State<Shell> {
               // chart and back should not lose a cast chart or re-run the
               // stations, and a tab that forgets what you did on it is a tab
               // you stop using.
-              child: IndexedStack(
-                index: _tab,
-                children: const [
-                  LandingScreen(),
-                  SkyScreen(),
-                  ChartScreen(),
-                  LettersScreen(),
-                  PracticeScreen(),
-                  SettingsScreen(),
+              // ⚠ A cross-fade, never a slide: six tabs have no left and
+              // right, and an animation that implies one lies about where you
+              // are.
+              //
+              // ⚠ Every tab stays in the tree, which is the point. An
+              // AnimatedSwitcher over an IndexedStack would look identical and
+              // be wrong: its new child is a NEW subtree, so every screen's
+              // State is thrown away on each tab change and the cast chart
+              // that survived a visit elsewhere stops surviving it.
+              child: Stack(
+                children: [
+                  for (var i = 0; i < 6; i++)
+                    IgnorePointer(
+                      ignoring: i != _tab,
+                      child: TickerMode(
+                        enabled: i == _tab,
+                        child: AnimatedOpacity(
+                          duration: Motion.of(context, Motion.normal),
+                          curve: Motion.ease,
+                          opacity: i == _tab ? 1 : 0,
+                          child: const [
+                            LandingScreen(),
+                            SkyScreen(),
+                            ChartScreen(),
+                            LettersScreen(),
+                            PracticeScreen(),
+                            SettingsScreen(),
+                          ][i],
+                        ),
+                      ),
+                    ),
                 ],
               ),
             ),

@@ -10,6 +10,8 @@ import '../services/settings.dart';
 import '../services/site.dart';
 import '../theme/tokens.dart';
 import '../widgets/brand.dart';
+import '../widgets/parts.dart';
+import '../widgets/forms.dart';
 
 class PickPlaceScreen extends StatefulWidget {
   const PickPlaceScreen({super.key});
@@ -63,38 +65,27 @@ class _PickPlaceScreenState extends State<PickPlaceScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const Bar(title: 'Where are you?'),
+      appBar: const Bar(title: 'Place', hour: false),
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(Gap.lg, 0, Gap.lg, Gap.md),
-            child: TextField(
+            padding: const EdgeInsets.fromLTRB(
+              Gap.gutter,
+              0,
+              Gap.gutter,
+              Gap.md,
+            ),
+            child: Field(
               controller: _field,
-              autofocus: true,
+              hint: 'Search for a city',
               onChanged: _onTyped,
-              textInputAction: TextInputAction.search,
-              style: Theme.of(context).textTheme.bodyLarge,
-              decoration: InputDecoration(
-                hintText: 'City, or country',
-                hintStyle: Theme.of(context).textTheme.bodyMedium,
-                filled: true,
-                fillColor: Tone.inset,
-                prefixIcon: const Icon(Icons.search, color: Tone.faint),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(Corner.sm),
-                  borderSide: const BorderSide(color: Tone.line),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(Corner.sm),
-                  borderSide: const BorderSide(color: Tone.line),
-                ),
-              ),
+              prefix: const Icon(Icons.search, size: 18, color: Tone.faint),
             ),
           ),
           if (_looking)
             const LinearProgressIndicator(
               minHeight: 2,
-              color: Tone.accent,
+              color: Gilt.gilt,
               backgroundColor: Colors.transparent,
             ),
           Expanded(child: _body(context)),
@@ -105,50 +96,67 @@ class _PickPlaceScreenState extends State<PickPlaceScreen> {
 
   Widget _body(BuildContext context) {
     if (_results.isNotEmpty) {
-      return ListView.separated(
-        itemCount: _results.length,
-        separatorBuilder: (_, _) => const Divider(height: 1),
-        itemBuilder: (context, i) {
-          final p = _results[i];
-          return ListTile(
-            title: Text(p.name, style: Theme.of(context).textTheme.bodyLarge),
-            // The zone is shown because it is the half that cannot be guessed
-            // from a name, and the half that makes the table right.
-            subtitle: Text(
-              p.zone,
-              style: Theme.of(context).textTheme.bodySmall,
+      return ListView(
+        padding: const EdgeInsets.fromLTRB(Gap.gutter, 0, Gap.gutter, Gap.huge),
+        children: [
+          ListGroup(
+            children: [
+              for (final p in _results)
+                ListRow(
+                  label: p.name,
+                  // The zone is shown because it is the half that cannot be
+                  // guessed from a name, and the half that makes the table
+                  // right.
+                  value: p.zone,
+                  onTap: () => Navigator.of(context).pop(p),
+                ),
+            ],
+          ),
+        ],
+      );
+    }
+
+    final typed = _field.text.trim();
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(Gap.gutter, 0, Gap.gutter, Gap.huge),
+      children: [
+        const Pressable(
+          tone: Surface.inset,
+          child: Text(
+            'The place decides sunrise, sunset and the planetary hours. It is '
+            'stored on this phone and never sent anywhere.',
+            style: TextStyle(
+              fontFamily: Face.body,
+              fontSize: Type.caption,
+              height: 1.6,
+              color: Tone.faint,
             ),
-            trailing: const Icon(Icons.chevron_right, color: Tone.faint),
-            onTap: () => Navigator.of(context).pop(p),
-          );
-        },
-      );
-    }
-    if (_failed && _field.text.trim().length >= 2 && !_looking) {
-      return _Note(
-        'Nothing found for "${_field.text.trim()}".\n\n'
-        'Searching needs a connection — the stations themselves do not. '
-        'If you are offline, the place you last chose still works.',
-      );
-    }
-    return const _Note(
-      'Type a couple of letters.\n\n'
-      'The place decides both when the sun rises and what time that is '
-      'called, so a town in the right country is not close enough.',
+          ),
+        ),
+        const SizedBox(height: Gap.md),
+        if (_failed && typed.length >= 2 && !_looking)
+          EmptyState(
+            compact: true,
+            mark: '♄',
+            title: 'Nothing called "$typed"',
+            body:
+                'Try the local spelling, or the nearest larger city — the '
+                'hours will be within a minute or two. Searching needs a '
+                'connection; the instruments never do.',
+          )
+        else if (typed.length < 2)
+          const EmptyState(
+            compact: true,
+            mark: '☾',
+            title: 'Type a couple of letters',
+            body:
+                'The place decides both when the Sun rises and what time '
+                'that is called, so a town in the right country is not close '
+                'enough.',
+          ),
+      ],
     );
   }
-}
-
-class _Note extends StatelessWidget {
-  const _Note(this.text);
-
-  final String text;
-
-  @override
-  Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.all(Gap.xl),
-    child: Text(text, style: Theme.of(context).textTheme.bodyMedium),
-  );
 }
 
 /// Open the picker and, if something is chosen, tell the settings.

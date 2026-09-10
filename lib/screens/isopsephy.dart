@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 import '../services/isopsephy.dart';
 import '../services/packs.dart';
 import '../theme/tokens.dart';
+import '../widgets/data.dart';
+import '../widgets/forms.dart';
 import '../widgets/parts.dart';
 import '../widgets/eyebrow.dart';
 
@@ -109,15 +111,6 @@ class _IsopsephyScreenState extends State<IsopsephyScreen> {
     return ListView(
       padding: const EdgeInsets.fromLTRB(Gap.lg, Gap.xl, Gap.lg, Gap.huge),
       children: [
-        Text('Isopsephy', style: Theme.of(context).textTheme.displaySmall),
-        const SizedBox(height: Gap.xs),
-        Text(
-          'Letter-reckoning, each script by its own table. Matches are only '
-          'ever found inside one system.',
-          style: Theme.of(context).textTheme.bodyMedium,
-        ),
-        const SizedBox(height: Gap.xl),
-
         if (system == null) ...[
           const Eyebrow('First, a language'),
           const SizedBox(height: Gap.sm),
@@ -126,58 +119,94 @@ class _IsopsephyScreenState extends State<IsopsephyScreen> {
                 ? 'Nothing to choose from — the site could not be reached. '
                       'Languages are downloaded once and work offline afterwards.'
                 : 'Nothing is downloaded yet. A letter table is a few '
-                      'kilobytes; the word lists are the large part, and you only '
-                      'need the ones you actually read.',
+                      'kilobytes; the word lists are the large part, and you '
+                      'only need the ones you actually read.',
           ),
         ] else ...[
-          _SystemPicker(
-            systems: _systems,
-            chosen: system,
-            onChanged: (s) => setState(() {
-              _system = s;
-              _result = null;
-              _found = const [];
-            }),
+          TagRow(
+            children: [
+              for (final sys in _systems)
+                Tag(
+                  label: sys.name,
+                  selected: sys.id == system.id,
+                  onTap: () => setState(() {
+                    _system = sys;
+                    _result = null;
+                    _found = const [];
+                  }),
+                ),
+            ],
           ),
           const SizedBox(height: Gap.md),
-          TextField(
+          Field(
+            label: 'Word or phrase',
             controller: _field,
-            textDirection: system.rightToLeft
-                ? TextDirection.rtl
-                : TextDirection.ltr,
-            style: Theme.of(context).textTheme.bodyLarge,
-            onSubmitted: (_) => _reckon(),
-            decoration: InputDecoration(
-              hintText: system.script,
-              hintStyle: Theme.of(context).textTheme.bodyMedium,
-              filled: true,
-              fillColor: Tone.inset,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(Corner.sm),
-                borderSide: const BorderSide(color: Tone.line),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(Corner.sm),
-                borderSide: const BorderSide(color: Tone.line),
+            hint: system.script,
+            helper:
+                'Each script by its own table. A match is only ever found inside one system.',
+          ),
+          const SizedBox(height: Gap.md),
+          Push(label: 'Reckon', full: true, onTap: _reckon),
+
+          if (_result != null) ...[
+            const SizedBox(height: Gap.lg),
+            // Letter by letter, as a printed table would set it — so the sum
+            // can be checked by anybody who wants to check it.
+            Figures(
+              label: '${system.name} · letter by letter',
+              right: true,
+              text: [
+                for (final letter in _result!.counted)
+                  '$letter   ${(system.table[letter] ?? 0).toString().padLeft(4)}',
+                '────────',
+                '    ${_result!.total}',
+              ].join('\n'),
+            ),
+            const SizedBox(height: Gap.md),
+            Pressable(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Fact(
+                    label: 'Total',
+                    value: '${_result!.total}',
+                    tone: Gilt.gilt,
+                  ),
+                  Fact(
+                    label: 'Letters counted',
+                    value: '${_result!.counted.length}',
+                  ),
+                  Fact(
+                    label: 'Matches in this system',
+                    value: _looking
+                        ? '…'
+                        : '${_found.length} '
+                              'word${_found.length == 1 ? "" : "s"}',
+                  ),
+                  // ⚠ Not swallowed. A Latin A in a Greek reckoning looks
+                  // exactly like Alpha, is worth nothing, and the total gives
+                  // no sign of it.
+                  if (_result!.ignored.isNotEmpty)
+                    Fact(
+                      label: 'No value here',
+                      value: _result!.ignored.join(' '),
+                      tone: Tone.rose,
+                    ),
+                ],
               ),
             ),
-          ),
-          const SizedBox(height: Gap.md),
-          FilledButton(onPressed: _reckon, child: const Text('Reckon')),
-          if (_result != null) ...[
-            const SizedBox(height: Gap.xl),
-            _Total(result: _result!, system: system),
-            const SizedBox(height: Gap.lg),
-            if (_looking)
-              const Center(child: CircularProgressIndicator(color: Tone.accent))
-            else if (_found.isNotEmpty) ...[
+            if (_found.isNotEmpty) ...[
+              const SizedBox(height: Gap.lg),
               Eyebrow('Also ${_result!.total}'),
               const SizedBox(height: Gap.sm),
               _Words(found: _found, rightToLeft: system.rightToLeft),
-            ] else if (_result!.total > 0)
-              _Note(
-                'Nothing at ${_result!.total} in the lists you have. Adding a '
-                'word list for this script would give it more to look in.',
+            ] else if (!_looking && _result!.total > 0)
+              Padding(
+                padding: const EdgeInsets.only(top: Gap.md),
+                child: _Note(
+                  'Nothing at ${_result!.total} in the lists you have. Adding '
+                  'a word list for this script would give it more to look in.',
+                ),
               ),
           ],
         ],
@@ -228,88 +257,6 @@ class _IsopsephyScreenState extends State<IsopsephyScreen> {
 
 extension<T> on Iterable<T> {
   T? get firstOrNull => isEmpty ? null : first;
-}
-
-class _SystemPicker extends StatelessWidget {
-  const _SystemPicker({
-    required this.systems,
-    required this.chosen,
-    required this.onChanged,
-  });
-
-  final List<NumberSystem> systems;
-  final NumberSystem chosen;
-  final ValueChanged<NumberSystem> onChanged;
-
-  @override
-  Widget build(BuildContext context) => Wrap(
-    spacing: 6,
-    runSpacing: 6,
-    children: [
-      for (final s in systems)
-        ChoiceChip(
-          label: Text(s.script.isEmpty ? s.name : s.script),
-          selected: s.id == chosen.id,
-          onSelected: (_) => onChanged(s),
-          backgroundColor: Tone.card,
-          selectedColor: Tone.accentWash,
-          side: BorderSide(color: s.id == chosen.id ? Tone.accent : Tone.line),
-          labelStyle: TextStyle(
-            fontFamily: Face.body,
-            fontSize: 14,
-            color: s.id == chosen.id ? Tone.accent : Tone.soft,
-          ),
-        ),
-    ],
-  );
-}
-
-class _Total extends StatelessWidget {
-  const _Total({required this.result, required this.system});
-
-  final Reckoning result;
-  final NumberSystem system;
-
-  @override
-  Widget build(BuildContext context) => Container(
-    width: double.infinity,
-    padding: const EdgeInsets.all(Gap.lg),
-    decoration: BoxDecoration(
-      color: Tone.card,
-      borderRadius: BorderRadius.circular(Corner.md),
-      border: Border.all(color: Tone.line),
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Eyebrow(system.name),
-        const SizedBox(height: Gap.sm),
-        Text(
-          '${result.total}',
-          style: Theme.of(
-            context,
-          ).textTheme.displaySmall!.copyWith(color: Tone.accent),
-        ),
-        const SizedBox(height: Gap.xs),
-        Text(
-          '${result.counted.length} letter'
-          '${result.counted.length == 1 ? "" : "s"} counted',
-          style: Theme.of(context).textTheme.bodySmall,
-        ),
-        // Not swallowed. A Latin A in a Greek reckoning looks exactly like
-        // Alpha and is worth nothing, and the total gives no sign of it.
-        if (result.ignored.isNotEmpty) ...[
-          const SizedBox(height: Gap.sm),
-          Text(
-            'No value in this system: ${result.ignored.join(" ")}',
-            style: Theme.of(
-              context,
-            ).textTheme.bodySmall!.copyWith(color: Tone.rose),
-          ),
-        ],
-      ],
-    ),
-  );
 }
 
 class _Words extends StatelessWidget {

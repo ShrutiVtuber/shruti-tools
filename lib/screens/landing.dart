@@ -170,7 +170,7 @@ class _LandingScreenState extends State<LandingScreen> {
           ),
           children: [
             if (_looked && !_reached) ...[
-              const Notice(
+              const NoticeBar(
                 tone: BannerTone.offline,
                 title: 'Her half is out of reach',
                 text:

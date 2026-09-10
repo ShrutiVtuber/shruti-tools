@@ -10,6 +10,9 @@ import 'package:flutter/material.dart';
 import '../services/notifications.dart';
 import '../theme/tokens.dart';
 import '../widgets/brand.dart';
+import '../widgets/parts.dart';
+import '../widgets/forms.dart';
+import '../widgets/eyebrow.dart';
 import 'account.dart';
 
 /// The notification preferences, offered down the tree.
@@ -41,85 +44,89 @@ class _NoticesScreenState extends State<NoticesScreen> {
     final signedIn = AccountScope.of(context).signedIn;
 
     return Scaffold(
-      appBar: const Bar(title: 'Notifications'),
+      appBar: const Bar(title: 'Notifications', hour: false),
       body: SafeArea(
         child: ListView(
-          padding: const EdgeInsets.fromLTRB(Gap.lg, Gap.lg, Gap.lg, Gap.huge),
+          padding: const EdgeInsets.fromLTRB(
+            Gap.gutter,
+            Gap.gutter,
+            Gap.gutter,
+            Gap.huge,
+          ),
           children: [
-            const Text(
-              'Nothing here is needed to use the app. Every instrument computes '
-              'on this phone, signed out and offline.',
-              style: TextStyle(color: Tone.soft, height: 1.45),
-            ),
-            const SizedBox(height: Gap.lg),
-
-            SwitchListTile(
-              contentPadding: EdgeInsets.zero,
-              value: wanted.on,
-              onChanged: _busy
-                  ? null
-                  : (want) async {
-                      setState(() {
-                        _busy = true;
-                        _trouble = null;
-                      });
-                      String? trouble;
-                      if (want) {
-                        trouble = await wanted.turnOn();
-                      } else {
-                        await wanted.turnOff();
-                      }
-                      if (mounted) {
-                        setState(() {
-                          _trouble = trouble;
-                          _busy = false;
-                        });
-                      }
-                    },
-              title: const Text('Send notifications to this phone'),
-              subtitle: Text(
-                wanted.on
-                    ? 'This phone is on the list.'
-                    : 'Off. Nothing is sent and no token is held.',
-                style: const TextStyle(color: Tone.faint, fontSize: 12),
+            const Eyebrow('Tell me about'),
+            const SizedBox(height: Gap.sm),
+            Pressable(
+              padding: const EdgeInsets.symmetric(horizontal: Gap.lg),
+              child: Column(
+                children: [
+                  Switcher(
+                    label: 'Send notifications to this phone',
+                    description: wanted.on
+                        ? 'This phone is on the list.'
+                        : 'Off. Nothing is sent and no token is held.',
+                    value: wanted.on,
+                    onChanged: _busy
+                        ? null
+                        : (want) async {
+                            setState(() {
+                              _busy = true;
+                              _trouble = null;
+                            });
+                            String? trouble;
+                            if (want) {
+                              trouble = await wanted.turnOn();
+                            } else {
+                              await wanted.turnOff();
+                            }
+                            if (mounted) {
+                              setState(() {
+                                _trouble = trouble;
+                                _busy = false;
+                              });
+                            }
+                          },
+                  ),
+                  for (final n in notices) ...[
+                    const Divider(height: 1),
+                    Switcher(
+                      label: n.label,
+                      // ⚠ Dimmed rather than hidden. Seeing that replies exist
+                      // is the reason somebody would make an account for them;
+                      // a control that vanishes teaches nobody anything.
+                      description: n.needsAccount && !signedIn
+                          ? '${n.about} Needs an account.'
+                          : n.about,
+                      value: wanted.wants(n.key),
+                      enabled: !(n.needsAccount && !signedIn),
+                      onChanged: (v) => wanted.setWants(n.key, v),
+                    ),
+                  ],
+                ],
               ),
             ),
 
             if (_trouble != null) ...[
-              const SizedBox(height: Gap.sm),
-              Text(
-                _trouble!,
-                style: const TextStyle(color: Tone.live, height: 1.45),
-              ),
+              const SizedBox(height: Gap.md),
+              NoticeBar(tone: BannerTone.warning, text: _trouble!),
             ],
 
-            const SizedBox(height: Gap.lg),
-            for (final n in notices)
-              Opacity(
-                // Dimmed rather than hidden: seeing that replies exist is why
-                // somebody would make an account for them.
-                opacity: (n.needsAccount && !signedIn) ? 0.55 : 1,
-                child: SwitchListTile(
-                  contentPadding: EdgeInsets.zero,
-                  value: wanted.wants(n.key),
-                  onChanged: (n.needsAccount && !signedIn)
-                      ? null
-                      : (v) => wanted.setWants(n.key, v),
-                  title: Text(n.label),
-                  subtitle: Text(
-                    n.needsAccount && !signedIn
-                        ? '${n.about} Needs an account.'
-                        : n.about,
-                    style: const TextStyle(color: Tone.faint, fontSize: 12),
-                  ),
+            const SizedBox(height: Gap.md),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: Gap.xs),
+              child: Text(
+                'Nothing here is needed to use the app — every instrument '
+                'computes on this phone, signed out and offline. The sky '
+                'notifications are worked out here too, so they still arrive '
+                'with no network. Turning this off takes the phone off the '
+                'list at her end as well, not just here.',
+                style: TextStyle(
+                  fontFamily: Face.body,
+                  fontSize: Type.caption,
+                  height: 1.6,
+                  color: Tone.faint,
                 ),
               ),
-
-            const SizedBox(height: Gap.lg),
-            const Text(
-              'Turning this off takes the phone off the list at her end too, '
-              'not just here.',
-              style: TextStyle(color: Tone.faint, fontSize: 12, height: 1.5),
             ),
           ],
         ),

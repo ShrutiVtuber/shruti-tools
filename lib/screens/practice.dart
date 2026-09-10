@@ -205,7 +205,7 @@ class _PracticeScreenState extends State<PracticeScreen> {
       ];
     }
     if (snap.hasError) {
-      return [Notice(tone: BannerTone.warning, text: '${snap.error}')];
+      return [NoticeBar(tone: BannerTone.warning, text: '${snap.error}')];
     }
     final works = snap.data ?? const <Work>[];
     if (works.isEmpty) {

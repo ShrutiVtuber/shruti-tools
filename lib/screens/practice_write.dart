@@ -330,7 +330,7 @@ class _WriteScreenState extends State<WriteScreen> {
 
             if (_trouble != null) ...[
               const SizedBox(height: Gap.md),
-              Notice(tone: BannerTone.warning, text: _trouble!),
+              NoticeBar(tone: BannerTone.warning, text: _trouble!),
             ],
 
             const SizedBox(height: Gap.lg),

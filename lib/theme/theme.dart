@@ -16,6 +16,7 @@
 // not have the case.
 import 'package:flutter/material.dart';
 
+import 'motion.dart';
 import 'tokens.dart';
 
 ThemeData shrutiTheme() {
@@ -47,6 +48,17 @@ ThemeData shrutiTheme() {
   return ThemeData(
     useMaterial3: true,
     colorScheme: scheme,
+
+    // ⚠ Push and pop slide 240 ms from the right, on the emphasised curve —
+    // not Material's default, which differs per platform and fades on Android.
+    // A pushed screen that arrives from the side is a pushed screen; one that
+    // fades in has no direction to go back in.
+    pageTransitionsTheme: const PageTransitionsTheme(
+      builders: {
+        TargetPlatform.android: _SlideIn(),
+        TargetPlatform.iOS: _SlideIn(),
+      },
+    ),
     scaffoldBackgroundColor: Tone.page,
     fontFamily: Face.body,
     splashFactory: InkSparkle.splashFactory,
@@ -392,4 +404,34 @@ ThemeData shrutiTheme() {
       ),
     ),
   );
+}
+
+/// The push: 240 ms from the right, and nothing else moves.
+///
+/// ⚠ Under reduced motion the whole thing collapses to a millisecond and the
+/// screen simply is there. Nothing in this app is only legible in motion.
+class _SlideIn extends PageTransitionsBuilder {
+  const _SlideIn();
+
+  @override
+  Duration get transitionDuration => Motion.normal;
+
+  @override
+  Widget buildTransitions<T>(
+    PageRoute<T> route,
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) {
+    if (Motion.stilled(context)) return child;
+    final curve = CurvedAnimation(parent: animation, curve: Motion.enter);
+    return SlideTransition(
+      position: Tween(
+        begin: const Offset(1, 0),
+        end: Offset.zero,
+      ).animate(curve),
+      child: FadeTransition(opacity: curve, child: child),
+    );
+  }
 }

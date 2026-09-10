@@ -215,7 +215,7 @@ class _ChartScreenState extends State<ChartScreen> {
           // ⚠ The cannot-compute state offers the honest alternative rather
           // than a fabricated answer.
           if (!known) ...[
-            const Notice(
+            const NoticeBar(
               tone: BannerTone.caution,
               title: 'The angles are not reckoned',
               text:

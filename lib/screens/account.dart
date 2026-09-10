@@ -15,7 +15,13 @@
 import 'package:flutter/material.dart';
 
 import '../services/account.dart';
+import '../theme/glyph.dart';
+import 'package:url_launcher/url_launcher.dart';
+import '../services/site.dart';
 import '../theme/tokens.dart';
+import '../widgets/parts.dart';
+import '../widgets/forms.dart';
+import '../widgets/brand.dart';
 import '../widgets/eyebrow.dart';
 
 /// The account, offered down the tree the way settings are.
@@ -145,194 +151,146 @@ class _AccountScreenState extends State<AccountScreen> {
     if (account.signedIn) return _SignedIn(account: account);
     if (_makingOne) _loadConsents(account);
 
-    return ListView(
-      padding: const EdgeInsets.fromLTRB(Gap.lg, Gap.xl, Gap.lg, Gap.huge),
-      children: [
-        Text(
-          _makingOne ? 'Make an account' : 'Sign in',
-          style: Theme.of(context).textTheme.displaySmall,
+    return Scaffold(
+      appBar: Bar(
+        title: 'Account',
+        hour: false,
+        leading: Navigator.of(context).canPop()
+            ? IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () => Navigator.of(context).pop(),
+              )
+            : null,
+      ),
+      body: ListView(
+        padding: const EdgeInsets.fromLTRB(
+          Gap.gutter,
+          Gap.gutter,
+          Gap.gutter,
+          Gap.huge,
         ),
-        const SizedBox(height: Gap.xs),
-        const Text(
-          'One account for the app and for shrutivtuber.com. Nothing else here '
-          'needs one — every instrument works signed out.',
-          style: TextStyle(color: Tone.soft, height: 1.45),
-        ),
-        const SizedBox(height: Gap.xl),
-
-        if (_makingOne) ...[
-          TextField(
-            controller: _name,
-            textCapitalization: TextCapitalization.words,
-            decoration: const InputDecoration(
-              labelText: 'Name',
-              helperText: 'What she calls you. Anything you like.',
-            ),
+        children: [
+          const SizedBox(height: Gap.sm),
+          Text(
+            'An account is only for the practice room',
+            style: Theme.of(context).textTheme.titleLarge,
           ),
-          const SizedBox(height: Gap.lg),
-        ],
-        TextField(
-          controller: _email,
-          keyboardType: TextInputType.emailAddress,
-          autocorrect: false,
-          decoration: const InputDecoration(labelText: 'Email'),
-        ),
-        const SizedBox(height: Gap.lg),
-        TextField(
-          controller: _password,
-          obscureText: true,
-          decoration: InputDecoration(
-            labelText: 'Password',
-            helperText: _makingOne ? 'Ten characters or more.' : null,
-          ),
-        ),
-
-        if (_makingOne) ...[
-          const SizedBox(height: Gap.xl),
-          const Eyebrow('Three decisions'),
           const SizedBox(height: Gap.sm),
           const Text(
-            'These are separate on purpose. You can say yes to one and no to '
-            'another, and change any of them later.',
-            style: TextStyle(color: Tone.faint, fontSize: 13, height: 1.5),
+            'Everything else — the sky, the hours, the chart, the letters — '
+            'works without one, offline, and always will. It is the same '
+            'account as shrutivtuber.com.',
+            style: TextStyle(
+              fontFamily: Face.body,
+              fontSize: Type.body,
+              height: 1.5,
+              color: Tone.soft,
+            ),
           ),
-          const SizedBox(height: Gap.sm),
-          if (_consents == null)
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: Gap.lg),
-              child: Text(
-                'Fetching what you are agreeing to…',
-                style: TextStyle(color: Tone.faint),
-              ),
-            )
-          else
-            for (final c in _consents!)
-              _ConsentTile(
-                consent: c,
-                granted: _granted[c.kind] ?? false,
-                onChanged: (v) => setState(() => _granted[c.kind] = v),
-              ),
-        ],
+          const SizedBox(height: Gap.xl),
 
-        if (_trouble != null) ...[
-          const SizedBox(height: Gap.lg),
-          Text(
-            _trouble!,
-            style: const TextStyle(color: Tone.live, height: 1.45),
+          if (_makingOne) ...[
+            Field(
+              label: 'Name',
+              controller: _name,
+              helper: 'What she calls you. Anything you like.',
+            ),
+            const SizedBox(height: 14),
+          ],
+          Field(label: 'Email', controller: _email, hint: 'you@example.com'),
+          const SizedBox(height: 14),
+          Field(
+            label: 'Password',
+            controller: _password,
+            helper: _makingOne ? 'Ten characters or more.' : null,
           ),
-        ],
-        if (_said != null) ...[
-          const SizedBox(height: Gap.lg),
-          Text(
-            _said!,
-            style: const TextStyle(color: Tone.accent, height: 1.45),
-          ),
-        ],
 
-        const SizedBox(height: Gap.xl),
-        FilledButton(
-          onPressed: _busy ? null : () => _go(account),
-          child: Text(
-            _busy
+          if (_makingOne) ...[
+            const SizedBox(height: Gap.xl),
+            const Eyebrow('Three decisions'),
+            const SizedBox(height: Gap.sm),
+            const Text(
+              // ⚠ Separate rows, never one bundled tick. A consent that comes
+              // packaged with two others is not a consent anybody gave.
+              'These are separate on purpose. You can say yes to one and no to '
+              'another, and change any of them later.',
+              style: TextStyle(
+                fontFamily: Face.body,
+                fontSize: Type.caption,
+                height: 1.5,
+                color: Tone.faint,
+              ),
+            ),
+            const SizedBox(height: Gap.sm),
+            if (_consents == null)
+              const Skeleton(height: 150)
+            else
+              for (final c in _consents!)
+                ChoiceRow(
+                  radio: false,
+                  label: c.label,
+                  rule: c.wording.isEmpty ? c.explanation : c.wording,
+                  checked: _granted[c.kind] ?? false,
+                  onChanged: (v) => setState(() => _granted[c.kind] = v),
+                ),
+          ],
+
+          if (_trouble != null) ...[
+            const SizedBox(height: Gap.lg),
+            NoticeBar(tone: BannerTone.warning, text: _trouble!),
+          ],
+          if (_said != null) ...[
+            const SizedBox(height: Gap.lg),
+            NoticeBar(tone: BannerTone.note, text: _said!),
+          ],
+
+          const SizedBox(height: Gap.xl),
+          Push(
+            label: _busy
                 ? 'One moment…'
                 : _makingOne
                 ? 'Make the account'
                 : 'Sign in',
+            size: Bulk.lg,
+            full: true,
+            loading: _busy,
+            onTap: _busy ? null : () => _go(account),
           ),
-        ),
-        if (!_makingOne) ...[
-          const SizedBox(height: Gap.sm),
-          TextButton(
-            onPressed: _busy ? null : () => _emailAPassword(account),
-            child: const Text('Email me a link to set a password'),
+          if (!_makingOne) ...[
+            const SizedBox(height: Gap.sm),
+            Push(
+              label: 'Email me a link to set a password',
+              weight: Weight.text,
+              full: true,
+              onTap: _busy ? null : () => _emailAPassword(account),
+            ),
+          ],
+          const SizedBox(height: Gap.xs),
+          Push(
+            label: _makingOne
+                ? 'I already have an account'
+                : 'I need an account',
+            weight: Weight.text,
+            full: true,
+            onTap: _busy
+                ? null
+                : () => setState(() {
+                    _makingOne = !_makingOne;
+                    _trouble = null;
+                    _said = null;
+                  }),
           ),
         ],
-        const SizedBox(height: Gap.md),
-        TextButton(
-          onPressed: _busy
-              ? null
-              : () => setState(() {
-                  _makingOne = !_makingOne;
-                  _trouble = null;
-                  _said = null;
-                }),
-          child: Text(
-            _makingOne ? 'I already have an account' : 'I need an account',
-          ),
-        ),
-      ],
+      ),
     );
   }
 }
 
-class _ConsentTile extends StatelessWidget {
-  const _ConsentTile({
-    required this.consent,
-    required this.granted,
-    required this.onChanged,
-  });
-
-  final Consent consent;
-  final bool granted;
-  final ValueChanged<bool> onChanged;
-
-  @override
-  Widget build(BuildContext context) => Container(
-    margin: const EdgeInsets.only(top: Gap.sm),
-    padding: const EdgeInsets.all(Gap.md),
-    decoration: BoxDecoration(
-      color: Tone.inset,
-      borderRadius: BorderRadius.circular(Corner.md),
-      border: Border.all(color: Tone.line),
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Checkbox(
-              value: granted,
-              // A required consent is the thing being asked for; it cannot
-              // be turned off and still make an account. The others are
-              // free, which is what makes them consent.
-              onChanged: consent.required ? null : (v) => onChanged(v ?? false),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(top: Gap.md),
-                child: Text(
-                  consent.label,
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-              ),
-            ),
-            if (consent.required)
-              const Padding(
-                padding: EdgeInsets.only(top: 14),
-                child: Text(
-                  'needed',
-                  style: TextStyle(color: Tone.faint, fontSize: 11),
-                ),
-              ),
-          ],
-        ),
-        const SizedBox(height: Gap.xs),
-        // The filed words, verbatim. This is the record.
-        Text(
-          consent.wording,
-          style: const TextStyle(color: Tone.soft, fontSize: 13, height: 1.5),
-        ),
-        const SizedBox(height: Gap.xs),
-        Text(
-          consent.explanation,
-          style: const TextStyle(color: Tone.faint, fontSize: 12, height: 1.5),
-        ),
-      ],
-    ),
-  );
-}
-
+/// The account, once there is one.
+///
+/// ⚠ Sign out and delete are the same shape of row and they are NOT the same
+/// decision, so delete wears the danger colour and goes behind a dialog that
+/// says what it takes with it. Nothing irreversible gets a filled button.
 class _SignedIn extends StatelessWidget {
   const _SignedIn({required this.account});
   final Account account;
@@ -340,53 +298,129 @@ class _SignedIn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final reader = account.reader;
-    return ListView(
-      padding: const EdgeInsets.fromLTRB(Gap.lg, Gap.xl, Gap.lg, Gap.huge),
-      children: [
-        Text('Your account', style: Theme.of(context).textTheme.displaySmall),
-        const SizedBox(height: Gap.xl),
-        Container(
-          padding: const EdgeInsets.all(Gap.lg),
-          decoration: BoxDecoration(
-            color: Tone.card,
-            borderRadius: BorderRadius.circular(Corner.md),
-            border: Border.all(color: Tone.line),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                reader?.shownName ?? 'Signed in',
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              if (reader != null && reader.name.trim().isNotEmpty) ...[
-                const SizedBox(height: 2),
-                Text(
-                  reader.email,
-                  style: const TextStyle(color: Tone.faint, fontSize: 13),
+    return Scaffold(
+      appBar: Bar(
+        title: 'Account',
+        hour: false,
+        leading: Navigator.of(context).canPop()
+            ? IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () => Navigator.of(context).pop(),
+              )
+            : null,
+      ),
+      body: ListView(
+        padding: const EdgeInsets.fromLTRB(
+          Gap.gutter,
+          Gap.gutter,
+          Gap.gutter,
+          Gap.huge,
+        ),
+        children: [
+          Pressable(
+            child: Row(
+              children: [
+                Container(
+                  width: 48,
+                  height: 48,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: Tone.veil,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Tone.line),
+                  ),
+                  child: const Glyph('☾', size: 22, color: Gilt.gilt),
+                ),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        reader?.shownName ?? 'Signed in',
+                        style: const TextStyle(
+                          fontFamily: Face.display,
+                          fontSize: 18,
+                          height: 1.3,
+                          fontWeight: FontWeight.w500,
+                          color: Tone.ink,
+                        ),
+                      ),
+                      if (reader != null && reader.email.isNotEmpty) ...[
+                        const SizedBox(height: 2),
+                        Text(
+                          reader.email,
+                          style: const TextStyle(
+                            fontFamily: Face.body,
+                            fontSize: Type.caption,
+                            color: Tone.faint,
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
                 ),
               ],
-              const SizedBox(height: Gap.sm),
-              const Text(
-                'The same account works on shrutivtuber.com — signed in there '
-                'too, with nothing more to do.',
-                style: TextStyle(color: Tone.soft, fontSize: 13, height: 1.5),
+            ),
+          ),
+          const SizedBox(height: Gap.md),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: Gap.xs),
+            child: Text(
+              'The same account works on shrutivtuber.com — signed in there '
+              'too, with nothing more to do.',
+              style: TextStyle(
+                fontFamily: Face.body,
+                fontSize: Type.caption,
+                height: 1.5,
+                color: Tone.faint,
+              ),
+            ),
+          ),
+
+          const SizedBox(height: Gap.xl),
+          const Eyebrow('Consents'),
+          const SizedBox(height: Gap.sm),
+          ListGroup(
+            children: [
+              ListRow(
+                label: 'What you agreed to',
+                description: 'Change any of them, at any time',
+                onTap: () => launchUrl(
+                  Uri.parse('$siteOrigin/account'),
+                  mode: LaunchMode.externalApplication,
+                ),
+                external: true,
               ),
             ],
           ),
-        ),
-        const SizedBox(height: Gap.xl),
-        OutlinedButton(
-          onPressed: account.signOut,
-          child: const Text('Sign out of this device'),
-        ),
-        const SizedBox(height: Gap.sm),
-        const Text(
-          'Signing out here does not sign you out on the website, and nothing '
-          'you have saved is deleted.',
-          style: TextStyle(color: Tone.faint, fontSize: 12, height: 1.5),
-        ),
-      ],
+
+          const SizedBox(height: Gap.xl),
+          ListGroup(
+            children: [
+              ListRow(
+                label: 'Sign out of this device',
+                onTap: account.signOut,
+                trailing: const SizedBox.shrink(),
+              ),
+            ],
+          ),
+          const SizedBox(height: Gap.sm),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: Gap.xs),
+            child: Text(
+              'Signing out here does not sign you out on the website, and '
+              'nothing you have saved is deleted.',
+              style: TextStyle(
+                fontFamily: Face.body,
+                fontSize: Type.caption,
+                height: 1.5,
+                color: Tone.faint,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

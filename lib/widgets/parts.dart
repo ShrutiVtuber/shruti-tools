@@ -374,15 +374,16 @@ class EmptyState extends StatelessWidget {
 
 /// An inline notice, pinned under the app bar.
 ///
-/// ⚠ Named Notice rather than Banner: Flutter already has a Banner, and two
-/// things called the same thing in one file is a bug waiting for a hurry.
+/// ⚠ Named NoticeBar: Flutter already has a Banner, and the app already has
+/// a Notice — a notification KIND, in services/notifications.dart. Three
+/// things called the same thing is a bug waiting for a hurry.
 ///
 /// ⚠ **Offline does not mean broken.** Every instrument still computes on the
 /// device, so the offline copy says which HALF is missing — never "no
 /// connection", which is a sentence about the network rather than about what
 /// the reader can still do.
-class Notice extends StatelessWidget {
-  const Notice({
+class NoticeBar extends StatelessWidget {
+  const NoticeBar({
     super.key,
     required this.text,
     this.title,

@@ -98,7 +98,7 @@ class _WorkScreenState extends State<WorkScreen> {
             if (snap.hasError) {
               return Padding(
                 padding: const EdgeInsets.all(Gap.gutter),
-                child: Notice(
+                child: NoticeBar(
                   tone: BannerTone.warning,
                   title: 'That reading did not load',
                   text: '${snap.error}',
@@ -333,7 +333,7 @@ class _WorkScreenState extends State<WorkScreen> {
 
                 if (_trouble != null) ...[
                   const SizedBox(height: Gap.md),
-                  Notice(tone: BannerTone.warning, text: _trouble!),
+                  NoticeBar(tone: BannerTone.warning, text: _trouble!),
                 ],
               ],
             );

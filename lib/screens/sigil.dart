@@ -16,6 +16,7 @@ import 'package:share_plus/share_plus.dart';
 
 import '../services/sigil.dart' as sigil;
 import '../theme/tokens.dart';
+import '../widgets/forms.dart';
 import '../widgets/parts.dart';
 import '../widgets/sigil_figure.dart';
 
@@ -57,30 +58,19 @@ class _SigilScreenState extends State<SigilScreen> {
     return ListView(
       padding: const EdgeInsets.all(Gap.lg),
       children: [
-        Text('Sigil', style: Theme.of(context).textTheme.headlineMedium),
-        const SizedBox(height: Gap.xs),
-        const Text(
-          'Drawn here on your phone. The statement is never sent anywhere, '
-          'never saved, and is not written into the figure you export.',
-          style: TextStyle(color: Tone.soft, height: 1.45),
-        ),
-        const SizedBox(height: Gap.lg),
-        TextField(
+        Field(
+          label: 'Statement of intent',
           controller: _field,
+          multiline: true,
+          rows: 3,
+          hint: 'My will is to finish the work',
+          helper:
+              'Repeated letters are struck out before the figure is '
+              'drawn. Nothing typed here is sent, saved, or written into the '
+              'figure you export.',
           onChanged: (_) => setState(() {}),
-          maxLines: 2,
-          minLines: 1,
-          textCapitalization: TextCapitalization.sentences,
-          // No suggestions, no autocorrect: both hand what is typed to a
-          // keyboard that may learn it.
-          autocorrect: false,
-          enableSuggestions: false,
-          decoration: const InputDecoration(
-            labelText: 'Statement of intent',
-            hintText: 'My will is to finish the work',
-          ),
         ),
-        const SizedBox(height: Gap.lg),
+        const SizedBox(height: Gap.md),
         _Options(
           keepVowels: _keepVowels,
           weight: _weight,
