@@ -116,6 +116,10 @@ class _ShellState extends State<Shell> {
               ),
             ),
             bottomNavigationBar: _TabBar(
+              // ⚠ Keyed for the tests. Both the app bar and the tab bar say
+              // "Sky" now, and a finder that matches text alone matches both —
+              // which is a real ambiguity, not a test being fussy.
+              key: const Key('tab-bar'),
               tab: _tab,
               onTab: (i) => setState(() => _tab = i),
               tabs: _tabs,
@@ -128,7 +132,12 @@ class _ShellState extends State<Shell> {
 }
 
 class _TabBar extends StatelessWidget {
-  const _TabBar({required this.tab, required this.onTab, required this.tabs});
+  const _TabBar({
+    super.key,
+    required this.tab,
+    required this.onTab,
+    required this.tabs,
+  });
 
   final int tab;
   final ValueChanged<int> onTab;

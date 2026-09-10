@@ -66,7 +66,14 @@ void main() {
 
     // ⚠ The app opens on HOME now, not on an instrument. The stations are
     // behind the Sky tab, which is where this test's subject lives.
-    await tester.tap(find.text('Sky'));
+    // ⚠ The tab, not the app bar — both say "Sky" since the screens took the
+    // design system's app bars, and a bare text finder matches both.
+    await tester.tap(
+      find.descendant(
+        of: find.byKey(const Key('tab-bar')),
+        matching: find.text('Sky'),
+      ),
+    );
     await tester.pumpAndSettle(const Duration(seconds: 2));
 
     // Stations opens on the default.
@@ -118,7 +125,14 @@ void main() {
       ),
     );
     await tester.pumpAndSettle(const Duration(seconds: 2));
-    await tester.tap(find.text('Sky'));
+    // ⚠ The tab, not the app bar — both say "Sky" since the screens took the
+    // design system's app bars, and a bare text finder matches both.
+    await tester.tap(
+      find.descendant(
+        of: find.byKey(const Key('tab-bar')),
+        matching: find.text('Sky'),
+      ),
+    );
     await tester.pumpAndSettle(const Duration(seconds: 2));
 
     /// Every clock time on screen, in the order they are drawn.
