@@ -94,13 +94,13 @@ class _EventsScreenState extends State<EventsScreen> {
         const SizedBox(height: Gap.xxl),
         Provenance(
           facts: [
-            ('engine', engineVersion),
-            ('computed', 'on this phone · nothing sent, nothing stored'),
+            ('Engine', engineVersion),
+            ('Computed', 'on this phone · nothing sent, nothing stored'),
             (
               'found by',
               'a coarse scan for the crossing, then bisection to the minute',
             ),
-            ('told in', place.zone),
+            ('Told in', place.zone),
           ],
         ),
       ],

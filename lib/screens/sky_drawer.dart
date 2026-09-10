@@ -235,10 +235,10 @@ class _SkyDrawerState extends State<SkyDrawer> {
           const SizedBox(height: Gap.xxl),
           Provenance(
             facts: [
-              ('engine', engineVersion),
-              ('computed', 'on this phone · nothing sent, nothing stored'),
-              ('positions', 'geocentric, apparent, midnight UT'),
-              ('zodiac', 'tropical'),
+              ('Engine', engineVersion),
+              ('Computed', 'on this phone · nothing sent, nothing stored'),
+              ('Positions', 'geocentric, apparent, midnight UT'),
+              ('Zodiac', 'tropical'),
               (
                 '℞',
                 'read from the motion itself, not from a table of station '

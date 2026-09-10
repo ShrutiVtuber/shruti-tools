@@ -415,6 +415,15 @@ ThemeData shrutiTheme() {
       circularTrackColor: Tone.inset,
     ),
 
+    // ⚠ No scrollbars, anywhere. The design system indicates vertical overflow
+    // with a fade at the foot of the scroller instead — a bar down the edge of
+    // a dense table is one more line competing with the figures, and on a
+    // phone it is over the content it is describing.
+    scrollbarTheme: const ScrollbarThemeData(
+      thumbVisibility: WidgetStatePropertyAll(false),
+      thickness: WidgetStatePropertyAll(0),
+    ),
+
     tooltipTheme: TooltipThemeData(
       decoration: BoxDecoration(
         color: Tone.veil,

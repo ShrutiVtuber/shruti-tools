@@ -88,12 +88,18 @@ void main() {
     // Hours is a different tab, alive the whole time, and must agree.
     await tester.tap(find.text('Hours'));
     await tester.pumpAndSettle(const Duration(seconds: 2));
+    // Case-insensitive. The screens write the place in sentence case in a
+    // caption and uppercased in an eyebrow, and both are correct — the claim
+    // under test is that the place REACHED the tab, not how it was cased.
     expect(
-      find.textContaining('ATHENS'),
+      find.textContaining(RegExp('athens', caseSensitive: false)),
       findsWidgets,
       reason: 'Hours kept its own copy and went on answering for London',
     );
-    expect(find.textContaining('LONDON'), findsNothing);
+    expect(
+      find.textContaining(RegExp('london', caseSensitive: false)),
+      findsNothing,
+    );
   });
 
   testWidgets('the sunrise convention reaches the stations too', (

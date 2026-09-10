@@ -290,11 +290,11 @@ class _ChartScreenState extends State<ChartScreen> {
           const SizedBox(height: Gap.xxl),
           Provenance(
             facts: [
-              ('engine', engineVersion),
-              ('computed', 'on this phone · nothing sent, nothing stored'),
-              ('zodiac', 'tropical'),
-              ('houses', known ? 'whole sign' : 'not reckoned'),
-              ('cast for', '${place.name} · ${place.zone}'),
+              ('Engine', engineVersion),
+              ('Computed', 'on this phone · nothing sent, nothing stored'),
+              ('Zodiac', 'tropical'),
+              ('Houses', known ? 'whole sign' : 'not reckoned'),
+              ('Cast for', '${place.name} · ${place.zone}'),
             ],
           ),
         ],

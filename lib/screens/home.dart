@@ -161,15 +161,15 @@ class _StationsScreenState extends State<StationsScreen> {
         const SizedBox(height: Gap.xxl),
         Provenance(
           facts: [
-            ('engine', engineVersion),
-            ('computed', 'on this phone · nothing sent, nothing stored'),
+            ('Engine', engineVersion),
+            ('Computed', 'on this phone · nothing sent, nothing stored'),
             (
               'the rule',
               settings.convention == RiseConvention.visibleDisc
                   ? "sunrise: the Sun's upper limb clears the horizon, refracted"
                   : 'sunrise: the centre of the disc, no refraction',
             ),
-            ('for', '${place.name} · ${place.zone}'),
+            ('For', '${place.name} · ${place.zone}'),
           ],
         ),
       ],

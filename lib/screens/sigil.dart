@@ -94,7 +94,7 @@ class _SigilScreenState extends State<SigilScreen> {
         const SizedBox(height: Gap.xxl),
         const Provenance(
           facts: [
-            ('the method', 'the rose of the magi, on the Latin alphabet'),
+            ('The method', 'the rose of the magi, on the Latin alphabet'),
             (
               'the rule',
               'vowels and repeats struck out, then each remaining letter '
@@ -104,7 +104,7 @@ class _SigilScreenState extends State<SigilScreen> {
               'computed',
               'on this phone · the statement is never sent and never kept',
             ),
-            ('agrees with', 'shrutivtuber.com, to the same SVG'),
+            ('Agrees with', 'shrutivtuber.com, to the same SVG'),
           ],
         ),
         const SizedBox(height: Gap.xxl),

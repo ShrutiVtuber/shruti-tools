@@ -15,6 +15,7 @@ import '../services/settings.dart';
 import '../services/stations.dart';
 import '../theme/tokens.dart';
 import '../widgets/forms.dart';
+import '../widgets/motifs.dart';
 
 Future<void> showSunriseSheet(BuildContext context) {
   final settings = SettingsScope.of(context);
@@ -28,6 +29,11 @@ Future<void> showSunriseSheet(BuildContext context) {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // The sheet's own hem, as the system draws it.
+            const Padding(
+              padding: EdgeInsets.only(bottom: Gap.md),
+              child: Hem(),
+            ),
             Text(
               'Where sunrise is',
               style: Theme.of(context).textTheme.titleLarge,

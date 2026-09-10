@@ -163,18 +163,19 @@ class _HoursScreenState extends State<HoursScreen> {
             ),
           ),
           const SizedBox(height: Gap.md),
-          if (day.isNotEmpty) table(day, 'Day hours · ${_today(place)}'),
+          if (day.isNotEmpty)
+            table(day, 'Day hours · ${_today(place)} · ${place.shortName}'),
           if (night.isNotEmpty) ...[
             const SizedBox(height: Gap.md),
-            table(night, 'Night hours · ${_today(place)}'),
+            table(night, 'Night hours · ${_today(place)} · ${place.shortName}'),
           ],
         ],
 
         const SizedBox(height: Gap.xxl),
         Provenance(
           facts: [
-            ('engine', engineVersion),
-            ('computed', 'on this phone · nothing sent, nothing stored'),
+            ('Engine', engineVersion),
+            ('Computed', 'on this phone · nothing sent, nothing stored'),
             (
               'the rule',
               'a twelfth of the daylight, then a twelfth of the night — so an '
@@ -186,7 +187,7 @@ class _HoursScreenState extends State<HoursScreen> {
                   ? "the Sun's upper limb clears the horizon, refracted"
                   : 'the centre of the disc, no refraction',
             ),
-            ('for', '${place.name} · ${place.zone}'),
+            ('For', '${place.name} · ${place.zone}'),
           ],
         ),
       ],

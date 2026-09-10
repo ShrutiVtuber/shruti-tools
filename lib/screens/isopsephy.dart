@@ -239,15 +239,15 @@ class _IsopsephyScreenState extends State<IsopsephyScreen> {
         const SizedBox(height: Gap.xxl),
         const Provenance(
           facts: [
-            ('the rule', 'each script by its own table; no table crosses'),
+            ('Rule in force', 'each script by its own table; no table crosses'),
             (
               '⚠ matches',
               'only ever found inside one system — a Greek sum and a Hebrew '
                   'sum that agree are a coincidence of two alphabets, not a '
                   'correspondence',
             ),
-            ('computed', 'on this phone · nothing typed here is sent'),
-            ('tables', 'downloaded once, then held on this phone'),
+            ('Computed', 'on this phone · nothing typed here is sent'),
+            ('Tables', 'downloaded once, then held on this phone'),
           ],
         ),
       ],

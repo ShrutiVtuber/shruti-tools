@@ -656,3 +656,40 @@ class _SkeletonState extends State<Skeleton>
     );
   }
 }
+
+/// A fade at the foot of a scroller, in place of a scrollbar.
+///
+/// ⚠ The design system's rule: no scrollbars, anywhere. A bar down the edge of
+/// a dense table is one more line competing with the figures, and on a phone it
+/// sits over the content it is describing. A fade says "there is more below"
+/// without taking a column to say it.
+class Fading extends StatelessWidget {
+  const Fading({super.key, required this.child, this.height = 28});
+
+  final Widget child;
+  final double height;
+
+  @override
+  Widget build(BuildContext context) => Stack(
+    children: [
+      child,
+      Positioned(
+        left: 0,
+        right: 0,
+        bottom: 0,
+        height: height,
+        child: IgnorePointer(
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Tone.page.withValues(alpha: 0), Tone.page],
+              ),
+            ),
+          ),
+        ),
+      ),
+    ],
+  );
+}
