@@ -30,7 +30,19 @@ void main() {
     test('${entry.value}: every segment has a screen behind it', () {
       final source = File(entry.key).readAsStringSync();
 
-      final segments = RegExp(r'ButtonSegment\(').allMatches(source).length;
+      // ⚠ Reads the app's OWN control, not Material's. The segmented control
+      // was Material's `SegmentedButton` and is now `Segmented`, which takes
+      // its options as `(value, 'Label')` records — this test kept passing
+      // against `ButtonSegment(` for exactly as long as it took somebody to
+      // notice it was counting zero of them.
+      final options = RegExp(
+        r'options: const \[(.*?)\]',
+        dotAll: true,
+      ).firstMatch(source);
+      expect(options, isNotNull, reason: '${entry.key} has no Segmented');
+      final segments = RegExp(
+        r"\(\s*\d+\s*,\s*'",
+      ).allMatches(options!.group(1)!).length;
       // The children of the IndexedStack, whatever the trailing punctuation.
       final stack = RegExp(
         r'IndexedStack\((.*?)\n\s*\),',
@@ -58,9 +70,14 @@ void main() {
 
     test('${entry.value}: the segment values are 0..n with no gaps', () {
       final source = File(entry.key).readAsStringSync();
-      final values = RegExp(
-        r'ButtonSegment\(\s*value:\s*(\d+)',
-      ).allMatches(source).map((m) => int.parse(m.group(1)!)).toList();
+      final options = RegExp(
+        r'options: const \[(.*?)\]',
+        dotAll: true,
+      ).firstMatch(source);
+      final values = RegExp(r"\(\s*(\d+)\s*,\s*'")
+          .allMatches(options!.group(1)!)
+          .map((m) => int.parse(m.group(1)!))
+          .toList();
       // ⚠ The value indexes the IndexedStack directly. A gap or a repeat is a
       // segment that opens the wrong instrument, silently.
       expect(values, [

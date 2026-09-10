@@ -50,8 +50,13 @@ void main() {
     await tester.tap(find.text('Reckon'));
     await tester.pumpAndSettle(const Duration(seconds: 3));
 
-    expect(find.text('888'), findsOneWidget);
-    expect(find.text('6 letters counted'), findsOneWidget);
+    // ⚠ The total AND the working. A sum with no letter-by-letter beside it is
+    // a number somebody has to trust; this screen exists so they do not have
+    // to. The label and the count moved into a Fact row when the screen took
+    // the design system's components — the fact asserted is the same one.
+    expect(find.text('888'), findsWidgets);
+    expect(find.text('Letters counted'), findsOneWidget);
+    expect(find.text('6'), findsWidgets);
   });
 
   testWidgets('a character with no value is named, not swallowed', (
@@ -75,7 +80,10 @@ void main() {
     await tester.tap(find.text('Reckon'));
     await tester.pumpAndSettle(const Duration(seconds: 3));
 
-    expect(find.textContaining('No value in this system'), findsOneWidget);
+    expect(find.text('No value here'), findsOneWidget);
+    // The character itself, named — not merely a count of how many were
+    // dropped, which tells nobody which one to look at.
+    expect(find.textContaining('A'), findsWidgets);
   });
 
   testWidgets('every language says what it costs before it is taken', (

@@ -409,11 +409,17 @@ class Masthead extends StatelessWidget {
   );
 }
 
-/// Sky's header: the day as an arc, the Sun on it, the Moon's phase beside it.
+/// Sky's header: the day drawn, sunrise to sunset, with the Sun where it
+/// actually is and the Moon's phase at the end of it.
+///
+/// This exists for one reason: the app knows what the sky is doing, on device,
+/// offline, and that is a signal almost no app has. It also stops every screen
+/// looking like the same stack of cards — Home has the plate, Sky has the arc,
+/// and neither borrows the other's surface.
 ///
 /// ⚠ Outside daylight the Sun is NOT drawn. An arc with a sun parked at one
-/// end would be a picture of a fact that is not true; an empty arc says night,
-/// which is the fact.
+/// end is a picture of a fact that is not true; an empty arc says night, which
+/// is the fact.
 class DayArc extends StatelessWidget {
   const DayArc({
     super.key,
@@ -422,6 +428,7 @@ class DayArc extends StatelessWidget {
     required this.now,
     required this.lit,
     this.waxing = true,
+    this.ruler,
   });
 
   final DateTime sunrise;
@@ -431,6 +438,11 @@ class DayArc extends StatelessWidget {
   /// The Moon's illuminated fraction, 0..1.
   final double lit;
   final bool waxing;
+  final HourRuler? ruler;
+
+  static String _clock(DateTime t) =>
+      '${t.hour.toString().padLeft(2, "0")}:'
+      '${t.minute.toString().padLeft(2, "0")}';
 
   @override
   Widget build(BuildContext context) {
@@ -439,63 +451,106 @@ class DayArc extends StatelessWidget {
     final daylight = span > 0 && into >= 0 && into <= span;
     final along = daylight ? into / span : null;
 
-    String clock(DateTime t) =>
-        '${t.hour.toString().padLeft(2, "0")}:'
-        '${t.minute.toString().padLeft(2, "0")}';
-
-    return Container(
-      padding: const EdgeInsets.fromLTRB(Gap.lg, Gap.lg, Gap.lg, Gap.md),
-      decoration: BoxDecoration(
-        color: Tone.card,
-        borderRadius: BorderRadius.circular(Corner.md),
-        border: Border.all(color: Tone.line),
-      ),
-      child: Column(
-        children: [
-          SizedBox(
-            height: 92,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
+    return Semantics(
+      label:
+          'Sunrise ${_clock(sunrise)}, sunset ${_clock(sunset)}, '
+          'now ${_clock(now)}',
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(Corner.lg),
+        child: Container(
+          decoration: BoxDecoration(
+            // Night, dusk, and the last of the light — the same three stops
+            // the website's arc uses.
+            gradient: const LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Color(0xFF0B1322), Color(0xFF16203A), Color(0xFF241E2E)],
+              stops: [0, 0.52, 1],
+            ),
+            borderRadius: BorderRadius.circular(Corner.lg),
+            border: Border.all(color: Tone.line),
+          ),
+          child: Scatter(
+            faint: true,
+            child: Column(
               children: [
-                Expanded(
+                Hem(),
+                const SizedBox(height: Gap.md),
+                SizedBox(
+                  height: 92,
                   child: CustomPaint(
-                    size: const Size.fromHeight(92),
+                    size: const Size(double.infinity, 92),
                     painter: _ArcPainter(along),
                   ),
                 ),
-                const SizedBox(width: Gap.lg),
                 Padding(
-                  padding: const EdgeInsets.only(bottom: Gap.md),
-                  child: MoonDisc(lit: lit, waxing: waxing, size: 34),
+                  padding: const EdgeInsets.fromLTRB(14, 0, 14, Gap.md),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      _Time(label: 'Rose', value: _clock(sunrise)),
+                      const Spacer(),
+                      Column(
+                        children: [
+                          if (ruler != null)
+                            Glyph(
+                              _rulerMarks[ruler]!,
+                              size: 13,
+                              color: hourTint[ruler]!,
+                            ),
+                          const SizedBox(height: 4),
+                          Text(
+                            _clock(now),
+                            style: const TextStyle(
+                              fontFamily: Face.body,
+                              fontFamilyFallback: [Face.glyph],
+                              fontSize: 15,
+                              height: 1,
+                              fontWeight: FontWeight.w600,
+                              color: Tone.ink,
+                              fontFeatures: [FontFeature.tabularFigures()],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const Spacer(),
+                      Column(
+                        children: [
+                          MoonDisc(lit: lit, waxing: waxing, size: 18),
+                          const SizedBox(height: 4),
+                          Text(
+                            '${(lit * 100).round()}%',
+                            style: const TextStyle(
+                              fontFamily: Face.body,
+                              fontFamilyFallback: [Face.glyph],
+                              fontSize: 11,
+                              height: 1,
+                              color: Tone.faint,
+                              fontFeatures: [FontFeature.tabularFigures()],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const Spacer(),
+                      _Time(
+                        label: 'Sets',
+                        value: _clock(sunset),
+                        trailing: true,
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: Gap.sm),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _Foot(label: 'Sunrise', value: clock(sunrise)),
-              Text(
-                daylight ? 'Daylight' : 'Night',
-                style: const TextStyle(
-                  fontFamily: Face.body,
-                  fontFamilyFallback: [Face.glyph],
-                  fontSize: 12,
-                  color: Tone.faint,
-                ),
-              ),
-              _Foot(label: 'Sunset', value: clock(sunset), trailing: true),
-            ],
-          ),
-        ],
+        ),
       ),
     );
   }
 }
 
-class _Foot extends StatelessWidget {
-  const _Foot({
+class _Time extends StatelessWidget {
+  const _Time({
     required this.label,
     required this.value,
     this.trailing = false,
@@ -512,21 +567,27 @@ class _Foot extends StatelessWidget {
         : CrossAxisAlignment.start,
     children: [
       Text(
-        label,
+        label.toUpperCase(),
         style: const TextStyle(
           fontFamily: Face.body,
           fontFamilyFallback: [Face.glyph],
-          fontSize: 11,
+          fontSize: 10,
+          height: 1,
+          fontWeight: FontWeight.w600,
+          letterSpacing: 1.4,
           color: Tone.faint,
         ),
       ),
+      const SizedBox(height: 3),
       Text(
         value,
         style: const TextStyle(
           fontFamily: Face.body,
           fontFamilyFallback: [Face.glyph],
-          fontSize: 14,
-          color: Tone.ink,
+          fontSize: 13,
+          height: 1,
+          fontWeight: FontWeight.w500,
+          color: Tone.soft,
           fontFeatures: [FontFeature.tabularFigures()],
         ),
       ),
@@ -542,66 +603,100 @@ class _ArcPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    const pad = 26.0;
     final w = size.width;
-    final h = size.height;
-    final base = h - 10;
-    final peak = 8.0;
+    final base = size.height - 20;
+    const peak = 18.0;
+    final span = w - pad * 2;
 
+    // A quadratic, as the website draws it — a shallow curve, because a
+    // semicircle would put noon absurdly high.
     Offset at(double t) {
-      // A parabola, not a circle: the Sun's path across a day is a shallow
-      // curve and a semicircle would put noon absurdly high.
-      final x = t * w;
-      final y = base - 4 * (base - peak) * t * (1 - t);
+      final x = pad + span * t;
+      final control = peak - (base - peak) * 0.32;
+      final y =
+          (1 - t) * (1 - t) * base + 2 * (1 - t) * t * control + t * t * base;
       return Offset(x, y);
     }
 
-    final path = Path()..moveTo(0, base);
+    final path = Path()..moveTo(pad, base);
     for (var i = 1; i <= 60; i++) {
       final p = at(i / 60);
       path.lineTo(p.dx, p.dy);
     }
-    canvas.drawPath(
+
+    // The day's area, barely there.
+    final area = Path.from(path)
+      ..lineTo(w - pad, base)
+      ..lineTo(pad, base)
+      ..close();
+    canvas.drawPath(area, Paint()..color = Gilt.gilt.withValues(alpha: 0.07));
+
+    // The arc itself, dashed: the Sun's path is a prediction, not a rail.
+    _dashed(
+      canvas,
       path,
       Paint()
-        ..color = Tone.line
+        ..color = Gilt.dim
         ..strokeWidth = 1
         ..style = PaintingStyle.stroke,
+      3,
+      4,
     );
 
-    // The horizon.
+    // The horizon, fading at both ends like the hem.
     canvas.drawLine(
       Offset(0, base),
       Offset(w, base),
       Paint()
-        ..color = Tone.line
+        ..shader = LinearGradient(
+          colors: [
+            Gilt.gilt.withValues(alpha: 0),
+            Gilt.gilt.withValues(alpha: 0.55),
+            Gilt.gilt.withValues(alpha: 0),
+          ],
+        ).createShader(Rect.fromLTWH(0, base - 1, w, 2))
         ..strokeWidth = 1,
     );
 
+    // The two ticks: where it rose, where it sets.
+    for (final x in [pad, w - pad]) {
+      canvas.drawLine(
+        Offset(x, base - 4),
+        Offset(x, base + 4),
+        Paint()
+          ..color = Gilt.dim
+          ..strokeWidth = 1,
+      );
+    }
+
     if (along == null) return;
 
-    // The travelled part, in gold, so the day reads as a quantity.
-    final done = Path()..moveTo(0, base);
-    for (var i = 1; i <= 60; i++) {
-      final t = i / 60 * along!;
-      final p = at(t);
-      done.lineTo(p.dx, p.dy);
-    }
-    canvas.drawPath(
-      done,
-      Paint()
-        ..color = Gilt.gilt.withValues(alpha: 0.75)
-        ..strokeWidth = 1.5
-        ..style = PaintingStyle.stroke,
-    );
-
     final sun = at(along!);
-    canvas.drawCircle(sun, 7, Paint()..color = Tone.page);
-    canvas.drawCircle(sun, 6, Paint()..color = Gilt.bright);
+    canvas.drawLine(
+      sun,
+      Offset(sun.dx, base),
+      Paint()
+        ..color = Gilt.gilt.withValues(alpha: 0.45)
+        ..strokeWidth = 0.8,
+    );
     canvas.drawCircle(
       sun,
-      1.6,
-      Paint()..color = Tone.page.withValues(alpha: 0.8),
+      9,
+      Paint()..color = Gilt.gilt.withValues(alpha: 0.16),
     );
+    canvas.drawCircle(sun, 4.5, Paint()..color = Gilt.bright);
+  }
+
+  void _dashed(Canvas canvas, Path path, Paint paint, double on, double off) {
+    for (final metric in path.computeMetrics()) {
+      var at = 0.0;
+      while (at < metric.length) {
+        final next = at + on < metric.length ? at + on : metric.length;
+        canvas.drawPath(metric.extractPath(at, next), paint);
+        at = next + off;
+      }
+    }
   }
 
   @override

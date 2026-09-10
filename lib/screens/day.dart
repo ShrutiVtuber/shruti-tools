@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 
 import '../services/period_sky.dart';
 import '../services/settings.dart';
+import '../services/shell_state.dart';
 import '../services/stations.dart';
 import '../theme/tokens.dart';
 import '../widgets/brand.dart';
@@ -131,6 +132,7 @@ class _TodayArc extends StatelessWidget {
       now: place.tell(now),
       lit: lit,
       waxing: waxing,
+      ruler: ShellScope.of(context)?.ruler,
     );
   }
 }

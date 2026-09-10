@@ -19,6 +19,7 @@ import 'services/account.dart';
 import 'services/notifications.dart';
 import 'screens/notifications.dart';
 import 'services/settings.dart';
+import 'services/art.dart';
 import 'services/ephemeris.dart';
 import 'theme/theme.dart';
 
@@ -31,6 +32,9 @@ Future<void> main() async {
   // Read before the first frame so no screen has to open on a spinner, and so
   // every tab starts from the same answer rather than each asking for itself.
   final settings = await Settings.load();
+  // Which of her drawings this build actually has. Asked once; every screen
+  // reads the answer rather than trying to load and catching.
+  await Drawings.look();
   // The token, not the account: reading it is a preferences lookup, and who it
   // belongs to is fetched afterwards without holding up the first frame. A
   // phone with no signal still opens on a working app.

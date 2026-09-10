@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ⚠ A STAND-IN, not the finished mark.
+
+     The artwork spec (guidelines/artwork-spec.md, item 1) reserves this icon
+     for Shruti to draw: the crescent-and-star clasp from the throat of the
+     cloak. What is here is the same figure built from geometry — a crescent
+     and an eight-pointed star in gilt on the cloak's deep navy — so the app
+     stops shipping Flutter's default blue logo while it waits.
+
+     ⚠ Adaptive, in two layers, because Android crops the outer 168px of a
+     432px canvas to a circle, a squircle, a rounded square or a teardrop
+     depending on the launcher, and you cannot know which. Everything that
+     must survive is inside the centre 264. -->
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@mipmap/ic_launcher_background"/>
+    <foreground android:drawable="@mipmap/ic_launcher_foreground"/>
+</adaptive-icon>

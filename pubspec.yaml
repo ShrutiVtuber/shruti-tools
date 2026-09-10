@@ -90,6 +90,8 @@ flutter:
   uses-material-design: true
 
   assets:
+    # ⚠ Her drawings, and they may be absent — see lib/services/art.dart.
+    - assets/art/
     - assets/fonts/
 
   fonts:

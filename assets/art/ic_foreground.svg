@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="432" height="432" viewBox="0 0 432 432">
+  <defs>
+    <mask id="bite">
+      <rect width="432" height="432" fill="black"/>
+      <circle cx="216" cy="216" r="86" fill="white"/>
+      <circle cx="252" cy="196" r="76" fill="black"/>
+    </mask>
+  </defs>
+  <rect width="432" height="432" fill="#C9A15B" mask="url(#bite)"/>
+  <polygon points="268.00,134.00 272.59,166.91 299.11,146.89 279.09,173.41 312.00,178.00 279.09,182.59 299.11,209.11 272.59,189.09 268.00,222.00 263.41,189.09 236.89,209.11 256.91,182.59 224.00,178.00 256.91,173.41 236.89,146.89 263.41,166.91" fill="#E0BE7E"/>
+</svg>

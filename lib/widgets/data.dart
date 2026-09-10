@@ -104,6 +104,11 @@ class _LeaderPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    // ⚠ A loop bounded by a width that could be infinite is a hang, not a
+    // drawing: an unbounded parent hands a painter `double.infinity`, the loop
+    // never ends, the raster thread stops answering and Android kills the app.
+    // Cheap to guard, invisible when it never happens, fatal when it does.
+    if (!size.width.isFinite || size.width <= 0) return;
     final paint = Paint()
       ..color = Tone.line
       ..strokeWidth = 1;

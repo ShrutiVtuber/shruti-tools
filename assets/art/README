@@ -1,0 +1,20 @@
+The drawings here are © Shruti, all rights reserved — NOT AGPL.
+
+See ../../ASSETS-LICENCE. A fork must replace every file in this directory
+with its own; the app is built to ship without any of them.
+
+⚠ WHAT IS HERE NOW IS A STAND-IN, not her work.
+
+  ic_foreground.svg   a crescent and an eight-pointed star, built from
+  ic_background.svg   geometry in the cloak's navy and the trim's gilt
+  icon-1024.png       the two flattened, for a store listing
+
+The artwork spec (design/astrolabe/guidelines/artwork-spec.md in the site
+repository, item 1) reserves the launcher icon for her: the crescent-and-star
+clasp at the throat of the cloak, drawn. When that arrives it replaces these
+three files and the mipmaps generated from them, and nothing else changes —
+the adaptive-icon XML already points at the right names.
+
+⚠ The safe zone is the centre 264 x 264 of a 432 x 432 canvas. Android crops
+the outer 168 to a circle, a squircle, a rounded square or a teardrop
+depending on the launcher, and you cannot know which.

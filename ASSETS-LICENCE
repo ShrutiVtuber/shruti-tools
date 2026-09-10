@@ -1,0 +1,48 @@
+Astrolabe — artwork licence
+===========================
+
+Two licences, deliberately. Confirmed by Shruti, 10 September 2026.
+
+CODE — AGPL-3.0
+---------------
+
+Everything that is not artwork: the Flutter source, the tests, the
+documentation. Published, forkable, and copyleft. See LICENSE.
+
+ARTWORK — © Shruti, all rights reserved
+---------------------------------------
+
+Her drawings are NOT under the AGPL. This covers every hand-drawn asset:
+
+  - the app icon (foreground and background layers), the notification icon,
+    the splash mark
+  - the Home portraits, offline and live
+  - the wordmark and any re-cut of it
+  - the empty-state drawings, the motifs and dividers, the live band
+  - any emote, sticker, outfit sheet or character art
+
+A fork may take the code. It may not take her face. A fork must replace every
+asset listed above with its own, and the app is built so that it can: every
+placement has a designed art-absent state and ships looking finished with no
+drawings at all.
+
+⚠ This is why the art-absent states are not placeholders and must not be
+replaced by "image missing" boxes. They are the state a lawful fork ships in,
+and they are also the state THIS app ships in until the drawings arrive.
+
+FONTS, ALL SHIPPED
+------------------
+
+  EB Garamond                 OFL-1.1     redistribution fine
+  Commissioner                OFL-1.1     redistribution fine
+  AstroSymbols                OFL-1.1     the bundled 29-glyph cut
+  Material Symbols Outlined   Apache-2.0
+  Swiss Ephemeris             AGPL-3.0    which is why this app is AGPL
+
+All five are compatible with an AGPL repository. Nothing needs replacing.
+
+⚠ The Swiss Ephemeris notice is reproduced in full in the app itself, on
+Settings → Licences, because its licence requires the notice be preserved on
+all copies. The names of Astrodienst and of the authors appear THERE and
+nowhere else — not in a store listing, not on a "powered by" line, not on
+stream. That is the licence's own condition, not a stylistic choice.

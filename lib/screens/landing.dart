@@ -18,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../services/art.dart';
 import '../services/chart.dart' show signNames;
 import '../services/period_sky.dart';
 import '../services/periods.dart';
@@ -185,6 +186,13 @@ class _LandingScreenState extends State<LandingScreen> {
             // Practice and Settings are page-coloured — put a second plate
             // anywhere and neither is special.
             Masthead(
+              // ⚠ Null until she has drawn it, and the art-absent state is
+              // designed rather than empty — see services/art.dart.
+              portrait: Drawings.of(
+                _liveness == Liveness.live
+                    ? Art.portraitLive
+                    : Art.portraitOffline,
+              ),
               greeting: _greeting(),
               line: _liveness == Liveness.live
                   ? (_live?.title.isNotEmpty ?? false

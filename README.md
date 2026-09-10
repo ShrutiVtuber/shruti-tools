@@ -2,6 +2,10 @@
 
 Instruments for magick — a lite companion to shrutivtuber.com
 
+Astrolabe's code is AGPL-3.0. **The artwork is not** — it is © Shruti, all
+rights reserved. See `ASSETS-LICENCE`. Every art placement in the app has a
+designed state without art, so a fork builds and ships without the drawings.
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
