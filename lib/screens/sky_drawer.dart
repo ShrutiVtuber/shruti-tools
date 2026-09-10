@@ -22,6 +22,7 @@ import '../widgets/data.dart';
 import '../widgets/forms.dart';
 import '../widgets/eyebrow.dart';
 import '../widgets/parts.dart';
+import '../widgets/period_events.dart';
 import '../widgets/period_wheel.dart';
 
 /// [opensOn] is the month to land on — the period being written for, when it
@@ -217,6 +218,17 @@ class _SkyDrawerState extends State<SkyDrawer> {
               ],
               rows: rows,
             ),
+
+          // ⚠ The margin notes a printed ephemeris puts beside the columns —
+          // ingresses, stations, phases and eclipses. The website has them as
+          // a column because it has the width; on a phone they go below,
+          // because the alternative is an eighth column and the table must
+          // FIT. Same facts, same order, the Moon kept out of the planets'
+          // way.
+          const SizedBox(height: Gap.lg),
+          const Eyebrow('What happens in it'),
+          const SizedBox(height: Gap.md),
+          PeriodEvents(events: _events),
 
           const SizedBox(height: Gap.md),
           if (_days.length > 1)
