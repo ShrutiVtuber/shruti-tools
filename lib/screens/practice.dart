@@ -164,9 +164,7 @@ class _PracticeScreenState extends State<PracticeScreen> {
                         onTap: () => Navigator.of(context)
                             .push(
                               MaterialPageRoute(
-                                builder: (_) => const Scaffold(
-                                  body: SafeArea(child: AccountScreen()),
-                                ),
+                                builder: (_) => const AccountScreen(),
                               ),
                             )
                             .then((_) => _again()),
@@ -202,11 +200,7 @@ class _PracticeScreenState extends State<PracticeScreen> {
               label: 'Sign in',
               onTap: () => Navigator.of(context)
                   .push(
-                    MaterialPageRoute(
-                      builder: (_) => const Scaffold(
-                        body: SafeArea(child: AccountScreen()),
-                      ),
-                    ),
+                    MaterialPageRoute(builder: (_) => const AccountScreen()),
                   )
                   .then((_) => _again()),
             ),
@@ -261,11 +255,11 @@ class _PracticeScreenState extends State<PracticeScreen> {
       // a skeleton says what is coming and how much of it, and the screen does
       // not jump when the answer lands.
       return const [
-        Skeleton(height: 96),
-        SizedBox(height: Gap.sm),
-        Skeleton(height: 96),
-        SizedBox(height: Gap.sm),
-        Skeleton(height: 96),
+        Pressable(padding: EdgeInsets.all(14), child: Skeleton(lines: 2)),
+        SizedBox(height: 10),
+        Pressable(padding: EdgeInsets.all(14), child: Skeleton(lines: 2)),
+        SizedBox(height: 10),
+        Pressable(padding: EdgeInsets.all(14), child: Skeleton(lines: 2)),
       ];
     }
     if (snap.hasError) {

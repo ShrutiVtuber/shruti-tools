@@ -55,10 +55,7 @@ class SettingsScreen extends StatelessWidget {
                     : 'Not signed in',
                 value: account.signedIn ? 'Signed in' : null,
                 onTap: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) =>
-                        const Scaffold(body: SafeArea(child: AccountScreen())),
-                  ),
+                  MaterialPageRoute(builder: (_) => const AccountScreen()),
                 ),
               ),
               ListRow(

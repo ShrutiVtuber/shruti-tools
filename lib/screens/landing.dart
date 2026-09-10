@@ -245,9 +245,15 @@ class _LandingScreenState extends State<LandingScreen> {
             if (!_looked)
               const Column(
                 children: [
-                  Skeleton(height: 118),
+                  Pressable(
+                    padding: EdgeInsets.all(14),
+                    child: Skeleton(lines: 2),
+                  ),
                   SizedBox(height: 10),
-                  Skeleton(height: 118),
+                  Pressable(
+                    padding: EdgeInsets.all(14),
+                    child: Skeleton(lines: 2),
+                  ),
                 ],
               )
             else if (_readings.isEmpty)

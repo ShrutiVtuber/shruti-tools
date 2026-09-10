@@ -614,13 +614,25 @@ class Provenance extends StatelessWidget {
 /// The shape of what is coming, while it comes.
 ///
 /// ⚠ Not a spinner. A spinner says "wait"; a skeleton says what is arriving
-/// and how much of it, and the screen does not jump when the answer lands. It
-/// breathes, unless the reader has asked for stillness.
+/// and how much of it, so the screen does not jump when the answer lands.
+///
+/// ⚠ **`pumpAndSettle` will never settle while one of these is on screen.**
+/// It shimmers on a loop — as the design system's own does — and pumpAndSettle
+/// waits for every animation to finish. A test that lands on a loading screen
+/// and calls it hangs until the harness gives up and reports "did not
+/// complete", which looks exactly like a crash. Use `pump` with a duration.
 class Skeleton extends StatefulWidget {
-  const Skeleton({super.key, this.height = 72, this.width});
+  const Skeleton({
+    super.key,
+    this.height = 72,
+    this.lines = 3,
+    this.title = true,
+  });
 
-  final double height;
-  final double? width;
+  /// A single block of this height, instead of lines.
+  final double? height;
+  final int lines;
+  final bool title;
 
   @override
   State<Skeleton> createState() => _SkeletonState();
@@ -628,68 +640,58 @@ class Skeleton extends StatefulWidget {
 
 class _SkeletonState extends State<Skeleton>
     with SingleTickerProviderStateMixin {
-  late final AnimationController _breath = AnimationController(
+  late final AnimationController _shimmer = AnimationController(
     vsync: this,
-    duration: const Duration(milliseconds: 1400),
+    duration: const Duration(milliseconds: 1600),
   )..repeat(reverse: true);
 
   @override
   void dispose() {
-    _breath.dispose();
+    _shimmer.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final still = Motion.stilled(context);
-    return AnimatedBuilder(
-      animation: _breath,
-      builder: (context, _) => Container(
-        height: widget.height,
-        width: widget.width,
-        decoration: BoxDecoration(
-          color: Color.lerp(Tone.card, Tone.veil, still ? 0.4 : _breath.value),
-          borderRadius: BorderRadius.circular(Corner.md),
-          border: Border.all(color: Tone.line),
-        ),
+    return ExcludeSemantics(
+      child: AnimatedBuilder(
+        animation: _shimmer,
+        builder: (context, _) {
+          // The kit shimmers the OPACITY of the bars between .5 and .85 — a
+          // fill that lightens and darkens reads as a surface breathing; an
+          // opacity that does reads as something not yet there.
+          final opacity = still ? 0.68 : 0.5 + 0.35 * _shimmer.value;
+          Widget bar(double widthFactor, double height) => Opacity(
+            opacity: opacity,
+            child: FractionallySizedBox(
+              alignment: Alignment.centerLeft,
+              widthFactor: widthFactor,
+              child: Container(
+                height: height,
+                decoration: BoxDecoration(
+                  color: Tone.veil,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+              ),
+            ),
+          );
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (widget.title) ...[bar(0.62, 16), const SizedBox(height: 10)],
+              if (widget.height != null)
+                bar(1, widget.height!)
+              else
+                for (var i = 0; i < widget.lines; i++) ...[
+                  if (i > 0) const SizedBox(height: 10),
+                  bar(i == widget.lines - 1 ? 0.48 : 1, 11),
+                ],
+            ],
+          );
+        },
       ),
     );
   }
-}
-
-/// A fade at the foot of a scroller, in place of a scrollbar.
-///
-/// ⚠ The design system's rule: no scrollbars, anywhere. A bar down the edge of
-/// a dense table is one more line competing with the figures, and on a phone it
-/// sits over the content it is describing. A fade says "there is more below"
-/// without taking a column to say it.
-class Fading extends StatelessWidget {
-  const Fading({super.key, required this.child, this.height = 28});
-
-  final Widget child;
-  final double height;
-
-  @override
-  Widget build(BuildContext context) => Stack(
-    children: [
-      child,
-      Positioned(
-        left: 0,
-        right: 0,
-        bottom: 0,
-        height: height,
-        child: IgnorePointer(
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [Tone.page.withValues(alpha: 0), Tone.page],
-              ),
-            ),
-          ),
-        ),
-      ),
-    ],
-  );
 }

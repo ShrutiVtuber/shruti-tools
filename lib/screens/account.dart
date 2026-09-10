@@ -152,16 +152,7 @@ class _AccountScreenState extends State<AccountScreen> {
     if (_makingOne) _loadConsents(account);
 
     return Scaffold(
-      appBar: Bar(
-        title: 'Account',
-        hour: false,
-        leading: Navigator.of(context).canPop()
-            ? IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: () => Navigator.of(context).pop(),
-              )
-            : null,
-      ),
+      appBar: Bar(title: 'Account', hour: false),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(
           Gap.gutter,
@@ -301,16 +292,7 @@ class _SignedIn extends StatelessWidget {
   Widget build(BuildContext context) {
     final reader = account.reader;
     return Scaffold(
-      appBar: Bar(
-        title: 'Account',
-        hour: false,
-        leading: Navigator.of(context).canPop()
-            ? IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: () => Navigator.of(context).pop(),
-              )
-            : null,
-      ),
+      appBar: Bar(title: 'Account', hour: false),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(
           Gap.gutter,

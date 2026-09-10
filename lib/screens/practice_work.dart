@@ -88,9 +88,9 @@ class _WorkScreenState extends State<WorkScreen> {
                 padding: EdgeInsets.all(Gap.gutter),
                 child: Column(
                   children: [
-                    Skeleton(height: 90),
-                    SizedBox(height: Gap.md),
-                    Skeleton(height: 220),
+                    Skeleton(lines: 1),
+                    SizedBox(height: Gap.xl),
+                    Skeleton(lines: 6, title: false),
                   ],
                 ),
               );

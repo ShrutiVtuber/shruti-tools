@@ -91,16 +91,44 @@ class _ShellState extends State<Shell> {
               // State is thrown away on each tab change and the cast chart
               // that survived a visit elsewhere stops surviving it.
               child: Stack(
+                // Keyed so a test can ask THIS stack how many screens are
+                // visible. `find.byType(Stack).first` is whatever Flutter's
+                // own chrome put there first.
+                key: const Key('tab-stack'),
                 children: [
                   for (var i = 0; i < 6; i++)
+                    // ⚠ TickerMode INSIDE the fade, never outside it.
+                    //
+                    // Outside, a tab being left behind has its tickers muted
+                    // in the same frame it is deselected — including the
+                    // fade-out's own — so it never fades. It stays at full
+                    // opacity forever, and because a Stack paints in order,
+                    // every screen ABOVE the one you asked for goes on
+                    // covering it: leaving Settings for Home showed Settings.
+                    // The tab bar changed and the screen did not.
                     IgnorePointer(
                       ignoring: i != _tab,
-                      child: TickerMode(
-                        enabled: i == _tab,
-                        child: AnimatedOpacity(
-                          duration: Motion.of(context, Motion.normal),
-                          curve: Motion.ease,
-                          opacity: i == _tab ? 1 : 0,
+                      child: AnimatedOpacity(
+                        // Keyed so a test can read these six opacities and
+                        // nothing else — a RefreshIndicator inside a screen
+                        // brings its own, and counting by type counted it.
+                        key: ValueKey('tab-fade-$i'),
+                        // ⚠ Fade THROUGH, not across. Two full-screen opaque
+                        // surfaces fading into each other are both half
+                        // visible at the midpoint, and on dense figures that
+                        // reads as ghosting — the screen you left is still
+                        // there, faintly, on top of the one you asked for.
+                        //
+                        // So the one being left goes at once, and the one
+                        // arriving fades up from the page colour. Same 240 ms,
+                        // one thing on screen at a time.
+                        duration: i == _tab
+                            ? Motion.of(context, Motion.normal)
+                            : Duration.zero,
+                        curve: Motion.ease,
+                        opacity: i == _tab ? 1 : 0,
+                        child: TickerMode(
+                          enabled: i == _tab,
                           child: const [
                             LandingScreen(),
                             SkyScreen(),

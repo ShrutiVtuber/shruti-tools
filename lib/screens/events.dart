@@ -69,11 +69,11 @@ class _EventsScreenState extends State<EventsScreen> {
         if (_working)
           const Column(
             children: [
-              Skeleton(height: 74),
+              Pressable(padding: EdgeInsets.all(14), child: Skeleton(lines: 1)),
               SizedBox(height: 10),
-              Skeleton(height: 74),
+              Pressable(padding: EdgeInsets.all(14), child: Skeleton(lines: 1)),
               SizedBox(height: 10),
-              Skeleton(height: 74),
+              Pressable(padding: EdgeInsets.all(14), child: Skeleton(lines: 1)),
             ],
           )
         // ⚠ Authored, not "No data". A quiet sky is a fact about the sky, and
