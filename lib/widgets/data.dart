@@ -179,6 +179,7 @@ class Reference extends StatelessWidget {
     required this.rows,
     this.caption,
     this.zebra = false,
+    this.minWidth,
   });
 
   final List<Heading> columns;
@@ -186,36 +187,123 @@ class Reference extends StatelessWidget {
   final String? caption;
   final bool zebra;
 
+  /// Below this the table scrolls sideways instead of squeezing, with the
+  /// first column pinned.
+  ///
+  /// ⚠ The design system says a reference table must FIT and never scroll
+  /// sideways, and it is right about the stations and the hours: four or five
+  /// columns fit, and squeezing beats scrolling every time.
+  ///
+  /// An ephemeris is the exception, and it is a real one. Eleven columns of
+  /// degrees cannot fit on a 360-point phone at a size anybody can read, and
+  /// the alternative shipped: the table simply stopped after Mars, so Jupiter
+  /// and Saturn were not missing from the screen — they were missing from the
+  /// ephemeris, silently.
+  ///
+  /// ⚠ The first column is PINNED when this is set. A scrolled grid of degrees
+  /// with the date gone is a grid of numbers about nothing.
+  final double? minWidth;
+
   @override
-  Widget build(BuildContext context) => Container(
-    clipBehavior: Clip.antiAlias,
-    decoration: BoxDecoration(
-      color: Tone.inset,
-      borderRadius: BorderRadius.circular(Corner.md),
-      border: Border.all(color: Tone.line),
+  Widget build(BuildContext context) {
+    final wide = minWidth != null;
+    return Container(
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(
+        color: Tone.inset,
+        borderRadius: BorderRadius.circular(Corner.md),
+        border: Border.all(color: Tone.line),
+      ),
+      child: wide
+          ? LayoutBuilder(
+              builder: (context, space) => space.maxWidth >= minWidth!
+                  ? _table(context)
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        // ⚠ The caption goes ABOVE both halves, not inside the
+                        // pinned one. Left in the pinned column it wraps to
+                        // four lines in 62 points and pushes every date down,
+                        // so the days no longer line up with the degrees
+                        // beside them — a table that is worse than no table.
+                        if (caption != null) _caption(),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Reference(
+                              columns: [columns.first],
+                              rows: [
+                                for (final row in rows)
+                                  Line([row.cells.first], now: row.now),
+                              ],
+                              zebra: zebra,
+                            )._table(context, pinned: true),
+                            Expanded(
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: SizedBox(
+                                  width: minWidth! - _pinnedWidth,
+                                  child: Reference(
+                                    columns: columns.sublist(1),
+                                    rows: [
+                                      for (final row in rows)
+                                        Line(
+                                          row.cells.sublist(1),
+                                          now: row.now,
+                                        ),
+                                    ],
+                                    zebra: zebra,
+                                  )._table(context),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+            )
+          : _table(context),
+    );
+  }
+
+  /// The width the pinned day column takes.
+  static const _pinnedWidth = 62.0;
+
+  /// Tall enough for a glyph above a label, whether or not there is one.
+  static const _headerHeight = 42.0;
+
+  Widget _caption() => Padding(
+    padding: const EdgeInsets.fromLTRB(10, 8, 10, 6),
+    child: Text(
+      caption!,
+      style: const TextStyle(
+        fontFamily: Face.body,
+        fontFamilyFallback: [Face.glyph],
+        fontSize: Type.caption,
+        height: 1.5,
+        color: Tone.faint,
+      ),
     ),
+  );
+
+  Widget _table(BuildContext context, {bool pinned = false}) => SizedBox(
+    width: pinned ? _pinnedWidth : null,
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if (caption != null)
-          Padding(
-            padding: const EdgeInsets.fromLTRB(10, 8, 10, 6),
-            child: Text(
-              caption!,
-              style: const TextStyle(
-                fontFamily: Face.body,
-                fontFamilyFallback: [Face.glyph],
-                fontSize: Type.caption,
-                height: 1.5,
-                color: Tone.faint,
-              ),
-            ),
-          ),
+        if (caption != null) _caption(),
         Container(
           decoration: const BoxDecoration(
             border: Border(bottom: BorderSide(color: Tone.lineStrong)),
           ),
           padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 7),
+          // ⚠ Fixed, because a header with a glyph above its label is two
+          // lines tall and one without is one. Split across a pinned column
+          // and a scroller, those two heights put every date half a row above
+          // its own degrees — a table that lines up wrongly is worse than no
+          // table, and it looks like a rendering glitch rather than a layout
+          // bug.
+          height: _headerHeight,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [

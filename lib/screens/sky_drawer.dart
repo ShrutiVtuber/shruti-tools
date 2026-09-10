@@ -51,6 +51,7 @@ class _SkyDrawerState extends State<SkyDrawer> {
     (widget.opensOn ?? DateTime.now()).month,
   );
   bool _retrogradesOnly = false;
+  bool _modern = false;
   List<SkyDay> _days = const [];
   List<SkyEvent> _events = const [];
 
@@ -109,7 +110,31 @@ class _SkyDrawerState extends State<SkyDrawer> {
 
   @override
   Widget build(BuildContext context) {
-    const shown = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars'];
+    // ⚠ All seven, not five. The table stopped after Mars, so Jupiter and
+    // Saturn were not missing from the screen — they were missing from the
+    // ephemeris, with nothing to say so.
+    final shown = [
+      'Sun',
+      'Moon',
+      'Mercury',
+      'Venus',
+      'Mars',
+      'Jupiter',
+      'Saturn',
+      if (_modern) ...['Uranus', 'Neptune', 'Pluto'],
+    ];
+    const marks = {
+      'Sun': '☉',
+      'Moon': '☾',
+      'Mercury': '☿',
+      'Venus': '♀',
+      'Mars': '♂',
+      'Jupiter': '♃',
+      'Saturn': '♄',
+      'Uranus': '♅',
+      'Neptune': '♆',
+      'Pluto': '♇',
+    };
     final today = DateTime.now().toUtc().toIso8601String().substring(0, 10);
 
     final rows = <Line>[];
@@ -185,6 +210,12 @@ class _SkyDrawerState extends State<SkyDrawer> {
                   },
                 ),
               Tag(
+                label: 'Modern planets',
+                kind: ChipKind.filter,
+                selected: _modern,
+                onTap: () => setState(() => _modern = !_modern),
+              ),
+              Tag(
                 label: 'Show ℞ only',
                 kind: ChipKind.filter,
                 selected: _retrogradesOnly,
@@ -207,14 +238,18 @@ class _SkyDrawerState extends State<SkyDrawer> {
             Reference(
               zebra: true,
               caption: 'Geocentric, apparent · midnight UT · tropical',
-              columns: const [
-                Heading(label: 'Day', flex: 6),
-                Heading(label: 'Sun', mark: '☉', numeric: true, flex: 5),
-                Heading(label: 'Moon', mark: '☾', numeric: true, flex: 5),
-                Heading(label: 'Mercury', mark: '☿', numeric: true, flex: 5),
-                Heading(label: 'Venus', mark: '♀', numeric: true, flex: 5),
-                Heading(label: 'Mars', mark: '♂', numeric: true, flex: 5),
-                Heading(label: 'Lit', numeric: true, flex: 4),
+              // 62 for the day, then a readable column each.
+              minWidth: 62 + (shown.length + 1) * 58,
+              columns: [
+                const Heading(label: 'Day', flex: 6),
+                for (final body in shown)
+                  Heading(
+                    label: body,
+                    mark: marks[body],
+                    numeric: true,
+                    flex: 5,
+                  ),
+                const Heading(label: 'Lit', numeric: true, flex: 4),
               ],
               rows: rows,
             ),

@@ -56,6 +56,17 @@ const _swe = {
   'Mars': HeavenlyBody.SE_MARS,
   'Jupiter': HeavenlyBody.SE_JUPITER,
   'Saturn': HeavenlyBody.SE_SATURN,
+  // The modern three, computed always and SHOWN behind a switch — the same
+  // arrangement the website's ephemeris page has. A Hellenistic reader does
+  // not want them in the way; somebody who does should not need another app.
+  // Three more calls a day makes it a display choice rather than a rebuild.
+  //
+  // ⚠ They are NOT in `periodBodies`: the wheel draws seven bands and an
+  // outer planet moves a degree a year, so its track would be a dot with a
+  // glyph on it, taking a band from something that actually moves.
+  'Uranus': HeavenlyBody.SE_URANUS,
+  'Neptune': HeavenlyBody.SE_NEPTUNE,
+  'Pluto': HeavenlyBody.SE_PLUTO,
 };
 
 double _julian(DateTime utc) => Sweph.swe_julday(
