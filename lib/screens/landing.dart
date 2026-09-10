@@ -31,6 +31,7 @@ import '../widgets/forms.dart';
 import '../widgets/moon_disc.dart';
 import '../widgets/parts.dart';
 import 'account.dart';
+import 'horoscopes.dart';
 import 'notifications.dart';
 
 class LandingScreen extends StatefulWidget {
@@ -86,6 +87,27 @@ class _LandingScreenState extends State<LandingScreen> {
       // list is a quiet week, four is a network.
       _reached = _live != null || _readings.isNotEmpty || _articles.isNotEmpty;
     });
+  }
+
+  /// Her readings, in the app when they are current and on the site when not.
+  ///
+  /// ⚠ The whole of the boundary she asked for, in one place. `covers` is
+  /// compared against what the period is NOW: a reading for this month opens
+  /// here, and last month's opens the site. Passing no covers means "whatever
+  /// is current", which is what the "All twelve" action wants.
+  Future<void> _readHerReadings({
+    String period = 'monthly',
+    String? covers,
+    String? sign,
+  }) async {
+    if (covers != null && covers != currentCovers(period)) {
+      await _open('/horoscopes/$sign/$period/$covers');
+      return;
+    }
+    if (!mounted) return;
+    await Navigator.of(context).push(MaterialPageRoute(
+      builder: (_) => HoroscopesScreen(period: period, sign: sign),
+    ));
   }
 
   Future<void> _open(String path) async {
@@ -239,7 +261,11 @@ class _LandingScreenState extends State<LandingScreen> {
               eyebrow: 'From Shruti',
               title: 'Latest readings',
               action: 'All twelve',
-              onAction: () => _open('/horoscopes'),
+              // ⚠ Opens IN THE APP now. It used to launch the website, which
+              // sent somebody out of the app to read the thing the app exists
+              // to carry. Her decision: the current period is read here, and
+              // only the archive is on the site.
+              onAction: _readHerReadings,
             ),
             const SizedBox(height: Gap.md),
             if (!_looked)
@@ -282,7 +308,12 @@ class _LandingScreenState extends State<LandingScreen> {
                     mark: _signMark(r.sign),
                     date: periodLabel(r.period, r.covers),
                     excerpt: r.opening,
-                    onOpen: () => _open(r.path),
+                    // ⚠ A card for the CURRENT period opens in the app; an
+                    // older one still opens the site, because that is where
+                    // the archive lives. `_readHerReadings` decides, so the
+                    // rule lives in one place rather than at every call.
+                    onOpen: () => _readHerReadings(
+                      period: r.period, covers: r.covers, sign: r.sign),
                   ),
                 ),
 

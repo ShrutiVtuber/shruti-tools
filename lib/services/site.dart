@@ -263,6 +263,78 @@ Future<List<Reading>> publishedReadings({int limit = 12}) async {
   ];
 }
 
+/// Her twelve readings for one period, as the app shows them.
+///
+/// ⚠ **The CURRENT period only, by her decision.** Anything older opens the
+/// website — the same boundary as the five tools that stayed off the app, and
+/// for the same reason: the app carries what somebody wants now, and the site
+/// is where the archive and the search live. The endpoint would serve any
+/// period just as happily, which is exactly why the line has to be drawn here
+/// deliberately rather than left to whatever gets called.
+class Twelve {
+  const Twelve({
+    required this.period,
+    required this.covers,
+    required this.readings,
+  });
+
+  final String period;
+  final String covers;
+
+  /// Every sign she has published for this period, in zodiacal order.
+  ///
+  /// ⚠ Only the published ones. A sign she has not written yet comes back with
+  /// an empty body, and showing it as a blank reading would say she had
+  /// written nothing for you rather than not yet.
+  final List<SignReading> readings;
+
+  bool get isEmpty => readings.isEmpty;
+}
+
+class SignReading {
+  const SignReading({required this.sign, required this.bodyMd});
+
+  final String sign;
+  final String bodyMd;
+}
+
+/// The twelve for the period we are in now.
+///
+/// Returns null when the site cannot be reached, which the screen shows as
+/// "her side is out of reach" rather than as "she has written nothing".
+Future<Twelve?> theTwelve({String period = 'monthly'}) async {
+  final body = await _get('/api/horoscopes?period=${Uri.encodeComponent(period)}');
+  if (body is! Map) return null;
+  final rows = body['readings'];
+  return Twelve(
+    period: (body['period'] ?? period) as String,
+    covers: (body['covers'] ?? '') as String,
+    readings: [
+      if (rows is List)
+        for (final r in rows)
+          if (r is Map &&
+              (r['published'] ?? false) == true &&
+              ((r['bodyMd'] ?? '') as String).trim().isNotEmpty)
+            SignReading(
+              sign: (r['sign'] ?? '') as String,
+              bodyMd: (r['bodyMd'] ?? '') as String,
+            ),
+    ],
+  );
+}
+
+/// Which periods she has anything published for, newest kind first.
+///
+/// ⚠ Read from the same answer rather than guessed. She may write monthly and
+/// not weekly, and a tab for a period she never uses is a tab that always says
+/// nothing is there.
+Future<List<String>> periodsShePublishes() async {
+  final body = await _get('/api/horoscopes');
+  if (body is! Map) return const [];
+  final list = body['availablePeriods'];
+  return [if (list is List) for (final p in list) p as String];
+}
+
 /// An article from the journal.
 class Article {
   const Article({
