@@ -3,20 +3,45 @@
 // One ThemeData, built from tokens.dart. Nothing in the app should reach for a
 // raw Color or a bare TextStyle — if a screen needs something this does not
 // offer, it belongs here so the next screen gets it too.
+//
+// The scale and the roles come from the Astrolabe design system
+// (`guidelines/theme-flutter.md`): two families and one glyph cut, EB Garamond
+// for her voice and Commissioner for the chrome, with data set in Commissioner
+// at tabular figures rather than in a third face nobody would notice.
+//
+// ⚠ Dark only, and that is a decision rather than an omission. The site
+// carries the light hour of the same palette; the app carries the dark one, so
+// the pair reads as one sky at two junctures. A dawn theme on a phone opened
+// mostly at night would double what has to be tested for an audience that does
+// not have the case.
 import 'package:flutter/material.dart';
 
 import 'tokens.dart';
 
 ThemeData shrutiTheme() {
   const scheme = ColorScheme.dark(
+    // ⚠ The only colour that means "you can touch this". Gilt is ornament and
+    // never lands in this object.
     primary: Tone.accent,
-    onPrimary: Tone.page,
-    secondary: Tone.rose,
-    onSecondary: Tone.page,
-    surface: Tone.card,
-    onSurface: Tone.ink,
+    onPrimary: Tone.onAccent,
+    primaryContainer: Tone.accentWash,
+    onPrimaryContainer: Tone.accent,
+    secondary: Gilt.gilt,
+    onSecondary: Gilt.wash,
+    tertiary: Tone.rose,
+    onTertiary: Color(0xFF2C2338),
     error: Tone.live,
-    onError: Tone.page,
+    onError: Color(0xFF2A0F16),
+    errorContainer: Tone.liveWash,
+    onErrorContainer: Tone.live,
+    surface: Tone.page,
+    onSurface: Tone.ink,
+    surfaceContainerLowest: Tone.inset,
+    surfaceContainerLow: Tone.card,
+    surfaceContainerHigh: Tone.veil,
+    onSurfaceVariant: Tone.soft,
+    outline: Tone.line,
+    outlineVariant: Tone.lineStrong,
   );
 
   return ThemeData(
@@ -27,13 +52,29 @@ ThemeData shrutiTheme() {
     splashFactory: InkSparkle.splashFactory,
 
     textTheme: const TextTheme(
-      // Display sizes are EB Garamond. It is a text face with a lot of
-      // character at size and very little at 13pt, which is exactly the
-      // division of labour here.
+      // EB Garamond has a great deal of character at size and very little at
+      // 13pt, which is exactly the division of labour here.
+      displayLarge: TextStyle(
+        fontFamily: Face.display,
+        fontWeight: FontWeight.w500,
+        fontSize: 34,
+        height: 1.12,
+        letterSpacing: -0.41,
+        color: Tone.ink,
+      ),
+      displayMedium: TextStyle(
+        fontFamily: Face.display,
+        fontWeight: FontWeight.w500,
+        fontSize: 28,
+        height: 1.12,
+        letterSpacing: -0.34,
+        color: Tone.ink,
+      ),
+      // Kept: screens written before the system used this for their title.
       displaySmall: TextStyle(
         fontFamily: Face.display,
         fontWeight: FontWeight.w600,
-        fontSize: 34,
+        fontSize: 28,
         height: 1.15,
         color: Tone.ink,
       ),
@@ -51,39 +92,63 @@ ThemeData shrutiTheme() {
         height: 1.25,
         color: Tone.ink,
       ),
-      titleMedium: TextStyle(
-        fontFamily: Face.body,
+      titleLarge: TextStyle(
+        fontFamily: Face.display,
         fontWeight: FontWeight.w600,
-        fontSize: 16,
-        height: 1.35,
+        fontSize: 22,
+        height: 1.24,
         color: Tone.ink,
       ),
-      bodyLarge: TextStyle(
+      titleMedium: TextStyle(
+        fontFamily: Face.display,
+        fontWeight: FontWeight.w500,
+        fontSize: 19,
+        height: 1.3,
+        color: Tone.ink,
+      ),
+      titleSmall: TextStyle(
         fontFamily: Face.body,
-        fontSize: 16,
-        height: 1.55,
+        fontWeight: FontWeight.w600,
+        fontSize: 17,
+        height: 1.32,
+        color: Tone.ink,
+      ),
+      // ⚠ Prose only. A reading set in Garamond reads as her writing; a list
+      // row set in it reads as a mistake.
+      bodyLarge: TextStyle(
+        fontFamily: Face.display,
+        fontSize: 17,
+        height: 1.65,
         color: Tone.ink,
       ),
       bodyMedium: TextStyle(
         fontFamily: Face.body,
-        fontSize: 14.5,
-        height: 1.55,
+        fontSize: 16,
+        height: 1.5,
         color: Tone.soft,
       ),
       bodySmall: TextStyle(
         fontFamily: Face.body,
         fontSize: 13,
-        height: 1.5,
+        height: 1.4,
         color: Tone.soft,
       ),
+      labelLarge: TextStyle(
+        fontFamily: Face.body,
+        fontWeight: FontWeight.w500,
+        fontSize: 14,
+        height: 1.4,
+        color: Tone.ink,
+      ),
       // Eyebrows and column headings. Uppercased at the call site, not here,
-      // so the string stays readable in the widget tree and in a test.
+      // so the string stays readable in the widget tree and in a test — and so
+      // a screen reader is given the sentence rather than the shout.
       labelSmall: TextStyle(
         fontFamily: Face.body,
         fontWeight: FontWeight.w600,
         fontSize: 11,
         height: 1.4,
-        letterSpacing: 0.9,
+        letterSpacing: 1.54,
         color: Tone.faint,
       ),
     ),
@@ -93,6 +158,7 @@ ThemeData shrutiTheme() {
       surfaceTintColor: Colors.transparent,
       elevation: 0,
       centerTitle: false,
+      toolbarHeight: Target.appBar,
       titleTextStyle: TextStyle(
         fontFamily: Face.display,
         fontWeight: FontWeight.w600,
@@ -105,6 +171,8 @@ ThemeData shrutiTheme() {
     cardTheme: CardThemeData(
       color: Tone.card,
       surfaceTintColor: Colors.transparent,
+      // On a #121829 page a Material shadow barely reads, so the hairline does
+      // the structural work and shadow is kept for things that truly float.
       elevation: 0,
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
@@ -122,8 +190,13 @@ ThemeData shrutiTheme() {
     navigationBarTheme: NavigationBarThemeData(
       backgroundColor: Tone.card,
       surfaceTintColor: Colors.transparent,
-      indicatorColor: Tone.accentWash,
-      height: 64,
+      // ⚠ No pill. The gilt hem above the bar marks the selected tab, together
+      // with a filled icon and a full-ink label — three signals, because
+      // colour is never allowed to be the only one.
+      indicatorColor: Colors.transparent,
+      overlayColor: WidgetStatePropertyAll(Tone.veil),
+      height: Target.tabBar,
+      labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
       labelTextStyle: WidgetStateProperty.resolveWith(
         (states) => TextStyle(
           fontFamily: Face.body,
@@ -131,17 +204,13 @@ ThemeData shrutiTheme() {
           fontWeight: states.contains(WidgetState.selected)
               ? FontWeight.w600
               : FontWeight.w400,
-          color: states.contains(WidgetState.selected)
-              ? Tone.accent
-              : Tone.faint,
+          color: states.contains(WidgetState.selected) ? Tone.ink : Tone.faint,
         ),
       ),
       iconTheme: WidgetStateProperty.resolveWith(
         (states) => IconThemeData(
           size: 22,
-          color: states.contains(WidgetState.selected)
-              ? Tone.accent
-              : Tone.faint,
+          color: states.contains(WidgetState.selected) ? Tone.ink : Tone.faint,
         ),
       ),
     ),
@@ -149,8 +218,10 @@ ThemeData shrutiTheme() {
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(
         backgroundColor: Tone.accent,
-        foregroundColor: Tone.page,
-        minimumSize: const Size(0, 48),
+        foregroundColor: Tone.onAccent,
+        disabledBackgroundColor: Tone.accent.withValues(alpha: 0.38),
+        disabledForegroundColor: Tone.onAccent.withValues(alpha: 0.6),
+        minimumSize: const Size(0, Target.min),
         textStyle: const TextStyle(
           fontFamily: Face.body,
           fontWeight: FontWeight.w600,
@@ -166,7 +237,7 @@ ThemeData shrutiTheme() {
       style: OutlinedButton.styleFrom(
         foregroundColor: Tone.ink,
         side: const BorderSide(color: Tone.lineStrong),
-        minimumSize: const Size(0, 48),
+        minimumSize: const Size(0, Target.min),
         textStyle: const TextStyle(
           fontFamily: Face.body,
           fontWeight: FontWeight.w600,
@@ -175,6 +246,149 @@ ThemeData shrutiTheme() {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(Corner.sm),
         ),
+      ),
+    ),
+
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+        foregroundColor: Tone.accent,
+        minimumSize: const Size(0, Target.min),
+        textStyle: const TextStyle(
+          fontFamily: Face.body,
+          fontWeight: FontWeight.w600,
+          fontSize: 15,
+        ),
+      ),
+    ),
+
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: Tone.inset,
+      hintStyle: const TextStyle(color: Tone.faint),
+      labelStyle: const TextStyle(color: Tone.soft),
+      contentPadding: const EdgeInsets.symmetric(
+        horizontal: Gap.md,
+        vertical: Gap.md,
+      ),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(Corner.sm),
+        borderSide: const BorderSide(color: Tone.line),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(Corner.sm),
+        borderSide: const BorderSide(color: Tone.line),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(Corner.sm),
+        borderSide: const BorderSide(color: Tone.accent, width: 2),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(Corner.sm),
+        borderSide: const BorderSide(color: Tone.live),
+      ),
+    ),
+
+    bottomSheetTheme: const BottomSheetThemeData(
+      backgroundColor: Tone.card,
+      surfaceTintColor: Colors.transparent,
+      showDragHandle: true,
+      dragHandleColor: Tone.lineStrong,
+      elevation: 3,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(Corner.xl)),
+      ),
+    ),
+
+    dialogTheme: DialogThemeData(
+      backgroundColor: Tone.card,
+      surfaceTintColor: Colors.transparent,
+      elevation: 3,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(Corner.lg),
+        side: const BorderSide(color: Tone.line),
+      ),
+      titleTextStyle: const TextStyle(
+        fontFamily: Face.display,
+        fontWeight: FontWeight.w600,
+        fontSize: 22,
+        color: Tone.ink,
+      ),
+      contentTextStyle: const TextStyle(
+        fontFamily: Face.body,
+        fontSize: 16,
+        height: 1.5,
+        color: Tone.soft,
+      ),
+    ),
+
+    snackBarTheme: SnackBarThemeData(
+      backgroundColor: Tone.veil,
+      contentTextStyle: const TextStyle(
+        fontFamily: Face.body,
+        fontSize: 14.5,
+        color: Tone.ink,
+      ),
+      actionTextColor: Tone.accent,
+      behavior: SnackBarBehavior.floating,
+      elevation: 3,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(Corner.sm),
+      ),
+    ),
+
+    chipTheme: ChipThemeData(
+      backgroundColor: Tone.card,
+      selectedColor: Tone.accentWash,
+      disabledColor: Tone.card,
+      side: const BorderSide(color: Tone.line),
+      labelStyle: const TextStyle(
+        fontFamily: Face.body,
+        fontSize: 14,
+        color: Tone.soft,
+      ),
+      secondaryLabelStyle: const TextStyle(
+        fontFamily: Face.body,
+        fontSize: 14,
+        color: Tone.accent,
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(Corner.sm),
+      ),
+      showCheckmark: false,
+    ),
+
+    switchTheme: SwitchThemeData(
+      thumbColor: WidgetStateProperty.resolveWith(
+        (s) => s.contains(WidgetState.selected) ? Tone.onAccent : Tone.soft,
+      ),
+      trackColor: WidgetStateProperty.resolveWith(
+        (s) => s.contains(WidgetState.selected) ? Tone.accent : Tone.inset,
+      ),
+      trackOutlineColor: const WidgetStatePropertyAll(Tone.lineStrong),
+    ),
+
+    listTileTheme: const ListTileThemeData(
+      minVerticalPadding: Gap.md,
+      iconColor: Tone.faint,
+      textColor: Tone.ink,
+    ),
+
+    progressIndicatorTheme: const ProgressIndicatorThemeData(
+      color: Gilt.gilt,
+      linearTrackColor: Tone.inset,
+      circularTrackColor: Tone.inset,
+    ),
+
+    tooltipTheme: TooltipThemeData(
+      decoration: BoxDecoration(
+        color: Tone.veil,
+        borderRadius: BorderRadius.circular(Corner.sm),
+        border: Border.all(color: Tone.line),
+      ),
+      textStyle: const TextStyle(
+        fontFamily: Face.body,
+        fontSize: 13,
+        color: Tone.ink,
       ),
     ),
   );

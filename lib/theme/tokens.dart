@@ -45,7 +45,58 @@ abstract final class Tone {
   /// She is streaming. This is the only red on the palette and it means one
   /// thing.
   static const live = Color(0xFFF07A8C);
+  static const liveWash = Color(0xFF33202B);
+
+  /// Pressed fill, sheet scrim base.
+  static const veil = Color(0xFF232C48);
+
+  /// On the accent — text and icons that sit on a filled blue.
+  static const onAccent = Color(0xFF10182B);
 }
+
+/// The brand layer, sampled from her own artwork: the cloak's gold trim and
+/// its scattered stars.
+///
+/// ⚠ **Gold is ornament and never interactive.** Blue keeps that job. A gilt
+/// hem marks a selected tab, a gilt rule closes a section, a gilt star sits on
+/// a brand surface — but nothing gold is ever the thing you tap, because then
+/// the app has two colours meaning "touch this" and neither means it reliably.
+abstract final class Gilt {
+  /// 7.8:1 on the page, so it may carry text.
+  static const gilt = Color(0xFFC9A15B);
+
+  /// Star fill, and the lit limb of a phase disc.
+  static const bright = Color(0xFFE0BE7E);
+
+  /// ⚠ Hairlines only. It does NOT pass contrast for text.
+  static const dim = Color(0xFF7A6238);
+  static const wash = Color(0xFF241E13);
+
+  /// The cloak's two flats, for large brand fields.
+  static const cloth = Color(0xFF3E4A6B);
+  static const clothDeep = Color(0xFF2B3450);
+
+  /// Card stock — share images and print only, never a screen surface.
+  static const parchment = Color(0xFFEDE4CE);
+}
+
+/// Which planet rules the hour, computed on the device from the place and the
+/// clock — so it is right offline, which is when the app is mostly opened.
+enum HourRuler { sun, moon, mars, mercury, jupiter, venus, saturn }
+
+/// ⚠ These tint EXACTLY two things: the hem under the app bar, and the hour
+/// chip. Never a table, never a `ColorScheme` slot, never body text. Somebody
+/// reading a table of stations must not watch it change colour every sixty-odd
+/// minutes.
+const hourTint = <HourRuler, Color>{
+  HourRuler.sun: Color(0xFFC9A15B),
+  HourRuler.moon: Color(0xFFB9C2DA),
+  HourRuler.mars: Color(0xFFD08A7C),
+  HourRuler.mercury: Color(0xFF8FBEE8),
+  HourRuler.jupiter: Color(0xFF9FC2A8),
+  HourRuler.venus: Color(0xFFE0A4BC),
+  HourRuler.saturn: Color(0xFF8B93AF),
+};
 
 abstract final class Face {
   /// Headings and numbers that want to feel set rather than typed.
@@ -62,13 +113,40 @@ abstract final class Gap {
   static const sm = 8.0;
   static const md = 12.0;
   static const lg = 16.0;
+  static const ml = 20.0;
   static const xl = 24.0;
   static const xxl = 32.0;
   static const huge = 48.0;
+  static const vast = 56.0;
+
+  /// The page margin. Reading screens get [gutter]; the instruments — Sky,
+  /// Chart, the ephemeris — get [gutterDense], because density is the point
+  /// there and a wide margin buys nothing but a narrower table.
+  static const gutter = 16.0;
+  static const gutterDense = 12.0;
 }
 
+/// ⚠ Rounder than the website's 4 / 10 / 16, deliberately: this is a phone, it
+/// is Material 3, and her line is soft. Anything SHARED with the site — an
+/// email, a share image — keeps the site's radii, not these.
 abstract final class Corner {
-  static const sm = 6.0;
-  static const md = 12.0;
+  /// Chips, buttons, inputs.
+  static const sm = 8.0;
+
+  /// Cards and list groups.
+  static const md = 14.0;
+
+  /// The Home plate, dialogs.
   static const lg = 20.0;
+
+  /// Bottom sheets.
+  static const xl = 28.0;
+}
+
+/// What a finger can reliably hit.
+abstract final class Target {
+  static const min = 48.0;
+  static const row = 56.0;
+  static const appBar = 56.0;
+  static const tabBar = 64.0;
 }

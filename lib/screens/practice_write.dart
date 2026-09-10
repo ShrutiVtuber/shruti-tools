@@ -11,9 +11,16 @@
 // here keeps you in the same draft; submitting sends whatever has words in it.
 import 'package:flutter/material.dart';
 
+import '../services/events.dart';
+import '../services/period_sky.dart';
 import '../services/periods.dart';
 import '../services/practice.dart';
 import '../theme/tokens.dart';
+import '../models/place.dart';
+import '../services/chart.dart';
+import '../widgets/period_events.dart';
+import '../widgets/period_wheel.dart';
+import '../widgets/wheel.dart';
 import '../widgets/eyebrow.dart';
 import 'account.dart';
 
@@ -38,10 +45,62 @@ class _WriteScreenState extends State<WriteScreen> {
 
   Practice get _room => Practice(AccountScope.of(context));
 
+  List<SkyDay> _sky = const [];
+  List<SkyEvent> _skyEvents = const [];
+  Chart? _day;
+
+  /// ⚠ Computed HERE, not fetched. The app carries Swiss Ephemeris, so the
+  /// wheel draws a whole month on a train with no signal — which is the reason
+  /// the instruments are on the phone at all.
+  void _readTheSky() {
+    final (start, end) = _span();
+    setState(() {
+      _sky = skyAcross(start, end);
+      _skyEvents = eventsAcross(start, end);
+      // ⚠ A single day has no movement to draw, so the movement wheel would be
+      // a wheel of dots. That day's chart is the honest figure — the same swap
+      // the website's desk makes, at the same moment and for the same reason.
+      _day = _period == 'daily' ? chartAtStart(start, _greenwich) : null;
+    });
+  }
+
+  /// ⚠ Greenwich at noon, matching the website exactly. A practice reading is
+  /// for a sign rather than for a place, and if the two desks cast from
+  /// different meridians the same period reads as two different skies.
+  static const _greenwich = Place(
+    name: 'Greenwich',
+    lat: 51.4779,
+    lon: 0,
+    zone: 'Europe/London',
+  );
+
+  (DateTime, DateTime) _span() {
+    switch (_period) {
+      case 'weekly':
+        final (a, b) = weekDays(_covers);
+        return (DateTime.parse(a), DateTime.parse(b));
+      case 'daily':
+        final d = DateTime.parse(_covers);
+        return (d, d);
+      case 'monthly':
+        final parts = _covers.split('-').map(int.parse).toList();
+        return (
+          DateTime.utc(parts[0], parts[1], 1),
+          DateTime.utc(parts[0], parts[1] + 1, 0),
+        );
+      default:
+        final y = int.tryParse(_covers) ?? DateTime.now().year;
+        return (DateTime.utc(y, 1, 1), DateTime.utc(y, 12, 31));
+    }
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (_loading) _fetch();
+    if (_loading) {
+      _fetch();
+      _readTheSky();
+    }
   }
 
   @override
@@ -134,6 +193,7 @@ class _WriteScreenState extends State<WriteScreen> {
                         _covers = currentCovers(p);
                       });
                       _fetch();
+                      _readTheSky();
                     },
                   ),
               ],
@@ -166,6 +226,52 @@ class _WriteScreenState extends State<WriteScreen> {
                   ),
               ],
             ),
+
+            if (_day != null) ...[
+              const SizedBox(height: Gap.lg),
+              const Eyebrow('The sky that day'),
+              const SizedBox(height: Gap.sm),
+              AspectRatio(
+                aspectRatio: 1,
+                child: CustomPaint(
+                  painter: WheelPainter(
+                    chart: _day!,
+                    rising: zodiac.indexOf(_sign),
+                  ),
+                ),
+              ),
+              const SizedBox(height: Gap.lg),
+              const Eyebrow('What happens in it'),
+              const SizedBox(height: Gap.sm),
+              PeriodEvents(events: _skyEvents),
+            ],
+
+            if (_sky.length > 1) ...[
+              const SizedBox(height: Gap.lg),
+              const Eyebrow('The sky across it'),
+              const SizedBox(height: Gap.sm),
+              AspectRatio(
+                aspectRatio: 1,
+                child: CustomPaint(
+                  painter: PeriodWheelPainter(
+                    days: _sky,
+                    events: _skyEvents,
+                    rising: zodiac.indexOf(_sign),
+                  ),
+                ),
+              ),
+              const SizedBox(height: Gap.xs),
+              const Text(
+                'Each body from where it starts to where it ends. Ticks are '
+                'sign changes, circles are stations. The inner ring is the '
+                'period day by day — the Moon\'s phase, not its position.',
+                style: TextStyle(color: Tone.faint, fontSize: 12, height: 1.5),
+              ),
+              const SizedBox(height: Gap.lg),
+              const Eyebrow('What happens in it'),
+              const SizedBox(height: Gap.sm),
+              PeriodEvents(events: _skyEvents),
+            ],
 
             const SizedBox(height: Gap.lg),
             if (_loading)

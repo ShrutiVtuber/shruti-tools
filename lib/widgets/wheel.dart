@@ -19,13 +19,20 @@ import '../services/chart.dart';
 import '../theme/tokens.dart';
 
 class WheelPainter extends CustomPainter {
-  WheelPainter({required this.chart, required this.rising});
+  WheelPainter({
+    required this.chart,
+    required this.rising,
+    this.houseNumbers = true,
+  });
 
   final Chart chart;
 
   /// Which sign begins the wheel. Presentation only — the same chart seen from
   /// a different starting sign, never a different chart.
   final int rising;
+
+  /// Which house each sign is, from the rising sign. On unless there is none.
+  final bool houseNumbers;
 
   /// Degrees measured from the start of the first house.
   double _relative(double longitude) =>
@@ -38,6 +45,21 @@ class WheelPainter extends CustomPainter {
       centre.dx + radius * math.cos(a),
       centre.dy - radius * math.sin(a),
     );
+  }
+
+  /// The 2nd, 6th, 8th and 12th are averse to the rising sign.
+  static const _averse = {2, 6, 8, 12};
+
+  /// A house number. Body type, not the symbol font — these are digits.
+  void _house(Canvas canvas, String text, Offset at, double size, Color tone) {
+    final tp = TextPainter(
+      text: TextSpan(
+        text: text,
+        style: TextStyle(fontSize: size, color: tone),
+      ),
+      textDirection: TextDirection.ltr,
+    )..layout();
+    tp.paint(canvas, at - Offset(tp.width / 2, tp.height / 2));
   }
 
   void _glyph(Canvas canvas, String text, Offset at, double size, Color tone) {
@@ -74,18 +96,36 @@ class WheelPainter extends CustomPainter {
     canvas.drawCircle(c, r * 0.78, hair);
     canvas.drawCircle(c, r * 0.30, hair);
 
-    // Twelve spokes and twelve sign glyphs, rotated so the rising sign begins.
+    // Twelve spokes, twelve sign glyphs, and which house each sign IS.
+    //
+    // ⚠ The house numbers rotate with the rising sign, and that rotation is
+    // the whole reason a reading for Leo differs from the same sky read for
+    // Aries. Without them this is the zodiac rather than a chart.
     for (var i = 0; i < 12; i++) {
       final deg = i * 30.0;
       canvas.drawLine(_at(deg, r * 0.30, c), _at(deg, r, c), hair);
       final sign = (rising + i) % 12;
+      final house = i + 1;
+      // The 2nd, 6th, 8th and 12th cannot see the rising sign.
+      final averse = _averse.contains(house);
       _glyph(
         canvas,
         signGlyphs[sign],
         _at(deg + 15, r * 0.89, c),
         r * 0.13,
-        i == 0 ? Tone.accent : Tone.faint,
+        i == 0
+            ? Tone.accent
+            : (averse ? Tone.faint.withValues(alpha: 0.5) : Tone.faint),
       );
+      if (houseNumbers) {
+        _house(
+          canvas,
+          '$house',
+          _at(deg + 15, r * 0.36, c),
+          r * 0.07,
+          averse ? Tone.faint.withValues(alpha: 0.5) : Tone.faint,
+        );
+      }
     }
 
     // Five-degree ticks, longer every thirty.
