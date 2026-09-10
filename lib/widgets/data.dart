@@ -214,32 +214,46 @@ class Reference extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              for (final c in columns)
+              for (var i = 0; i < columns.length; i++)
                 Expanded(
-                  flex: c.flex,
-                  child: Column(
-                    crossAxisAlignment: c.numeric
-                        ? CrossAxisAlignment.end
-                        : CrossAxisAlignment.start,
-                    children: [
-                      if (c.mark != null) ...[
-                        Glyph(c.mark!, size: 13, color: Gilt.gilt),
-                        const SizedBox(height: 2),
-                      ],
-                      Text(
-                        c.label.toUpperCase(),
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontFamily: Face.body,
-                          fontFamilyFallback: [Face.glyph],
-                          fontSize: 9,
-                          height: 1.15,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: 0.72,
-                          color: Tone.faint,
-                        ),
-                      ),
-                    ],
+                  flex: columns[i].flex,
+                  // ⚠ The same air the cells get. Without it a right-aligned
+                  // "To" and a left-aligned "Ruler" meet in the middle and the
+                  // header reads TORULER — which is what shipped.
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      left: i == 0 ? 0 : 6,
+                      right: i == columns.length - 1 ? 0 : 2,
+                    ),
+                    child: Builder(
+                      builder: (context) {
+                        final c = columns[i];
+                        return Column(
+                          crossAxisAlignment: c.numeric
+                              ? CrossAxisAlignment.end
+                              : CrossAxisAlignment.start,
+                          children: [
+                            if (c.mark != null) ...[
+                              Glyph(c.mark!, size: 13, color: Gilt.gilt),
+                              const SizedBox(height: 2),
+                            ],
+                            Text(
+                              c.label.toUpperCase(),
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                fontFamily: Face.body,
+                                fontFamilyFallback: [Face.glyph],
+                                fontSize: 9,
+                                height: 1.15,
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: 0.72,
+                                color: Tone.faint,
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
                   ),
                 ),
             ],
@@ -259,7 +273,16 @@ class Reference extends StatelessWidget {
             child: Row(
               children: [
                 for (var c = 0; c < columns.length; c++)
-                  Expanded(flex: columns[c].flex, child: _cell(rows[i], c)),
+                  Expanded(
+                    flex: columns[c].flex,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        left: c == 0 ? 0 : 6,
+                        right: c == columns.length - 1 ? 0 : 2,
+                      ),
+                      child: _cell(rows[i], c),
+                    ),
+                  ),
               ],
             ),
           ),
