@@ -172,4 +172,57 @@ void main() {
           'does not exist',
     );
   });
+
+  // ── and the same failure on the iPhone, found the same way ───────────────
+
+  test('iOS is asked to present a notice while the app is on screen', () {
+    // ⚠ **The Android bug, on the other platform.** With the app open on her
+    // iPhone, FCM reported delivered=True, the phone accepted the message, and
+    // nothing appeared — proven by sending one on 11 September 2026.
+    //
+    // iOS will present a notification in the foreground only when told to, and
+    // this is the line that tells it.
+    expect(
+      service.contains('setForegroundNotificationPresentationOptions'),
+      isTrue,
+      reason: 'nothing arrives on screen while an iPhone has the app open',
+    );
+    expect(
+      service.contains('alert: true'),
+      isTrue,
+      reason: 'presented with no alert is presented invisibly',
+    );
+  });
+
+  test('an iPhone is not shown the same notice twice', () {
+    // ⚠ The commonest bug in this corner of Flutter: iOS presents the real
+    // notification AND the app draws a local copy of it, so the same words
+    // appear in two banners. The listener must leave iOS alone.
+    final listener = service.substring(
+      service.indexOf('FirebaseMessaging.onMessage.listen'),
+    );
+    final body = listener.substring(0, listener.indexOf('_local.show'));
+    expect(
+      body.contains('_onAnIPhone'),
+      isTrue,
+      reason:
+          'the foreground listener draws a local notification on iOS as '
+          'well as the presented one',
+    );
+  });
+
+  test('the platform is read from the build, not from the machine', () {
+    // ⚠ `Platform.isIOS` answers for the computer a test is running on, which
+    // is a Linux box — so a guard written with it would be permanently false
+    // and permanently green.
+    expect(
+      service.contains('defaultTargetPlatform == TargetPlatform.iOS'),
+      isTrue,
+    );
+    expect(
+      RegExp(r'Platform\.isIOS').hasMatch(service),
+      isFalse,
+      reason: 'dart:io answers for the host, not for the phone',
+    );
+  });
 }

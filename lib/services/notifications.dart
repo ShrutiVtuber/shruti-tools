@@ -189,6 +189,11 @@ class Notifications extends ChangeNotifier {
   final _local = FlutterLocalNotificationsPlugin();
   bool _listening = false;
 
+  /// ⚠ `defaultTargetPlatform`, not `Platform.isIOS`: this is read by a test
+  /// running on a Linux host, where dart:io would answer for the machine
+  /// rather than for the build under test.
+  static bool get _onAnIPhone => defaultTargetPlatform == TargetPlatform.iOS;
+
   /// Draw the ones that arrive while the app is OPEN.
   ///
   /// ⚠ **This is the whole of the bug it was written for.** Android draws an
@@ -250,9 +255,33 @@ class Notifications extends ChangeNotifier {
       await android.createNotificationChannel(_channel);
     }
 
+    // ⚠ **iOS presents the notification itself, and only if asked.** Android
+    // hands a foreground message to the app and draws nothing, which is why
+    // the listener below exists. iOS does the same by default — but drawing a
+    // local notification there is the wrong answer: the real one is already on
+    // the device, and a second would be a duplicate banner. This says "show
+    // the one you already have", which is the one line that makes a notice
+    // appear while the app is on screen.
+    //
+    // ⚠ Proven on her iPhone on 11 September 2026: without it, FCM reports
+    // delivered=True, the phone takes the message, and absolutely nothing
+    // happens — the same silent shape the Android bug had.
+    if (_onAnIPhone) {
+      await FirebaseMessaging.instance
+          .setForegroundNotificationPresentationOptions(
+            alert: true,
+            badge: true,
+            sound: true,
+          );
+    }
+
     FirebaseMessaging.onMessage.listen((message) {
       final note = message.notification;
       if (note == null) return;
+      // ⚠ Android only. iOS has been told to present the real notification
+      // above, and drawing a local copy as well would show the same words
+      // twice — the commonest bug in this corner of Flutter.
+      if (_onAnIPhone) return;
       _local.show(
         note.hashCode,
         note.title,
