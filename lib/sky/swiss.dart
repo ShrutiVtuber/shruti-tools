@@ -56,6 +56,11 @@ class SwissSky implements Sky {
   @override
   String get engine => 'Swiss Ephemeris 2.10.03';
 
+  // ⚠ Its licence says the copyright notice must be preserved on all copies,
+  // and a compiled APK is a copy.
+  @override
+  bool get noticeRequired => true;
+
   /// Unpack the ephemeris and point the library at it.
   ///
   /// ⚠ **The path must be ABSOLUTE.**

@@ -34,6 +34,12 @@ class PublicSky implements Sky {
   @override
   String get engine => 'VSOP87 and ELP-2000/82';
 
+  // ⚠ Published theory carries no software licence and requires no notice.
+  // The credit on the licences screen is courtesy, not obligation — which is
+  // exactly why it is worth giving.
+  @override
+  bool get noticeRequired => false;
+
   @override
   Future<void> begin({String? into}) async {
     // ⚠ Nothing to load, and that is the point. No data files, no native

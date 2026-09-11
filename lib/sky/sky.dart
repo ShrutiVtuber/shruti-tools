@@ -94,6 +94,14 @@ abstract interface class Sky {
   /// entire purpose is to be accurate about what the app is made of.
   String get engine;
 
+  /// Whether this engine's licence requires its notice to be reproduced.
+  ///
+  /// ⚠ The licences screen exists to be accurate about what the app is made
+  /// of, and the two builds are made of different things. A build that does not
+  /// contain a library must not reproduce its notice — that is not caution, it
+  /// is the screen telling the truth.
+  bool get noticeRequired;
+
   /// Anything that must be loaded before the first question. Safe to call more
   /// than once.
   ///

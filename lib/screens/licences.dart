@@ -28,9 +28,27 @@ import '../widgets/parts.dart';
 import '../widgets/data.dart';
 import '../widgets/content.dart';
 import '../services/ephemeris.dart';
+import '../sky/current.dart';
 import '../widgets/eyebrow.dart';
 
 const sourceUrl = 'https://github.com/ShrutiVtuber/astrolabe';
+
+/// What the iOS build computes with.
+///
+/// ⚠ Credit rather than obligation. VSOP87 and the abridged lunar theory are
+/// published analytic theories under no software licence, so nothing requires
+/// this — which is precisely why it is here. Somebody reading this screen wants
+/// to know what the arithmetic is, and "public domain" is an answer that tells
+/// them nothing about whose work it was.
+const _publicTheory = '''
+VSOP87 — the planetary theory of P. Bretagnon and G. Francou, Bureau des
+Longitudes, published in Astronomy & Astrophysics.
+
+ELP-2000/82 — the lunar theory of M. Chapront-Touzé and J. Chapront, in the
+abridged form that has been printed and reimplemented for decades.
+
+Both are published science rather than software. No licence governs their use
+and none is claimed over them here.''';
 
 /// Preserved verbatim from `native/sweph/src/LICENSE`. Do not paraphrase it.
 const _swissEphemeris = '''
@@ -178,11 +196,15 @@ class LicencesScreen extends StatelessWidget {
             const SizedBox(height: Gap.xl),
             const Eyebrow('The ephemeris'),
             const SizedBox(height: Gap.sm),
-            const Text(
-              'The astronomy is computed on this phone, against Swiss '
-              'Ephemeris. Its notice is kept here in full, as its licence '
-              'requires.',
-              style: TextStyle(color: Tone.soft, height: 1.5),
+            Text(
+              sky.noticeRequired
+                  ? 'The astronomy is computed on this phone, against '
+                        '$engineVersion. Its notice is kept here in full, as '
+                        'its licence requires.'
+                  : 'The astronomy is computed on this phone, from published '
+                        'theory. Nothing below is required of this app — it is '
+                        'here because you should know whose work it is.',
+              style: const TextStyle(color: Tone.soft, height: 1.5),
             ),
             const SizedBox(height: Gap.md),
             Container(
@@ -192,8 +214,8 @@ class LicencesScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(Corner.md),
                 border: Border.all(color: Tone.line),
               ),
-              child: const Text(
-                _swissEphemeris,
+              child: Text(
+                sky.noticeRequired ? _swissEphemeris : _publicTheory,
                 style: TextStyle(
                   color: Tone.soft,
                   fontSize: 12,
