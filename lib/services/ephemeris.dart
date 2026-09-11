@@ -22,9 +22,20 @@ bool _ready = false;
 /// be a lie on one of them.
 String get engineVersion => sky.engine;
 
-/// ⚠ Kept in step with pubspec.yaml by hand, and named here so the one place
-/// that shows it is not six places that disagree.
-const appVersion = '1.0.0 (1)';
+/// What the app calls itself, on the settings and licences screens.
+///
+/// ⚠ **No build number, deliberately.** It used to read `1.0.0 (1)`, kept in
+/// step with pubspec.yaml by hand — which cannot work, because nothing here
+/// has the last word on it. `manageAppVersionAndBuildNumber` defaults to true
+/// for `xcodebuild -exportArchive`, so Xcode takes the next free number on the
+/// way to TestFlight: pubspec has said `+1` throughout and Apple holds builds
+/// 1 to 4. The app was telling everybody it was build 1 whichever build it was.
+///
+/// A wrong build number is worse than none — somebody reporting a bug reads it
+/// out and it points at the wrong binary. If the real one is wanted later,
+/// `package_info_plus` reports it at runtime; that is a dependency rather than
+/// a constant, which is why it is not here today.
+const appVersion = '1.0.0';
 
 /// Make the sky answerable.
 ///
