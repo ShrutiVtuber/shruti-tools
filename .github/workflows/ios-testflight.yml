@@ -1,0 +1,142 @@
+# Build Astrolabe for iOS and send it to TestFlight.
+#
+# ⚠ **Nothing here has been run.** It was written on a Linux machine with no
+# Apple account, so every step is reasoned from Apple's and Flutter's
+# documentation rather than from a green build. Expect the first run to fail on
+# something small — a certificate that will not import, a profile whose name
+# does not match — and read the log rather than assuming the shape is wrong.
+#
+# ⚠ **A macOS runner costs about ten times a Linux one** in GitHub Actions
+# minutes. That is why this does not run on every push: it runs when a version
+# tag is pushed, or when you press the button. A workflow that built on every
+# commit would quietly eat the free allowance in a fortnight.
+name: iOS → TestFlight
+
+on:
+  push:
+    tags: ['v*']          # v1.0.0, v1.0.1 — a deliberate release
+  workflow_dispatch: {}   # or the "Run workflow" button, for a test build
+
+jobs:
+  build:
+    runs-on: macos-15
+    timeout-minutes: 60
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          # ⚠ Pinned, not "stable". A Flutter release lands mid-week and
+          # changes the Gradle or CocoaPods contract; a pinned version means a
+          # broken build is something you changed, not something that moved
+          # underneath you.
+          flutter-version: '3.44.8'
+          channel: stable
+          cache: true
+
+      - name: Fetch packages
+        run: flutter pub get
+
+      - name: Check it still analyses and passes
+        # ⚠ Before spending twenty minutes of macOS time on an archive. A build
+        # that ships a failing test is worse than one that never started.
+        run: |
+          flutter analyze
+          flutter test
+
+      # ── signing ──────────────────────────────────────────────────────────
+      #
+      # ⚠ Apple signing on a fresh runner needs three things and they are
+      # easy to confuse:
+      #   - a DISTRIBUTION CERTIFICATE (.p12), which says who you are
+      #   - a PROVISIONING PROFILE (.mobileprovision), which says this app,
+      #     signed by that certificate, may run
+      #   - an APP STORE CONNECT API KEY (.p8), which is how the upload
+      #     authenticates. It is NOT the same as the certificate and cannot
+      #     stand in for it.
+      - name: Put the certificate and profile on the runner
+        env:
+          CERT_P12: ${{ secrets.IOS_DIST_CERT_P12 }}
+          CERT_PASSWORD: ${{ secrets.IOS_DIST_CERT_PASSWORD }}
+          PROFILE: ${{ secrets.IOS_PROVISIONING_PROFILE }}
+        run: |
+          set -euo pipefail
+          CERT=$RUNNER_TEMP/cert.p12
+          PROF=$RUNNER_TEMP/profile.mobileprovision
+          KEYCHAIN=$RUNNER_TEMP/build.keychain
+
+          echo "$CERT_P12"  | base64 --decode > "$CERT"
+          echo "$PROFILE"   | base64 --decode > "$PROF"
+
+          # A throwaway keychain, unlocked for this job only. The runner is
+          # destroyed afterwards, so the password is a formality — but an
+          # empty one makes `security` refuse.
+          security create-keychain -p runner "$KEYCHAIN"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN"
+          security unlock-keychain -p runner "$KEYCHAIN"
+          security import "$CERT" -P "$CERT_PASSWORD" -A \
+            -t cert -f pkcs12 -k "$KEYCHAIN"
+          # ⚠ Without this, codesign stops to ask for permission — on a machine
+          # with nobody at it, which reads as a hang until the job times out.
+          security set-key-partition-list -S apple-tool:,apple: -k runner "$KEYCHAIN"
+          security list-keychain -d user -s "$KEYCHAIN"
+
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          cp "$PROF" ~/Library/MobileDevice/Provisioning\ Profiles/
+
+      - name: Build the archive
+        env:
+          TEAM_ID: ${{ secrets.IOS_TEAM_ID }}
+          PROFILE_NAME: ${{ secrets.IOS_PROVISIONING_PROFILE_NAME }}
+        run: |
+          set -euo pipefail
+          # ⚠ Manual signing, named explicitly. Automatic signing wants to talk
+          # to an Apple ID session the runner does not have, and fails with a
+          # message about "no signing certificate" that sends you looking at
+          # the certificate, which is fine.
+          cat > ios/ExportOptions.plist <<PLIST
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>method</key><string>app-store-connect</string>
+            <key>teamID</key><string>${TEAM_ID}</string>
+            <key>signingStyle</key><string>manual</string>
+            <key>provisioningProfiles</key>
+            <dict>
+              <key>com.shrutivtuber.astrolabe</key><string>${PROFILE_NAME}</string>
+            </dict>
+            <key>uploadSymbols</key><true/>
+          </dict>
+          </plist>
+          PLIST
+
+          flutter build ipa --release --export-options-plist=ios/ExportOptions.plist
+
+      - name: Send it to TestFlight
+        env:
+          ISSUER_ID: ${{ secrets.APPSTORE_ISSUER_ID }}
+          KEY_ID: ${{ secrets.APPSTORE_KEY_ID }}
+          PRIVATE_KEY: ${{ secrets.APPSTORE_PRIVATE_KEY }}
+        run: |
+          set -euo pipefail
+          # ⚠ altool looks for the key in this exact directory and by this
+          # exact filename. Anywhere else and it reports "No suitable
+          # application records were found", which sounds like an App Store
+          # Connect problem and is not one.
+          mkdir -p ~/private_keys
+          echo "$PRIVATE_KEY" > ~/private_keys/AuthKey_${KEY_ID}.p8
+
+          xcrun altool --upload-app -f build/ios/ipa/*.ipa -t ios \
+            --apiKey "$KEY_ID" --apiIssuer "$ISSUER_ID"
+
+      - name: Keep the build, whatever happened
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: astrolabe-ios
+          path: |
+            build/ios/ipa/*.ipa
+          if-no-files-found: ignore
+          retention-days: 14
