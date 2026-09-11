@@ -8,7 +8,30 @@
 # profile, which has to be created first.
 #
 # ⚠ Safe to re-run. Setting a secret replaces it.
+#
+# ── Which GitHub identity this uses ─────────────────────────────────────────
+#
+# Writing a repository secret needs ADMIN on the repo. `gh` may be signed in as
+# an account that can push code and still cannot do this — pushing needs write,
+# secrets need admin, and the 403 does not distinguish them.
+#
+# The narrow way to grant it, without switching the active account: a
+# fine-grained personal access token belonging to the repo's OWNER, scoped to
+# this one repository, with `Secrets: Read and write` and nothing else.
+#
+#   TOKEN_FILE=~/gh-astrolabe-token ./scripts/set-ios-secrets.sh
+#
+# ⚠ Give the PATH to a file, never the token itself on a command line: an
+# argument is visible in `ps` to every process on the machine, and it lands in
+# shell history.
 set -euo pipefail
+
+if [ -n "${TOKEN_FILE:-}" ]; then
+  [ -f "$TOKEN_FILE" ] || { echo "no such file: $TOKEN_FILE"; exit 1; }
+  GH_TOKEN=$(tr -d '\r\n' < "$TOKEN_FILE")
+  export GH_TOKEN
+  echo "using the token in $TOKEN_FILE"
+fi
 
 REPO=${REPO:-ShrutiVtuber/shruti-tools}
 KEYS=${KEYS:-$HOME/keystores}

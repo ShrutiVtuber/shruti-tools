@@ -158,18 +158,59 @@ void main() {
   });
 
   test('the deployment target is new enough for Firebase', () {
+    // ⚠ **15.0, and the number was learned the expensive way.** The first
+    // TestFlight run failed on exactly this, and the message named the package
+    // rather than the setting:
+    //
+    //   error: The package product 'firebase-core' requires minimum platform
+    //   version 15.0 for the iOS platform, but this target supports 13.0
+    //
+    // Firebase raised its floor. Flutter's template still writes 13.0.
     final pbx = File('ios/Runner.xcodeproj/project.pbxproj').readAsStringSync();
     final targets = RegExp(
       r'IPHONEOS_DEPLOYMENT_TARGET = ([\d.]+)',
     ).allMatches(pbx).map((m) => double.parse(m.group(1)!)).toList();
     expect(targets, isNotEmpty, reason: 'no deployment target is set at all');
     expect(
-      targets.every((t) => t >= 13.0),
+      targets.every((t) => t >= 15.0),
       isTrue,
       reason:
-          'firebase_core needs iOS 13 or later; a lower target fails in '
-          'CocoaPods with a dependency error that names the pod, not the '
-          'setting',
+          'firebase_core needs iOS 15 or later; a lower target fails the '
+          'archive with an error that names the package, not the setting',
+    );
+  });
+
+  test('the Podfile and the project agree on the floor', () {
+    // ⚠ Three places have to say the same number: the project setting governs
+    // the app, the Podfile's platform line governs the pods, and the
+    // post_install hook governs each pod that declares its own. CocoaPods
+    // lets a pod keep an older target unless told otherwise —
+    // flutter_local_notifications arrived asking for 11.0, which Xcode 26 no
+    // longer supports, and only warned. A warning today is an error next
+    // release.
+    final podfile = File('ios/Podfile');
+    expect(
+      podfile.existsSync(),
+      isTrue,
+      reason: 'no Podfile, so the pods take whatever floor they like',
+    );
+
+    final pods = podfile.readAsStringSync();
+    final platform = RegExp(
+      r"platform :ios, '([\d.]+)'",
+    ).firstMatch(pods)?.group(1);
+    expect(
+      platform,
+      equals('15.0'),
+      reason: 'the Podfile platform is $platform, not 15.0',
+    );
+
+    expect(
+      pods.contains(
+        "config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.0'",
+      ),
+      isTrue,
+      reason: 'no post_install hook forcing every pod to the same floor',
     );
   });
 }

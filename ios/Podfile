@@ -1,0 +1,59 @@
+# ⚠ **iOS 15, not 13.** The first TestFlight run failed here, and the message
+# named the package rather than the setting:
+#
+#     error: The package product 'firebase-core' requires minimum platform
+#     version 15.0 for the iOS platform, but this target supports 13.0
+#
+# Firebase raised its floor. This line, the three IPHONEOS_DEPLOYMENT_TARGET
+# entries in Runner.xcodeproj, and the post_install hook below all have to say
+# the same number — the project's setting governs the app, this governs the
+# pods, and CocoaPods gives each pod its own unless told otherwise.
+platform :ios, '15.0'
+
+# Flutter's standard preamble, unchanged.
+ENV['COCOAPODS_DISABLE_STATS'] = 'true'
+
+project 'Runner', {
+  'Debug' => :debug,
+  'Profile' => :release,
+  'Release' => :release,
+}
+
+def flutter_root
+  generated_xcode_build_settings_path = File.expand_path(File.join('..', 'Flutter', 'Generated.xcconfig'), __FILE__)
+  unless File.exist?(generated_xcode_build_settings_path)
+    raise "#{generated_xcode_build_settings_path} must exist. If you're running pod install manually, make sure flutter pub get is executed first"
+  end
+
+  File.foreach(generated_xcode_build_settings_path) do |line|
+    matches = line.match(/FLUTTER_ROOT\=(.*)/)
+    return matches[1].strip if matches
+  end
+  raise "FLUTTER_ROOT not found in #{generated_xcode_build_settings_path}. Try deleting Generated.xcconfig, then run flutter pub get"
+end
+
+require File.expand_path(File.join('packages', 'flutter_tools', 'bin', 'podhelper'), flutter_root)
+
+flutter_ios_podfile_setup
+
+target 'Runner' do
+  use_frameworks!
+  flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
+
+  target 'RunnerTests' do
+    inherit! :search_paths
+  end
+end
+
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    flutter_additional_ios_build_settings(target)
+    target.build_configurations.each do |config|
+      # ⚠ Every pod, forced to the same floor. Without this, a pod that
+      # declares an older target keeps it — flutter_local_notifications
+      # arrived asking for 11.0, which Xcode 26 no longer supports at all, and
+      # warned rather than failed. A warning today is an error next release.
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.0'
+    end
+  end
+end
