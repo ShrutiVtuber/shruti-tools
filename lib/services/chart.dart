@@ -71,11 +71,21 @@ const _bodies = <String, HeavenlyBody>{
   'Mars': HeavenlyBody.SE_MARS,
   'Jupiter': HeavenlyBody.SE_JUPITER,
   'Saturn': HeavenlyBody.SE_SATURN,
-  'Uranus': HeavenlyBody.SE_URANUS,
-  'Neptune': HeavenlyBody.SE_NEPTUNE,
-  'Pluto': HeavenlyBody.SE_PLUTO,
   'Rahu': HeavenlyBody.SE_TRUE_NODE,
 };
+
+// ⚠ **No Uranus, Neptune or Pluto, and that is the tradition rather than an
+// omission.** Her practice is Hellenistic, which has seven wandering stars and
+// the two nodes; the outer three were not known and are not read. Her words,
+// 11 September 2026: "we don't track uranus neptune or pluto".
+//
+// It is also what the website returns — its chart engine offers the seven and
+// the nodes in every tradition it accepts — so the app and the site now agree
+// about what exists, which they did not before.
+//
+// They come back as an OPTION, not as a default, if the Swiss Ephemeris is
+// ever licensed commercially. Until then the app must not ship that library at
+// all: Apple's terms and the AGPL cannot both be satisfied in one binary.
 
 /// Julian day from a UTC instant.
 ///

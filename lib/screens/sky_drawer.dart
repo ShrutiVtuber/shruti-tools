@@ -51,7 +51,6 @@ class _SkyDrawerState extends State<SkyDrawer> {
     (widget.opensOn ?? DateTime.now()).month,
   );
   bool _retrogradesOnly = false;
-  bool _modern = false;
   List<SkyDay> _days = const [];
   List<SkyEvent> _events = const [];
 
@@ -121,7 +120,6 @@ class _SkyDrawerState extends State<SkyDrawer> {
       'Mars',
       'Jupiter',
       'Saturn',
-      if (_modern) ...['Uranus', 'Neptune', 'Pluto'],
     ];
     const marks = {
       'Sun': '☉',
@@ -131,9 +129,6 @@ class _SkyDrawerState extends State<SkyDrawer> {
       'Mars': '♂',
       'Jupiter': '♃',
       'Saturn': '♄',
-      'Uranus': '♅',
-      'Neptune': '♆',
-      'Pluto': '♇',
     };
     final today = DateTime.now().toUtc().toIso8601String().substring(0, 10);
 
@@ -209,12 +204,6 @@ class _SkyDrawerState extends State<SkyDrawer> {
                     );
                   },
                 ),
-              Tag(
-                label: 'Modern planets',
-                kind: ChipKind.filter,
-                selected: _modern,
-                onTap: () => setState(() => _modern = !_modern),
-              ),
               Tag(
                 label: 'Show ℞ only',
                 kind: ChipKind.filter,
