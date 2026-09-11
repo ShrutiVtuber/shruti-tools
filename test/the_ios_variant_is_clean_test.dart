@@ -106,6 +106,27 @@ void main() {
     );
   });
 
+  test('CI makes the variant before it builds for Apple', () {
+    // ⚠ The script existing is not the same as the workflow running it. A
+    // pipeline that skips this step builds a perfectly good binary with AGPL
+    // code inside it, uploads it, and the first anybody knows is a complaint.
+    final wf = File('.github/workflows/ios-testflight.yml').readAsStringSync();
+    expect(
+      wf.contains('./tool/make_ios_variant.sh'),
+      isTrue,
+      reason:
+          'the iOS workflow never makes the variant, so it ships the '
+          'Swiss Ephemeris inside an App Store binary',
+    );
+    expect(
+      wf.contains("grep -q 'sweph' pubspec.lock"),
+      isTrue,
+      reason:
+          'nothing checks the dependency actually went; the script could '
+          'fail silently and the build would still be made',
+    );
+  });
+
   test('the licences screen follows the engine', () {
     // ⚠ A build that does not contain a library must not reproduce its notice.
     // That screen exists to be accurate about what the app is made of, and the
