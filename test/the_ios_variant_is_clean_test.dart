@@ -32,12 +32,19 @@ void main() {
         importers.add(e.path);
       }
     }
+    // ⚠ Two trees, two right answers. On the Android checkout exactly one file
+    // imports it; on a tree the variant script has been run over, NONE does —
+    // which is the whole point, and is the stronger statement. Asserting the
+    // first everywhere makes this test fail on the very tree it certifies.
+    final swissExists = File('lib/sky/swiss.dart').existsSync();
     expect(
       importers,
-      equals(['lib/sky/swiss.dart']),
-      reason:
-          'the Swiss Ephemeris is imported by more than the one file the '
-          'iOS variant removes: ${importers.join(", ")}',
+      equals(swissExists ? ['lib/sky/swiss.dart'] : <String>[]),
+      reason: swissExists
+          ? 'the Swiss Ephemeris is imported by more than the one file the '
+                'iOS variant removes: ${importers.join(", ")}'
+          : 'this is the iOS variant and it still imports the Swiss '
+                'Ephemeris: ${importers.join(", ")}',
     );
   });
 
@@ -60,6 +67,20 @@ void main() {
       reason:
           'these files pick an engine themselves, so the variant script '
           'cannot switch the app by rewriting one file: ${namers.join(", ")}',
+    );
+  });
+
+  test('the variant picks the public-domain engine', () {
+    // ⚠ Only meaningful on a tree the script has been run over; on the Android
+    // checkout current.dart rightly names the other one.
+    if (File('lib/sky/swiss.dart').existsSync()) return;
+    final code = _code(File('lib/sky/current.dart').readAsStringSync());
+    expect(
+      code.contains('PublicSky()'),
+      isTrue,
+      reason:
+          'the Swiss implementation is gone but the app still asks for '
+          'it, so this build does not start at all',
     );
   });
 
