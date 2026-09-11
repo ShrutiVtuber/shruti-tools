@@ -49,6 +49,16 @@ that could not open its ephemeris at all.
 with no plugins linked, so `libsweph.so` is simply absent. Anything needing it
 lives in `integration_test/` and runs against a real target.
 
+## iOS builds cost her money
+
+⚠ **One build, when the app is finished.** macOS runners bill at ten times
+Linux minutes and she pays for them. Never dispatch `ios-testflight.yml` to
+check whether a change works — batch iOS changes and let one build carry all of
+them. `test/ios_is_configured_test.dart` proves the bundle id, signing,
+deployment target, icon, push entitlement and Firebase config from a machine
+with no Mac; `tool/make_ios_variant.sh` plus a lockfile grep proves the Swiss
+Ephemeris is gone. All of that is free.
+
 ## Suites
 
 ```bash

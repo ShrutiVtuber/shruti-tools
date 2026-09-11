@@ -6,6 +6,25 @@ name: TestFlight
 # is then the repo's own permanent record that iOS was brought up to that
 # version.
 #
+# ⚠ **ONE BUILD, WHEN THE APP IS FINISHED. SHE PAYS FOR THESE.** Her words, on
+# 11 September 2026, after I had dispatched a fourth in a day to bundle a
+# feature written twenty minutes earlier that had never run on a device: "it
+# costs money to build on ios", "we cant do it willy nilly for fun", "only when
+# it's a finished model", "there should be only one ios build for this - when
+# it's done". Do not run this to find out whether something compiles.
+#
+# Everything short of the .ipa is free and proves the same things:
+#
+#   flutter analyze && flutter test          # and on a real Android device
+#   ./tool/make_ios_variant.sh && flutter pub get && grep sweph pubspec.lock
+#   flutter test test/ios_is_configured_test.dart
+#
+# That last file checks the bundle id, the signing, the deployment target, the
+# icon, the entitlement, the Firebase plist and the push declaration from a
+# machine with no Mac on it. Batch every iOS change; let one build carry them
+# all. A run still in the Linux gate has touched no Mac — `gh run cancel` it
+# and it costs nothing.
+#
 # Even then, the Mac is never the first to hear about a problem: a Linux gate
 # runs first and the macOS job refuses to start unless it passes. Her words, to
 # another project, 18 August 2026: "I don't want to pay for mac os runners if
