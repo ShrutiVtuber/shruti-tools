@@ -4,8 +4,8 @@
 //
 // ⚠ **This exists because AGPL software cannot be distributed through Apple's
 // App Store.** Apple's terms impose restrictions the GPL family forbids adding,
-// and the Swiss Ephemeris belongs to Astrodienst rather than to her, so no
-// permission of hers can cover it. Everything here — VSOP87 for the planets,
+// and the Swiss Ephemeris belongs to its own authors rather than to her, so
+// no permission of hers can cover it. Everything here — VSOP87 for the planets,
 // the abridged lunar theory for the Moon — is published theory under no
 // software licence at all.
 //

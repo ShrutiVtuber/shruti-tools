@@ -7,8 +7,9 @@
 // about its answers changes by being behind an interface.
 //
 // ⚠ **It must not be compiled into the iOS build.** Apple's App Store terms
-// impose restrictions the AGPL forbids adding, and the Swiss Ephemeris is
-// Astrodienst's rather than hers, so no exception of hers can cover it. A
+// impose restrictions the AGPL forbids adding, and the Swiss Ephemeris
+// belongs to its own authors rather than to her, so no exception of hers can
+// cover it. A
 // runtime switch is not enough: a package listed in pubspec.yaml has its pod
 // compiled in whether or not anything calls it. The iOS variant removes the
 // dependency, which removes this file with it.
