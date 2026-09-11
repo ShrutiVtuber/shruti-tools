@@ -29,6 +29,7 @@ class Work {
   const Work({
     required this.id,
     required this.author,
+    required this.authorId,
     required this.period,
     required this.covers,
     required this.title,
@@ -48,6 +49,7 @@ class Work {
   factory Work.fromJson(Map<String, dynamic> j) => Work(
     id: j['id'] as int,
     author: j['author'] as String? ?? 'somebody',
+    authorId: j['authorId'] as int?,
     period: j['period'] as String? ?? 'weekly',
     covers: j['covers'] as String? ?? '',
     title: j['title'] as String? ?? '',
@@ -72,6 +74,10 @@ class Work {
 
   final int id;
   final String author;
+
+  /// ⚠ Null when the server did not say. Nothing can be blocked without it,
+  /// and offering the button anyway would be a button that does nothing.
+  final int? authorId;
   final String period;
   final String covers;
   final String title;
@@ -122,6 +128,7 @@ class Remark {
   const Remark({
     required this.id,
     required this.author,
+    this.authorId,
     required this.bodyMd,
     required this.at,
     required this.mine,
@@ -132,6 +139,7 @@ class Remark {
   factory Remark.fromJson(Map<String, dynamic> j) => Remark(
     id: j['id'] as int,
     author: j['author'] as String? ?? 'somebody',
+    authorId: j['authorId'] as int?,
     bodyMd: j['bodyMd'] as String? ?? '',
     at: j['at'] as String?,
     mine: j['mine'] as bool? ?? false,
@@ -141,6 +149,11 @@ class Remark {
 
   final int id;
   final String author;
+
+  /// ⚠ Null for a comment bridged from Discord: there is no site account
+  /// behind it, so there is nobody to block. Said in the app rather than
+  /// discovered by pressing a button that quietly fails.
+  final int? authorId;
   final String bodyMd;
   final String? at;
   final bool mine;
@@ -343,6 +356,37 @@ class Practice {
     'reason': reason,
     'detail': detail,
   });
+
+  /// Be done with somebody.
+  ///
+  /// ⚠ **Not a report and not a strike.** Nobody is told, she is not notified,
+  /// and nothing is hidden from anybody else — it is one reader's decision
+  /// about their own room. Reporting asks her to act; this does not ask
+  /// anybody anything.
+  ///
+  /// ⚠ Cuts both ways on the server: their writing goes from your room AND
+  /// they can no longer answer yours. Half of that would leave the person you
+  /// blocked still able to reach you, which is the thing worth stopping.
+  ///
+  /// Pressing it twice is not an error. The list it is pressed from can be
+  /// seconds out of date, and "that failed" for something already true teaches
+  /// people to press again.
+  Future<void> blockPerson(int userId) =>
+      _send('POST', '/api/practice/blocks', {'user_id': userId});
+
+  Future<void> unblockPerson(int userId) =>
+      _send('DELETE', '/api/practice/blocks/$userId');
+
+  /// Who this person has blocked, so it can be undone.
+  ///
+  /// ⚠ A block nobody can find is a mistake somebody has to live with.
+  Future<List<({int id, String name})>> blocked() async {
+    final rows = await _send('GET', '/api/practice/blocks') as List? ?? [];
+    return [
+      for (final r in rows)
+        (id: (r as Map)['id'] as int, name: r['name'] as String? ?? 'somebody'),
+    ];
+  }
 
   /// An author taking their own work back. Not a moderation event, and it does
   /// not appear in her queue as though it were.

@@ -21,6 +21,7 @@ import '../widgets/forms.dart';
 import '../widgets/data.dart';
 import '../widgets/parts.dart';
 import 'account.dart';
+import 'blocked.dart';
 import 'licences.dart';
 import 'notifications.dart';
 import '../widgets/eyebrow.dart';
@@ -65,6 +66,18 @@ class SettingsScreen extends StatelessWidget {
                   MaterialPageRoute(builder: (_) => const NoticesScreen()),
                 ),
               ),
+              // ⚠ Only when signed in, because a block belongs to an account
+              // and there is nothing to show without one. It sits here rather
+              // than in the practice room on purpose: the undo must be
+              // findable by somebody who has forgotten the name they blocked.
+              if (account.signedIn)
+                ListRow(
+                  label: 'Blocked',
+                  description: 'People whose writing you do not see',
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => const BlockedScreen()),
+                  ),
+                ),
             ],
           ),
           const SizedBox(height: Gap.md),

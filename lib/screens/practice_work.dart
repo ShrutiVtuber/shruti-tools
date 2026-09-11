@@ -91,6 +91,102 @@ class _WorkScreenState extends State<WorkScreen> {
   /// ⚠ The reason is a short list, not a free-text box. A queue of a hundred
   /// paragraphs is a queue nobody reads; a queue of labelled reasons can be
   /// taken in at a glance, which is what makes it get looked at at all.
+  /// Two different things, and they are not the same thing.
+  ///
+  /// ⚠ Reporting asks her to look. Blocking asks nobody anything — it is this
+  /// reader's own decision about their own room, nobody is told, and nothing
+  /// moves for anybody else. Offering them from one menu keeps them findable
+  /// together; describing them in one sentence would make them sound alike.
+  Future<void> _askAboutPerson(Work work) async {
+    final chose = await showModalBottomSheet<String>(
+      context: context,
+      backgroundColor: Tone.card,
+      builder: (sheet) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(top: Gap.md, bottom: Gap.sm),
+              child: Hem(),
+            ),
+            ListTile(
+              leading: const Icon(Icons.flag_outlined, color: Tone.faint),
+              title: const Text('Report this reading'),
+              subtitle: const Text('It goes to Shruti.'),
+              onTap: () => Navigator.of(sheet).pop('report'),
+            ),
+            // ⚠ Only when the server said who wrote it. A button that cannot
+            // work should not be drawn, and an older server does not send it.
+            if (work.authorId != null)
+              ListTile(
+                leading: const Icon(Icons.block, color: Tone.faint),
+                title: Text('Block ${work.author}'),
+                subtitle: const Text(
+                  'You stop seeing their writing, and they stop answering '
+                  'yours. Nobody is told.',
+                ),
+                onTap: () => Navigator.of(sheet).pop('block'),
+              ),
+            const SizedBox(height: Gap.md),
+          ],
+        ),
+      ),
+    );
+    if (!mounted) return;
+    if (chose == 'report') return _askReport(work);
+    if (chose == 'block') return _askBlock(work);
+  }
+
+  /// ⚠ Confirmed, because it is undone somewhere else.
+  ///
+  /// The undo lives in Settings, which is the right place for it and is not
+  /// the place somebody will look in the next five seconds. So the moment to
+  /// be sure is this one, and the sheet says where to go back on.
+  Future<void> _askBlock(Work work) async {
+    final id = work.authorId;
+    if (id == null) return;
+    final sure = await showDialog<bool>(
+      context: context,
+      builder: (ask) => AlertDialog(
+        backgroundColor: Tone.card,
+        title: Text('Block ${work.author}?'),
+        content: const Text(
+          'Their writing goes from your feed, and they can no longer comment '
+          'on yours. They are not told. You can undo it in Settings.',
+          style: TextStyle(
+            fontFamily: Face.body,
+            fontFamilyFallback: [Face.glyph],
+            fontSize: Type.caption,
+            height: 1.5,
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ask).pop(false),
+            child: const Text('Keep reading them'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(ask).pop(true),
+            child: const Text('Block'),
+          ),
+        ],
+      ),
+    );
+    if (sure != true || !mounted) return;
+    try {
+      await _room.blockPerson(id);
+      if (!mounted) return;
+      // ⚠ Off this page. Their work is now a 404 for this reader, so staying
+      // here and refreshing would answer the block with an error message.
+      Navigator.of(context).pop(true);
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('${work.author} is blocked.')));
+    } on PracticeTrouble catch (e) {
+      if (mounted) setState(() => _trouble = e.message);
+    }
+  }
+
   Future<void> _askReport(Work work) async {
     var reason = reportReasons.first.$1;
     final detail = TextEditingController();
@@ -227,8 +323,8 @@ class _WorkScreenState extends State<WorkScreen> {
               if (w == null) return const SizedBox.shrink();
               return Tap(
                 icon: Icons.more_vert,
-                label: w.mine ? 'What to do with this' : 'Report this',
-                onTap: () => w.mine ? _askWithdraw(w) : _askReport(w),
+                label: w.mine ? 'What to do with this' : 'Report or block',
+                onTap: () => w.mine ? _askWithdraw(w) : _askAboutPerson(w),
               );
             },
           ),
