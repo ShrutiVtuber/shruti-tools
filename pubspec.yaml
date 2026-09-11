@@ -96,6 +96,13 @@ flutter:
     # ⚠ Her drawings, and they may be absent — see lib/services/art.dart.
     - assets/art/
     - assets/fonts/
+    # ⚠ Shipped as an asset so the agreement test can read it ON THE DEVICE.
+    # The Swiss Ephemeris is a native library with no binding in a plain
+    # `flutter test`, so that test has to run in integration_test — where
+    # dart:io cannot see the repository and rootBundle is the only way in.
+    # It costs 116KB in the bundle and buys the one guarantee that matters:
+    # a chart cast on a phone and on the website show the same degrees.
+    - test/fixtures/ephemeris.json
 
   fonts:
     # Her two faces, taken from the site's own files rather than re-picked, so

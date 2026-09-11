@@ -1,0 +1,6074 @@
+{
+ "note": "Generated from shruti-astro \u2014 the WEBSITE's own ephemeris \u2014 by tool/make_ephemeris_fixture.py. Do not hand-edit: both engines are compared against this one file, so editing it to make one pass makes the other fail.",
+ "zodiac": "tropical",
+ "houseSystem": "whole_sign",
+ "generated": "2026-09-11T12:54:03Z",
+ "places": {
+  "athens": [
+   37.9838,
+   23.7275
+  ],
+  "reykjavik": [
+   64.1466,
+   -21.9426
+  ],
+  "quito": [
+   -0.1807,
+   -78.4678
+  ],
+  "sydney": [
+   -33.8688,
+   151.2093
+  ]
+ },
+ "samples": [
+  {
+   "utc": "1800-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 353.50997,
+     "speed": 0.994888,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 214.726596,
+     "speed": 14.543749,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 2.637874,
+     "speed": 1.964884,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 316.967207,
+     "speed": 1.20258,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 295.797248,
+     "speed": 0.726803,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 82.54816,
+     "speed": 0.084949,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 123.730577,
+     "speed": -0.037713,
+     "retrograde": true
+    },
+    "Rahu": {
+     "longitude": 27.852665,
+     "speed": 0.010198,
+     "retrograde": false
+    },
+    "Ketu": {
+     "longitude": 207.852665,
+     "speed": 0.010198,
+     "retrograde": false
+    }
+   },
+   "ascendant": {
+    "athens": 53.979774,
+    "reykjavik": 296.732474,
+    "quito": 292.279571,
+    "sydney": 155.365498
+   }
+  },
+  {
+   "utc": "1800-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 186.395941,
+     "speed": 0.983902,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 329.04215,
+     "speed": 13.469796,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 180.992523,
+     "speed": 1.804197,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 201.348851,
+     "speed": 1.242008,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 54.947277,
+     "speed": 0.049004,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 120.356267,
+     "speed": 0.144762,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 140.297175,
+     "speed": 0.101937,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 18.469095,
+     "speed": -0.028565,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 198.469095,
+     "speed": -0.028565,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 77.635331,
+    "reykjavik": 69.208089,
+    "quito": 312.697285,
+    "sydney": 187.356427
+   }
+  },
+  {
+   "utc": "1806-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 353.06502,
+     "speed": 0.995596,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 286.3598,
+     "speed": 11.778909,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 352.176828,
+     "speed": 1.951299,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 353.971765,
+     "speed": -0.629112,
+     "retrograde": true
+    },
+    "Mars": {
+     "longitude": 345.657174,
+     "speed": 0.78529,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 275.562938,
+     "speed": 0.121239,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 207.388122,
+     "speed": -0.055916,
+     "retrograde": true
+    },
+    "Rahu": {
+     "longitude": 274.040658,
+     "speed": -0.018774,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 94.040658,
+     "speed": -0.018774,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 53.424896,
+    "reykjavik": 295.42101,
+    "quito": 291.865726,
+    "sydney": 154.728734
+   }
+  },
+  {
+   "utc": "1806-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 185.954701,
+     "speed": 0.98357,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 28.654659,
+     "speed": 12.663039,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 172.247626,
+     "speed": 1.690758,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 163.694445,
+     "speed": 1.234709,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 126.118222,
+     "speed": 0.592933,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 270.2659,
+     "speed": 0.102702,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 208.24169,
+     "speed": 0.114916,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 262.077355,
+     "speed": -0.168525,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 82.077355,
+     "speed": -0.168525,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 77.185484,
+    "reykjavik": 68.081458,
+    "quito": 312.25902,
+    "sydney": 186.680336
+   }
+  },
+  {
+   "utc": "1812-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 353.599269,
+     "speed": 0.99564,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 8.32776,
+     "speed": 15.195858,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 344.174495,
+     "speed": 1.820281,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 29.454433,
+     "speed": 1.196926,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 33.25654,
+     "speed": 0.712995,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 87.006819,
+     "speed": 0.070809,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 277.081053,
+     "speed": 0.053436,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 158.062623,
+     "speed": -0.025797,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 338.062623,
+     "speed": -0.025797,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 54.088456,
+    "reykjavik": 297.093165,
+    "quito": 292.367718,
+    "sydney": 155.503887
+   }
+  },
+  {
+   "utc": "1812-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 186.483495,
+     "speed": 0.984324,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 123.207824,
+     "speed": 12.645642,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 168.638615,
+     "speed": 1.047103,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 140.8057,
+     "speed": 0.874388,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 165.028833,
+     "speed": 0.633949,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 124.320074,
+     "speed": 0.153439,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 271.85893,
+     "speed": 0.039163,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 148.534795,
+     "speed": 0.02639,
+     "retrograde": false
+    },
+    "Ketu": {
+     "longitude": 328.534795,
+     "speed": 0.02639,
+     "retrograde": false
+    }
+   },
+   "ascendant": {
+    "athens": 77.720796,
+    "reykjavik": 69.366496,
+    "quito": 312.789332,
+    "sydney": 187.494606
+   }
+  },
+  {
+   "utc": "1818-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 353.152304,
+     "speed": 0.995566,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 75.059405,
+     "speed": 11.822428,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 335.650989,
+     "speed": 1.642182,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 353.467662,
+     "speed": 1.245888,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 84.472423,
+     "speed": 0.445892,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 279.653376,
+     "speed": 0.132521,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 340.346645,
+     "speed": 0.120211,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 39.82056,
+     "speed": 0.017611,
+     "retrograde": false
+    },
+    "Ketu": {
+     "longitude": 219.82056,
+     "speed": 0.017611,
+     "retrograde": false
+    }
+   },
+   "ascendant": {
+    "athens": 53.531777,
+    "reykjavik": 295.672399,
+    "quito": 291.945631,
+    "sydney": 154.851721
+   }
+  },
+  {
+   "utc": "1818-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 186.039038,
+     "speed": 0.984222,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 180.784886,
+     "speed": 13.568493,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 174.965925,
+     "speed": -0.536446,
+     "retrograde": true
+    },
+    "Venus": {
+     "longitude": 232.057734,
+     "speed": 1.072532,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 201.451417,
+     "speed": 0.669817,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 274.5379,
+     "speed": 0.090816,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 343.236197,
+     "speed": -0.06738,
+     "retrograde": true
+    },
+    "Rahu": {
+     "longitude": 29.777344,
+     "speed": -0.044746,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 209.777344,
+     "speed": -0.044746,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 77.27334,
+    "reykjavik": 68.307575,
+    "quito": 312.344107,
+    "sydney": 186.811839
+   }
+  },
+  {
+   "utc": "1824-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 353.699265,
+     "speed": 0.994876,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 160.737048,
+     "speed": 14.945283,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 330.418545,
+     "speed": 1.456596,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 318.681078,
+     "speed": 1.208606,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 188.482816,
+     "speed": -0.33335,
+     "retrograde": true
+    },
+    "Jupiter": {
+     "longitude": 91.554222,
+     "speed": 0.055872,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 49.662634,
+     "speed": 0.090564,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 286.26867,
+     "speed": -0.14593,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 106.26867,
+     "speed": -0.14593,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 54.21276,
+    "reykjavik": 297.390674,
+    "quito": 292.459992,
+    "sydney": 155.645759
+   }
+  },
+  {
+   "utc": "1824-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 186.587306,
+     "speed": 0.984164,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 274.848284,
+     "speed": 12.34901,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 193.371483,
+     "speed": -1.062133,
+     "retrograde": true
+    },
+    "Venus": {
+     "longitude": 203.357209,
+     "speed": 1.24062,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 244.720087,
+     "speed": 0.705052,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 128.196354,
+     "speed": 0.160825,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 67.755237,
+     "speed": -0.018018,
+     "retrograde": true
+    },
+    "Rahu": {
+     "longitude": 274.815547,
+     "speed": 3e-05,
+     "retrograde": false
+    },
+    "Ketu": {
+     "longitude": 94.815547,
+     "speed": 3e-05,
+     "retrograde": false
+    }
+   },
+   "ascendant": {
+    "athens": 77.821476,
+    "reykjavik": 69.609856,
+    "quito": 312.887802,
+    "sydney": 187.646236
+   }
+  },
+  {
+   "utc": "1830-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 353.241686,
+     "speed": 0.995371,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 224.650122,
+     "speed": 11.918697,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 326.095417,
+     "speed": 1.160042,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 342.700318,
+     "speed": -0.535319,
+     "retrograde": true
+    },
+    "Mars": {
+     "longitude": 281.069877,
+     "speed": 0.667371,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 283.756767,
+     "speed": 0.143752,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 132.009778,
+     "speed": -0.050589,
+     "retrograde": true
+    },
+    "Rahu": {
+     "longitude": 169.316168,
+     "speed": -0.005635,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 349.316168,
+     "speed": -0.005635,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 53.643013,
+    "reykjavik": 296.021694,
+    "quito": 292.035113,
+    "sydney": 154.991963
+   }
+  },
+  {
+   "utc": "1830-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 186.136655,
+     "speed": 0.983405,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 331.805584,
+     "speed": 14.226038,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 208.028038,
+     "speed": 0.111976,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 165.665882,
+     "speed": 1.237079,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 353.472879,
+     "speed": -0.235192,
+     "retrograde": true
+    },
+    "Jupiter": {
+     "longitude": 278.949077,
+     "speed": 0.078238,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 147.222164,
+     "speed": 0.10887,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 160.15405,
+     "speed": 0.010769,
+     "retrograde": false
+    },
+    "Ketu": {
+     "longitude": 340.15405,
+     "speed": 0.010769,
+     "retrograde": false
+    }
+   },
+   "ascendant": {
+    "athens": 77.360712,
+    "reykjavik": 68.477726,
+    "quito": 312.437717,
+    "sydney": 186.95274
+   }
+  },
+  {
+   "utc": "1836-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 353.776924,
+     "speed": 0.995694,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 314.970015,
+     "speed": 13.932228,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 326.881776,
+     "speed": 0.682577,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 31.131062,
+     "speed": 1.188611,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 333.679013,
+     "speed": 0.785674,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 96.112813,
+     "speed": 0.040621,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 214.535946,
+     "speed": -0.04778,
+     "retrograde": true
+    },
+    "Rahu": {
+     "longitude": 51.872551,
+     "speed": -0.13864,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 231.872551,
+     "speed": -0.13864,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 54.317337,
+    "reykjavik": 297.672911,
+    "quito": 292.539764,
+    "sydney": 155.769238
+   }
+  },
+  {
+   "utc": "1836-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 186.670261,
+     "speed": 0.983869,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 64.206393,
+     "speed": 12.176384,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 212.317447,
+     "speed": 0.871055,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 140.545293,
+     "speed": 0.940774,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 114.817753,
+     "speed": 0.565431,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 132.002918,
+     "speed": 0.167846,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 214.327836,
+     "speed": 0.111146,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 41.362296,
+     "speed": 0.029794,
+     "retrograde": false
+    },
+    "Ketu": {
+     "longitude": 221.362296,
+     "speed": 0.029794,
+     "retrograde": false
+    }
+   },
+   "ascendant": {
+    "athens": 77.907049,
+    "reykjavik": 69.810563,
+    "quito": 312.972314,
+    "sydney": 187.776
+   }
+  },
+  {
+   "utc": "1842-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 353.339678,
+     "speed": 0.995934,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 16.124821,
+     "speed": 12.333858,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 334.508619,
+     "speed": -0.266974,
+     "retrograde": true
+    },
+    "Venus": {
+     "longitude": 355.50906,
+     "speed": 1.245956,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 20.99198,
+     "speed": 0.742973,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 287.888233,
+     "speed": 0.154311,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 283.108148,
+     "speed": 0.062907,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 298.341585,
+     "speed": -0.172991,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 118.341585,
+     "speed": -0.172991,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 53.766947,
+    "reykjavik": 296.294151,
+    "quito": 292.126012,
+    "sydney": 155.131198
+   }
+  },
+  {
+   "utc": "1842-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 186.229608,
+     "speed": 0.983956,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 124.297811,
+     "speed": 14.240291,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 210.041471,
+     "speed": 1.262776,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 232.674219,
+     "speed": 1.03796,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 155.54175,
+     "speed": 0.626203,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 283.505938,
+     "speed": 0.064448,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 278.070523,
+     "speed": 0.028532,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 287.338872,
+     "speed": -0.026671,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 107.338872,
+     "speed": -0.026671,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 77.461538,
+    "reykjavik": 68.736173,
+    "quito": 312.534958,
+    "sydney": 187.103133
+   }
+  },
+  {
+   "utc": "1848-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 353.877827,
+     "speed": 0.995304,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 110.04998,
+     "speed": 13.067774,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 351.563484,
+     "speed": -0.949815,
+     "retrograde": true
+    },
+    "Venus": {
+     "longitude": 320.429392,
+     "speed": 1.214126,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 70.061464,
+     "speed": 0.558509,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 100.609752,
+     "speed": 0.025869,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 346.565349,
+     "speed": 0.122318,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 180.621946,
+     "speed": -0.01178,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 0.621946,
+     "speed": -0.01178,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 54.430062,
+    "reykjavik": 298.051006,
+    "quito": 292.630854,
+    "sydney": 155.912087
+   }
+  },
+  {
+   "utc": "1848-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 186.768126,
+     "speed": 0.984279,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 213.547275,
+     "speed": 11.912701,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 206.144214,
+     "speed": 1.448004,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 205.342443,
+     "speed": 1.238846,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 192.290363,
+     "speed": 0.659289,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 135.702134,
+     "speed": 0.174189,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 350.734259,
+     "speed": -0.072681,
+     "retrograde": true
+    },
+    "Rahu": {
+     "longitude": 171.522486,
+     "speed": -0.040016,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 351.522486,
+     "speed": -0.040016,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 77.995843,
+    "reykjavik": 69.972964,
+    "quito": 313.067714,
+    "sydney": 187.919122
+   }
+  },
+  {
+   "utc": "1854-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 353.420033,
+     "speed": 0.995305,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 168.071408,
+     "speed": 13.171782,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 8.083853,
+     "speed": 0.002265,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 332.66688,
+     "speed": -0.284313,
+     "retrograde": true
+    },
+    "Mars": {
+     "longitude": 152.250848,
+     "speed": -0.31782,
+     "retrograde": true
+    },
+    "Jupiter": {
+     "longitude": 291.939573,
+     "speed": 0.164074,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 56.874159,
+     "speed": 0.080344,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 63.984317,
+     "speed": -0.204798,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 243.984317,
+     "speed": -0.204798,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 53.870885,
+    "reykjavik": 296.573578,
+    "quito": 292.205837,
+    "sydney": 155.254917
+   }
+  },
+  {
+   "utc": "1854-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 186.321477,
+     "speed": 0.983643,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 280.184051,
+     "speed": 14.156534,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 199.221901,
+     "speed": 1.5881,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 167.655993,
+     "speed": 1.239427,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 232.252429,
+     "speed": 0.699229,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 288.089955,
+     "speed": 0.050342,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 75.877265,
+     "speed": -0.002739,
+     "retrograde": true
+    },
+    "Rahu": {
+     "longitude": 53.265694,
+     "speed": -0.008733,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 233.265694,
+     "speed": -0.008733,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 77.546074,
+    "reykjavik": 68.934919,
+    "quito": 312.619285,
+    "sydney": 187.232349
+   }
+  },
+  {
+   "utc": "1860-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 353.966138,
+     "speed": 0.995517,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 263.111639,
+     "speed": 12.674675,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 12.112662,
+     "speed": 1.215862,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 32.759439,
+     "speed": 1.178888,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 265.124693,
+     "speed": 0.559425,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 105.221199,
+     "speed": 0.010533,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 140.341952,
+     "speed": -0.060125,
+     "retrograde": true
+    },
+    "Rahu": {
+     "longitude": 310.243084,
+     "speed": -0.000413,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 130.243084,
+     "speed": -0.000413,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 54.551879,
+    "reykjavik": 298.338958,
+    "quito": 292.720455,
+    "sydney": 156.049592
+   }
+  },
+  {
+   "utc": "1860-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 186.864245,
+     "speed": 0.983545,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 4.14711,
+     "speed": 11.879863,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 192.800024,
+     "speed": 1.694248,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 140.71003,
+     "speed": 0.992551,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 300.031722,
+     "speed": 0.453384,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 139.43657,
+     "speed": 0.180149,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 154.233912,
+     "speed": 0.113787,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 299.725794,
+     "speed": -0.201605,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 119.725794,
+     "speed": -0.201605,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 78.095585,
+    "reykjavik": 70.218131,
+    "quito": 313.163776,
+    "sydney": 188.067606
+   }
+  },
+  {
+   "utc": "1866-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 353.515534,
+     "speed": 0.996089,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 318.947425,
+     "speed": 13.857474,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 5.606721,
+     "speed": 1.888691,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 357.538883,
+     "speed": 1.245795,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 320.704084,
+     "speed": 0.776412,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 295.850576,
+     "speed": 0.172959,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 221.906102,
+     "speed": -0.036962,
+     "retrograde": true
+    },
+    "Rahu": {
+     "longitude": 191.923518,
+     "speed": -0.046364,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 11.923518,
+     "speed": -0.046364,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 53.986487,
+    "reykjavik": 296.935217,
+    "quito": 292.298145,
+    "sydney": 155.399297
+   }
+  },
+  {
+   "utc": "1866-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 186.413881,
+     "speed": 0.983481,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 77.464938,
+     "speed": 14.349112,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 183.884468,
+     "speed": 1.793875,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 232.998853,
+     "speed": 0.994505,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 100.838804,
+     "speed": 0.512449,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 292.621014,
+     "speed": 0.035673,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 220.557926,
+     "speed": 0.106027,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 182.792368,
+     "speed": -0.002507,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 2.792368,
+     "speed": -0.002507,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 77.637015,
+    "reykjavik": 69.112155,
+    "quito": 312.716009,
+    "sydney": 187.378029
+   }
+  },
+  {
+   "utc": "1872-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 354.054568,
+     "speed": 0.995758,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 53.058671,
+     "speed": 12.451486,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 357.371052,
+     "speed": 1.986346,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 322.21632,
+     "speed": 1.21904,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 9.431792,
+     "speed": 0.764566,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 109.858966,
+     "speed": -0.004499,
+     "retrograde": true
+    },
+    "Saturn": {
+     "longitude": 289.532296,
+     "speed": 0.071248,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 76.204628,
+     "speed": -0.048042,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 256.204628,
+     "speed": -0.048042,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 54.654143,
+    "reykjavik": 298.6524,
+    "quito": 292.800605,
+    "sydney": 156.174436
+   }
+  },
+  {
+   "utc": "1872-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 186.947413,
+     "speed": 0.984166,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 154.543732,
+     "speed": 12.168778,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 176.542234,
+     "speed": 1.784585,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 207.313958,
+     "speed": 1.236704,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 146.419083,
+     "speed": 0.617472,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 143.117833,
+     "speed": 0.185749,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 284.747737,
+     "speed": 0.01855,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 65.303913,
+     "speed": -0.167457,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 245.303913,
+     "speed": -0.167457,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 78.178732,
+    "reykjavik": 70.394649,
+    "quito": 313.248478,
+    "sydney": 188.196441
+   }
+  },
+  {
+   "utc": "1878-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 353.61026,
+     "speed": 0.995704,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 110.456745,
+     "speed": 13.990292,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 347.145823,
+     "speed": 1.867643,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 324.647163,
+     "speed": 0.014521,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 56.595822,
+     "speed": 0.631217,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 299.840585,
+     "speed": 0.181582,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 353.109824,
+     "speed": 0.123656,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 322.040071,
+     "speed": 0.01713,
+     "retrograde": false
+    },
+    "Ketu": {
+     "longitude": 142.040071,
+     "speed": 0.01713,
+     "retrograde": false
+    }
+   },
+   "ascendant": {
+    "athens": 54.10723,
+    "reykjavik": 297.201172,
+    "quito": 292.386231,
+    "sydney": 155.534097
+   }
+  },
+  {
+   "utc": "1878-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 186.51557,
+     "speed": 0.983804,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 232.063159,
+     "speed": 14.599987,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 169.438377,
+     "speed": 1.365277,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 169.668063,
+     "speed": 1.241462,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 182.742549,
+     "speed": 0.649267,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 297.388742,
+     "speed": 0.020464,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 358.929586,
+     "speed": -0.076696,
+     "retrograde": true
+    },
+    "Rahu": {
+     "longitude": 311.730931,
+     "speed": -0.116265,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 131.730931,
+     "speed": -0.116265,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 77.73606,
+    "reykjavik": 69.367609,
+    "quito": 312.810413,
+    "sydney": 187.52444
+   }
+  },
+  {
+   "utc": "1884-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 354.146544,
+     "speed": 0.995287,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 202.376908,
+     "speed": 12.08808,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 339.847458,
+     "speed": 1.71788,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 34.308104,
+     "speed": 1.16765,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 122.509551,
+     "speed": 0.020652,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 114.551981,
+     "speed": -0.019651,
+     "retrograde": true
+    },
+    "Saturn": {
+     "longitude": 64.632445,
+     "speed": 0.069442,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 203.221462,
+     "speed": -0.001579,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 23.221462,
+     "speed": -0.001579,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 54.771174,
+    "reykjavik": 299.038954,
+    "quito": 292.894077,
+    "sydney": 156.320619
+   }
+  },
+  {
+   "utc": "1884-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 187.050381,
+     "speed": 0.983645,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 303.838582,
+     "speed": 12.49529,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 171.140484,
+     "speed": 0.186439,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 141.194452,
+     "speed": 1.033983,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 221.563339,
+     "speed": 0.689824,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 146.71689,
+     "speed": 0.190264,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 84.202311,
+     "speed": 0.011509,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 194.083274,
+     "speed": -0.014509,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 14.083274,
+     "speed": -0.014509,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 78.271121,
+    "reykjavik": 70.566274,
+    "quito": 313.346679,
+    "sydney": 188.344011
+   }
+  },
+  {
+   "utc": "1890-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 353.689821,
+     "speed": 0.995954,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 265.473907,
+     "speed": 13.952944,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 332.328708,
+     "speed": 1.527648,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 359.565296,
+     "speed": 1.245337,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 245.121111,
+     "speed": 0.358336,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 303.853675,
+     "speed": 0.190161,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 148.720265,
+     "speed": -0.069087,
+     "retrograde": true
+    },
+    "Rahu": {
+     "longitude": 88.865077,
+     "speed": 0.000394,
+     "retrograde": false
+    },
+    "Ketu": {
+     "longitude": 268.865077,
+     "speed": 0.000394,
+     "retrograde": false
+    }
+   },
+   "ascendant": {
+    "athens": 54.209495,
+    "reykjavik": 297.512917,
+    "quito": 292.466945,
+    "sydney": 155.659998
+   }
+  },
+  {
+   "utc": "1890-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 186.595204,
+     "speed": 0.983059,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 23.9157,
+     "speed": 14.302209,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 186.55063,
+     "speed": -1.133595,
+     "retrograde": true
+    },
+    "Venus": {
+     "longitude": 232.959173,
+     "speed": 0.93935,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 273.908624,
+     "speed": 0.651677,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 302.330378,
+     "speed": 0.004422,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 161.008675,
+     "speed": 0.118204,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 77.3041,
+     "speed": -0.148887,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 257.3041,
+     "speed": -0.148887,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 77.818746,
+    "reykjavik": 69.543458,
+    "quito": 312.895416,
+    "sydney": 187.653531
+   }
+  },
+  {
+   "utc": "1896-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 354.24092,
+     "speed": 0.996011,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 352.705779,
+     "speed": 11.802448,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 328.334403,
+     "speed": 1.303566,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 324.047156,
+     "speed": 1.223303,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 308.1751,
+     "speed": 0.755793,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 119.278375,
+     "speed": -0.034426,
+     "retrograde": true
+    },
+    "Saturn": {
+     "longitude": 228.879455,
+     "speed": -0.027443,
+     "retrograde": true
+    },
+    "Rahu": {
+     "longitude": 333.670268,
+     "speed": -0.030622,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 153.670268,
+     "speed": -0.030622,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 54.889342,
+    "reykjavik": 299.323526,
+    "quito": 292.980787,
+    "sydney": 156.453674
+   }
+  },
+  {
+   "utc": "1896-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 187.141331,
+     "speed": 0.983779,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 94.076904,
+     "speed": 12.634247,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 204.264591,
+     "speed": -0.41196,
+     "retrograde": true
+    },
+    "Venus": {
+     "longitude": 209.283355,
+     "speed": 1.234194,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 82.558266,
+     "speed": 0.372595,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 150.29857,
+     "speed": 0.194685,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 226.677421,
+     "speed": 0.100918,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 323.586793,
+     "speed": -0.006259,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 143.586793,
+     "speed": -0.006259,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 78.368334,
+    "reykjavik": 70.804658,
+    "quito": 313.43966,
+    "sydney": 188.487952
+   }
+  },
+  {
+   "utc": "1900-01-01T00:00:00Z",
+   "positions": {
+    "Sun": {
+     "longitude": 280.153362,
+     "speed": 1.019848,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 272.416373,
+     "speed": 14.322771,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 258.997774,
+     "speed": 1.276594,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 306.374451,
+     "speed": 1.243507,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 283.867742,
+     "speed": 0.770423,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 241.135908,
+     "speed": 0.195622,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 267.716811,
+     "speed": 0.11636,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 260.267273,
+     "speed": -0.015577,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 80.267273,
+     "speed": -0.015577,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 207.495576,
+    "reykjavik": 173.243286,
+    "quito": 110.006841,
+    "sydney": 344.322397
+   }
+  },
+  {
+   "utc": "1902-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 352.79461,
+     "speed": 0.996775,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 48.186718,
+     "speed": 14.315764,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 325.387084,
+     "speed": 0.836989,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 318.401596,
+     "speed": 0.251789,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 356.199471,
+     "speed": 0.780074,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 307.709232,
+     "speed": 0.199104,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 295.456307,
+     "speed": 0.080805,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 215.024944,
+     "speed": 0.018669,
+     "retrograde": false
+    },
+    "Ketu": {
+     "longitude": 35.024944,
+     "speed": 0.018669,
+     "retrograde": false
+    }
+   },
+   "ascendant": {
+    "athens": 53.094272,
+    "reykjavik": 294.849828,
+    "quito": 291.633281,
+    "sydney": 154.377107
+   }
+  },
+  {
+   "utc": "1902-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 185.714855,
+     "speed": 0.983128,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 162.351388,
+     "speed": 13.553358,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 211.165704,
+     "speed": 0.723852,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 170.437338,
+     "speed": 1.242564,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 135.65666,
+     "speed": 0.60857,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 307.449545,
+     "speed": -0.015477,
+     "retrograde": true
+    },
+    "Saturn": {
+     "longitude": 291.194315,
+     "speed": 0.005555,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 205.337222,
+     "speed": -0.045498,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 25.337222,
+     "speed": -0.045498,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 76.916568,
+    "reykjavik": 67.289171,
+    "quito": 312.013668,
+    "sydney": 186.294991
+   }
+  },
+  {
+   "utc": "1908-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 353.328413,
+     "speed": 0.996063,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 131.26448,
+     "speed": 11.823775,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 330.660326,
+     "speed": 0.091094,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 34.613612,
+     "speed": 1.157289,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 43.855553,
+     "speed": 0.682362,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 123.98254,
+     "speed": -0.051246,
+     "retrograde": true
+    },
+    "Saturn": {
+     "longitude": 359.342723,
+     "speed": 0.124007,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 101.7166,
+     "speed": -0.086669,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 281.7166,
+     "speed": -0.086669,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 53.76351,
+    "reykjavik": 296.426791,
+    "quito": 292.133782,
+    "sydney": 155.147195
+   }
+  },
+  {
+   "utc": "1908-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 186.246405,
+     "speed": 0.983375,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 234.239079,
+     "speed": 12.775633,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 211.184321,
+     "speed": 1.16543,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 140.86754,
+     "speed": 1.062849,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 173.310433,
+     "speed": 0.640407,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 153.589898,
+     "speed": 0.199492,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 6.776411,
+     "speed": -0.078483,
+     "retrograde": true
+    },
+    "Rahu": {
+     "longitude": 89.596119,
+     "speed": -0.086978,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 269.596119,
+     "speed": -0.086978,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 77.457803,
+    "reykjavik": 68.658322,
+    "quito": 312.542961,
+    "sydney": 187.110594
+   }
+  },
+  {
+   "utc": "1914-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 352.881251,
+     "speed": 0.996202,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 202.965403,
+     "speed": 15.031403,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 345.725757,
+     "speed": -0.90251,
+     "retrograde": true
+    },
+    "Venus": {
+     "longitude": 0.357315,
+     "speed": 1.244977,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 100.262529,
+     "speed": 0.285356,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 311.679253,
+     "speed": 0.205833,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 72.069797,
+     "speed": 0.054999,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 344.91424,
+     "speed": -0.011095,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 164.91424,
+     "speed": -0.011095,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 53.211981,
+    "reykjavik": 295.08116,
+    "quito": 291.71823,
+    "sydney": 154.506518
+   }
+  },
+  {
+   "utc": "1914-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 185.810138,
+     "speed": 0.982551,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 316.016221,
+     "speed": 12.617249,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 206.635462,
+     "speed": 1.408693,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 231.598032,
+     "speed": 0.878765,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 210.255176,
+     "speed": 0.676883,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 312.600256,
+     "speed": -0.031663,
+     "retrograde": true
+    },
+    "Saturn": {
+     "longitude": 92.107528,
+     "speed": 0.028755,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 335.639084,
+     "speed": 0.025214,
+     "retrograde": false
+    },
+    "Ketu": {
+     "longitude": 155.639084,
+     "speed": 0.025214,
+     "retrograde": false
+    }
+   },
+   "ascendant": {
+    "athens": 77.01345,
+    "reykjavik": 67.560492,
+    "quito": 312.104738,
+    "sydney": 186.436852
+   }
+  },
+  {
+   "utc": "1920-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 353.425994,
+     "speed": 0.996476,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 280.426169,
+     "speed": 12.001823,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 3.859491,
+     "speed": -0.466274,
+     "retrograde": true
+    },
+    "Venus": {
+     "longitude": 324.676217,
+     "speed": 1.226743,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 219.0949,
+     "speed": 0.010058,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 128.783134,
+     "speed": -0.06476,
+     "retrograde": true
+    },
+    "Saturn": {
+     "longitude": 157.096639,
+     "speed": -0.075194,
+     "retrograde": true
+    },
+    "Rahu": {
+     "longitude": 227.21061,
+     "speed": -0.045098,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 47.21061,
+     "speed": -0.045098,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 53.885358,
+    "reykjavik": 296.767945,
+    "quito": 292.228296,
+    "sydney": 155.293988
+   }
+  },
+  {
+   "utc": "1920-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 186.343879,
+     "speed": 0.982703,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 28.205487,
+     "speed": 13.733339,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 201.596174,
+     "speed": 1.547415,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 209.996826,
+     "speed": 1.231529,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 256.672604,
+     "speed": 0.694562,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 157.13506,
+     "speed": 0.202934,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 167.723363,
+     "speed": 0.121325,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 216.705255,
+     "speed": -0.013835,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 36.705255,
+     "speed": -0.013835,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 77.554524,
+    "reykjavik": 68.866584,
+    "quito": 312.642743,
+    "sydney": 187.262082
+   }
+  },
+  {
+   "utc": "1926-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 352.967387,
+     "speed": 0.99708,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 355.336288,
+     "speed": 15.008905,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 11.230824,
+     "speed": 0.960313,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 313.939997,
+     "speed": 0.476379,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 293.61029,
+     "speed": 0.717994,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 315.496839,
+     "speed": 0.211745,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 236.021322,
+     "speed": -0.013803,
+     "retrograde": true
+    },
+    "Rahu": {
+     "longitude": 113.784117,
+     "speed": -0.146065,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 293.784117,
+     "speed": -0.146065,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 53.315946,
+    "reykjavik": 295.389801,
+    "quito": 291.800948,
+    "sydney": 154.635791
+   }
+  },
+  {
+   "utc": "1926-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 185.894878,
+     "speed": 0.982741,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 108.163671,
+     "speed": 12.203714,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 193.795946,
+     "speed": 1.674903,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 172.453873,
+     "speed": 1.243808,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 49.454465,
+     "speed": -0.008713,
+     "retrograde": true
+    },
+    "Jupiter": {
+     "longitude": 317.658728,
+     "speed": -0.047425,
+     "retrograde": true
+    },
+    "Saturn": {
+     "longitude": 232.825744,
+     "speed": 0.093309,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 102.636187,
+     "speed": -0.00422,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 282.636187,
+     "speed": -0.00422,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 77.096146,
+    "reykjavik": 67.738215,
+    "quito": 312.191255,
+    "sydney": 186.567925
+   }
+  },
+  {
+   "utc": "1932-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 353.514993,
+     "speed": 0.996522,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 69.720471,
+     "speed": 12.142949,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 8.209887,
+     "speed": 1.75316,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 35.999657,
+     "speed": 1.142436,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 344.353052,
+     "speed": 0.786673,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 133.599687,
+     "speed": -0.077179,
+     "retrograde": true
+    },
+    "Saturn": {
+     "longitude": 301.863907,
+     "speed": 0.088057,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 356.18667,
+     "speed": 0.001245,
+     "retrograde": false
+    },
+    "Ketu": {
+     "longitude": 176.18667,
+     "speed": 0.001245,
+     "retrograde": false
+    }
+   },
+   "ascendant": {
+    "athens": 53.9999,
+    "reykjavik": 297.019018,
+    "quito": 292.311883,
+    "sydney": 155.421868
+   }
+  },
+  {
+   "utc": "1932-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 186.437545,
+     "speed": 0.983404,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 180.807288,
+     "speed": 14.704356,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 186.774235,
+     "speed": 1.772694,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 141.796678,
+     "speed": 1.091245,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 125.398623,
+     "speed": 0.592583,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 160.638264,
+     "speed": 0.206043,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 298.122458,
+     "speed": -0.004925,
+     "retrograde": true
+    },
+    "Rahu": {
+     "longitude": 347.092008,
+     "speed": -0.015314,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 167.092008,
+     "speed": -0.015314,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 77.649187,
+    "reykjavik": 69.115636,
+    "quito": 312.732405,
+    "sydney": 187.40137
+   }
+  },
+  {
+   "utc": "1938-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 353.066612,
+     "speed": 0.996349,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 148.413559,
+     "speed": 14.098439,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 358.624957,
+     "speed": 1.98047,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 2.388617,
+     "speed": 1.244431,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 31.430174,
+     "speed": 0.720436,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 319.431203,
+     "speed": 0.21737,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 6.095506,
+     "speed": 0.123039,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 239.280712,
+     "speed": -0.173411,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 59.280712,
+     "speed": -0.173411,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 53.439838,
+    "reykjavik": 295.707548,
+    "quito": 291.895591,
+    "sydney": 154.782191
+   }
+  },
+  {
+   "utc": "1938-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 185.997546,
+     "speed": 0.982792,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 257.681059,
+     "speed": 12.078124,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 177.535027,
+     "speed": 1.81397,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 230.586071,
+     "speed": 0.788815,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 163.926077,
+     "speed": 0.63273,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 323.014763,
+     "speed": -0.063015,
+     "retrograde": true
+    },
+    "Saturn": {
+     "longitude": 15.282491,
+     "speed": -0.077219,
+     "retrograde": true
+    },
+    "Rahu": {
+     "longitude": 228.586495,
+     "speed": 0.025634,
+     "retrograde": false
+    },
+    "Ketu": {
+     "longitude": 48.586495,
+     "speed": 0.025634,
+     "retrograde": false
+    }
+   },
+   "ascendant": {
+    "athens": 77.19465,
+    "reykjavik": 67.966338,
+    "quito": 312.291278,
+    "sydney": 186.720548
+   }
+  },
+  {
+   "utc": "1944-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 353.599768,
+     "speed": 0.996224,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 221.472715,
+     "speed": 12.498326,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 350.208424,
+     "speed": 1.910136,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 326.546972,
+     "speed": 1.229633,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 83.197229,
+     "speed": 0.462667,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 138.397071,
+     "speed": -0.088681,
+     "retrograde": true
+    },
+    "Saturn": {
+     "longitude": 80.163383,
+     "speed": 0.041785,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 125.545534,
+     "speed": -0.128079,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 305.545534,
+     "speed": -0.128079,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 54.103997,
+    "reykjavik": 297.360878,
+    "quito": 292.395956,
+    "sydney": 155.553671
+   }
+  },
+  {
+   "utc": "1944-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 186.526015,
+     "speed": 0.982584,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 332.93424,
+     "speed": 14.949961,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 171.07357,
+     "speed": 1.582406,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 211.919491,
+     "speed": 1.228758,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 200.807643,
+     "speed": 0.666184,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 164.042559,
+     "speed": 0.208274,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 100.282844,
+     "speed": 0.04245,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 114.972886,
+     "speed": -0.100231,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 294.972886,
+     "speed": -0.100231,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 77.731944,
+    "reykjavik": 69.275775,
+    "quito": 312.82044,
+    "sydney": 187.533869
+   }
+  },
+  {
+   "utc": "1950-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 353.149522,
+     "speed": 0.997062,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 303.006271,
+     "speed": 13.047685,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 340.78886,
+     "speed": 1.750809,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 310.907669,
+     "speed": 0.647764,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 185.392605,
+     "speed": -0.352279,
+     "retrograde": true
+    },
+    "Jupiter": {
+     "longitude": 323.409531,
+     "speed": 0.222978,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 165.486607,
+     "speed": -0.078769,
+     "retrograde": true
+    },
+    "Rahu": {
+     "longitude": 7.508259,
+     "speed": -0.034076,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 187.508259,
+     "speed": -0.034076,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 53.552645,
+    "reykjavik": 295.948041,
+    "quito": 291.977981,
+    "sydney": 154.90817
+   }
+  },
+  {
+   "utc": "1950-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 186.085391,
+     "speed": 0.982283,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 46.758858,
+     "speed": 11.913513,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 168.868697,
+     "speed": 0.547696,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 174.489582,
+     "speed": 1.244707,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 242.783279,
+     "speed": 0.699878,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 328.575017,
+     "speed": -0.078279,
+     "retrograde": true
+    },
+    "Saturn": {
+     "longitude": 174.385018,
+     "speed": 0.123203,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 358.35192,
+     "speed": -0.021934,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 178.35192,
+     "speed": -0.021934,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 77.287645,
+    "reykjavik": 68.217861,
+    "quito": 312.379306,
+    "sydney": 186.857361
+   }
+  },
+  {
+   "utc": "1956-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 353.700414,
+     "speed": 0.996893,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 14.82462,
+     "speed": 13.314139,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 334.485116,
+     "speed": 1.590738,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 37.270626,
+     "speed": 1.124298,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 279.477306,
+     "speed": 0.653433,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 143.262319,
+     "speed": -0.099106,
+     "retrograde": true
+    },
+    "Saturn": {
+     "longitude": 242.810049,
+     "speed": -0.003671,
+     "retrograde": true
+    },
+    "Rahu": {
+     "longitude": 251.283028,
+     "speed": -0.171448,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 71.283028,
+     "speed": -0.171448,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 54.228058,
+    "reykjavik": 297.693629,
+    "quito": 292.490523,
+    "sydney": 155.699942
+   }
+  },
+  {
+   "utc": "1956-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 186.625654,
+     "speed": 0.983118,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 127.740352,
+     "speed": 14.470987,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 180.064704,
+     "speed": -0.898619,
+     "retrograde": true
+    },
+    "Venus": {
+     "longitude": 142.897715,
+     "speed": 1.114394,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 343.901165,
+     "speed": -0.138621,
+     "retrograde": true
+    },
+    "Jupiter": {
+     "longitude": 167.485741,
+     "speed": 0.21055,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 239.002909,
+     "speed": 0.086829,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 240.550183,
+     "speed": -0.08118,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 60.550183,
+     "speed": -0.08118,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 77.831232,
+    "reykjavik": 69.497313,
+    "quito": 312.920769,
+    "sydney": 187.686892
+   }
+  },
+  {
+   "utc": "1962-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 353.239812,
+     "speed": 0.996809,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 96.269898,
+     "speed": 12.497231,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 328.367777,
+     "speed": 1.368251,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 4.40385,
+     "speed": 1.243909,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 331.550421,
+     "speed": 0.784746,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 327.413211,
+     "speed": 0.227465,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 307.847369,
+     "speed": 0.095068,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 137.535915,
+     "speed": 0.023355,
+     "retrograde": false
+    },
+    "Ketu": {
+     "longitude": 317.535915,
+     "speed": 0.023355,
+     "retrograde": false
+    }
+   },
+   "ascendant": {
+    "athens": 53.658487,
+    "reykjavik": 296.285271,
+    "quito": 292.063392,
+    "sydney": 155.042064
+   }
+  },
+  {
+   "utc": "1962-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 186.176503,
+     "speed": 0.982848,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 197.058433,
+     "speed": 11.864514,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 199.813742,
+     "speed": -0.695091,
+     "retrograde": true
+    },
+    "Venus": {
+     "longitude": 228.802607,
+     "speed": 0.668961,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 113.313526,
+     "speed": 0.566065,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 334.249294,
+     "speed": -0.092561,
+     "retrograde": true
+    },
+    "Saturn": {
+     "longitude": 304.842127,
+     "speed": -0.016404,
+     "retrograde": true
+    },
+    "Rahu": {
+     "longitude": 127.189386,
+     "speed": -0.195188,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 307.189386,
+     "speed": -0.195188,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 77.371452,
+    "reykjavik": 68.384036,
+    "quito": 312.468651,
+    "sydney": 186.991929
+   }
+  },
+  {
+   "utc": "1968-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 353.784813,
+     "speed": 0.996163,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 167.380126,
+     "speed": 14.316383,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 326.295541,
+     "speed": 1.055748,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 328.452539,
+     "speed": 1.232182,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 19.831884,
+     "speed": 0.748394,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 148.050654,
+     "speed": -0.107869,
+     "retrograde": true
+    },
+    "Saturn": {
+     "longitude": 12.647556,
+     "speed": 0.121517,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 18.80801,
+     "speed": -0.045849,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 198.80801,
+     "speed": -0.045849,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 54.338006,
+    "reykjavik": 297.958863,
+    "quito": 292.572021,
+    "sydney": 155.825168
+   }
+  },
+  {
+   "utc": "1968-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 186.714763,
+     "speed": 0.982833,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 284.659691,
+     "speed": 14.007564,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 210.524356,
+     "speed": 0.380629,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 213.828344,
+     "speed": 1.225849,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 155.041558,
+     "speed": 0.625199,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 170.864322,
+     "speed": 0.212427,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 23.296545,
+     "speed": -0.074302,
+     "retrograde": true
+    },
+    "Rahu": {
+     "longitude": 9.649517,
+     "speed": -0.002928,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 189.649517,
+     "speed": -0.002928,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 77.92184,
+    "reykjavik": 69.72447,
+    "quito": 313.00776,
+    "sydney": 187.821452
+   }
+  },
+  {
+   "utc": "1974-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 353.335029,
+     "speed": 0.996858,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 246.737353,
+     "speed": 12.296851,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 328.074302,
+     "speed": 0.410051,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 308.959791,
+     "speed": 0.77591,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 68.357408,
+     "speed": 0.569841,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 331.360618,
+     "speed": 0.231315,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 87.978154,
+     "speed": 0.026846,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 263.929862,
+     "speed": -0.019201,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 83.929862,
+     "speed": -0.019201,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 53.783531,
+    "reykjavik": 296.591909,
+    "quito": 292.157327,
+    "sydney": 155.186772
+   }
+  },
+  {
+   "utc": "1974-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 186.279305,
+     "speed": 0.982036,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 347.850706,
+     "speed": 12.200098,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 211.940093,
+     "speed": 1.040147,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 176.533818,
+     "speed": 1.245483,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 191.083776,
+     "speed": 0.655636,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 339.928273,
+     "speed": -0.104829,
+     "retrograde": true
+    },
+    "Saturn": {
+     "longitude": 107.985079,
+     "speed": 0.056528,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 252.67928,
+     "speed": -0.198414,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 72.67928,
+     "speed": -0.198414,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 77.472013,
+    "reykjavik": 68.624591,
+    "quito": 312.568598,
+    "sydney": 187.145168
+   }
+  },
+  {
+   "utc": "1980-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 353.871507,
+     "speed": 0.997011,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 319.012186,
+     "speed": 14.69255,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 338.846425,
+     "speed": -0.549533,
+     "retrograde": true
+    },
+    "Venus": {
+     "longitude": 38.388932,
+     "speed": 1.10204,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 149.2586,
+     "speed": -0.290686,
+     "retrograde": true
+    },
+    "Jupiter": {
+     "longitude": 152.948528,
+     "speed": -0.115701,
+     "retrograde": true
+    },
+    "Saturn": {
+     "longitude": 173.63165,
+     "speed": -0.079224,
+     "retrograde": true
+    },
+    "Rahu": {
+     "longitude": 149.167187,
+     "speed": 0.0111,
+     "retrograde": false
+    },
+    "Ketu": {
+     "longitude": 329.167187,
+     "speed": 0.0111,
+     "retrograde": false
+    }
+   },
+   "ascendant": {
+    "athens": 54.444861,
+    "reykjavik": 298.329976,
+    "quito": 292.65918,
+    "sydney": 155.962064
+   }
+  },
+  {
+   "utc": "1980-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 186.804022,
+     "speed": 0.982687,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 80.264305,
+     "speed": 13.835119,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 209.692452,
+     "speed": 1.32359,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 144.131968,
+     "speed": 1.133351,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 231.243994,
+     "speed": 0.694989,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 174.295729,
+     "speed": 0.214007,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 181.037818,
+     "speed": 0.123761,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 139.073336,
+     "speed": -0.035737,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 319.073336,
+     "speed": -0.035737,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 78.006208,
+    "reykjavik": 69.877141,
+    "quito": 313.098753,
+    "sydney": 187.957743
+   }
+  },
+  {
+   "utc": "1986-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 353.420657,
+     "speed": 0.99725,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 35.700845,
+     "speed": 12.038785,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 358.155283,
+     "speed": -0.826373,
+     "retrograde": true
+    },
+    "Venus": {
+     "longitude": 6.421282,
+     "speed": 1.243138,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 262.756985,
+     "speed": 0.538077,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 335.152854,
+     "speed": 0.23434,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 249.682172,
+     "speed": 0.008547,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 30.352494,
+     "speed": 0.010187,
+     "retrograde": false
+    },
+    "Ketu": {
+     "longitude": 210.352494,
+     "speed": 0.010187,
+     "retrograde": false
+    }
+   },
+   "ascendant": {
+    "athens": 53.891761,
+    "reykjavik": 296.849241,
+    "quito": 292.237885,
+    "sydney": 155.310601
+   }
+  },
+  {
+   "utc": "1986-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 186.362055,
+     "speed": 0.982648,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 137.610452,
+     "speed": 12.622346,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 203.829428,
+     "speed": 1.503357,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 226.015726,
+     "speed": 0.509144,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 295.184572,
+     "speed": 0.496186,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 345.460222,
+     "speed": -0.115254,
+     "retrograde": true
+    },
+    "Saturn": {
+     "longitude": 245.286198,
+     "speed": 0.07866,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 20.960856,
+     "speed": -0.032379,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 200.960856,
+     "speed": -0.032379,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 77.561107,
+    "reykjavik": 68.851557,
+    "quito": 312.654517,
+    "sydney": 187.277963
+   }
+  },
+  {
+   "utc": "1992-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 353.973313,
+     "speed": 0.996529,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 112.789982,
+     "speed": 14.411527,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 10.791763,
+     "speed": 0.384384,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 330.38286,
+     "speed": 1.234682,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 319.330514,
+     "speed": 0.773193,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 157.85153,
+     "speed": -0.121636,
+     "retrograde": true
+    },
+    "Saturn": {
+     "longitude": 314.27593,
+     "speed": 0.101166,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 276.53496,
+     "speed": -0.02605,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 96.53496,
+     "speed": -0.02605,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 54.569155,
+    "reykjavik": 298.651705,
+    "quito": 292.752473,
+    "sydney": 156.105866
+   }
+  },
+  {
+   "utc": "1992-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 186.907374,
+     "speed": 0.983015,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 232.187707,
+     "speed": 13.654692,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 198.052901,
+     "speed": 1.623887,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 215.715184,
+     "speed": 1.222372,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 99.486868,
+     "speed": 0.505208,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 177.707863,
+     "speed": 0.215177,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 312.040314,
+     "speed": -0.026762,
+     "retrograde": true
+    },
+    "Rahu": {
+     "longitude": 264.764235,
+     "speed": -0.073707,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 84.764235,
+     "speed": -0.073707,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 78.106712,
+    "reykjavik": 70.109159,
+    "quito": 313.1982,
+    "sydney": 188.110189
+   }
+  },
+  {
+   "utc": "1998-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 353.510376,
+     "speed": 0.996705,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 185.630595,
+     "speed": 11.823699,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 10.249964,
+     "speed": 1.545085,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 307.8196,
+     "speed": 0.871859,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 7.437181,
+     "speed": 0.769276,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 339.071785,
+     "speed": 0.237077,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 19.607617,
+     "speed": 0.118132,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 160.562913,
+     "speed": -0.024814,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 340.562913,
+     "speed": -0.024814,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 54.001185,
+    "reykjavik": 297.210427,
+    "quito": 292.326538,
+    "sydney": 155.449658
+   }
+  },
+  {
+   "utc": "1998-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 186.458355,
+     "speed": 0.982225,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 287.412018,
+     "speed": 12.8288,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 189.622161,
+     "speed": 1.743836,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 178.569728,
+     "speed": 1.246354,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 145.266516,
+     "speed": 0.617618,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 351.273542,
+     "speed": -0.123669,
+     "retrograde": true
+    },
+    "Saturn": {
+     "longitude": 31.97539,
+     "speed": -0.06764,
+     "retrograde": true
+    },
+    "Rahu": {
+     "longitude": 150.890873,
+     "speed": 0.018916,
+     "retrograde": false
+    },
+    "Ketu": {
+     "longitude": 330.890873,
+     "speed": 0.018916,
+     "retrograde": false
+    }
+   },
+   "ascendant": {
+    "athens": 77.64713,
+    "reykjavik": 69.013358,
+    "quito": 312.747073,
+    "sydney": 187.416869
+   }
+  },
+  {
+   "utc": "1999-08-11T11:03:00Z",
+   "positions": {
+    "Sun": {
+     "longitude": 138.349671,
+     "speed": 0.959717,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 138.300008,
+     "speed": 13.949792,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 120.161036,
+     "speed": 0.598115,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 152.156023,
+     "speed": -0.465107,
+     "retrograde": true
+    },
+    "Mars": {
+     "longitude": 226.845868,
+     "speed": 0.547639,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 34.681002,
+     "speed": 0.044534,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 46.876566,
+     "speed": 0.0325,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 132.967685,
+     "speed": -0.002246,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 312.967685,
+     "speed": -0.002246,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 227.54369,
+    "reykjavik": 187.633358,
+    "quito": 134.233834,
+    "sydney": 5.427857
+   }
+  },
+  {
+   "utc": "2000-01-01T12:00:00Z",
+   "positions": {
+    "Sun": {
+     "longitude": 280.36892,
+     "speed": 1.019432,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 223.323775,
+     "speed": 12.021183,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 271.889275,
+     "speed": 1.556254,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 241.565798,
+     "speed": 1.20904,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 327.963313,
+     "speed": 0.775673,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 25.25303,
+     "speed": 0.040761,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 40.395639,
+     "speed": -0.019945,
+     "retrograde": true
+    },
+    "Rahu": {
+     "longitude": 123.952895,
+     "speed": -0.054382,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 303.952895,
+     "speed": -0.054382,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 51.407729,
+    "reykjavik": 291.462632,
+    "quito": 290.397368,
+    "sydney": 152.488909
+   }
+  },
+  {
+   "utc": "2004-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 354.05141,
+     "speed": 0.996878,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 269.722854,
+     "speed": 14.106315,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 3.718772,
+     "speed": 1.94597,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 39.347381,
+     "speed": 1.074871,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 55.507224,
+     "speed": 0.640869,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 162.658802,
+     "speed": -0.126119,
+     "retrograde": true
+    },
+    "Saturn": {
+     "longitude": 96.326878,
+     "speed": 0.012378,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 42.409762,
+     "speed": -0.012332,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 222.409762,
+     "speed": -0.012332,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 54.674755,
+    "reykjavik": 298.940014,
+    "quito": 292.832625,
+    "sydney": 156.229752
+   }
+  },
+  {
+   "utc": "2004-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 186.992796,
+     "speed": 0.98227,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 22.596401,
+     "speed": 13.0483,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 182.235241,
+     "speed": 1.815505,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 145.496201,
+     "speed": 1.149018,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 182.219033,
+     "speed": 0.646727,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 181.010243,
+     "speed": 0.215643,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 115.937207,
+     "speed": 0.06848,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 32.201956,
+     "speed": -0.014157,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 212.201956,
+     "speed": -0.014157,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 78.193646,
+    "reykjavik": 70.312761,
+    "quito": 313.28348,
+    "sydney": 188.241219
+   }
+  },
+  {
+   "utc": "2010-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 353.604983,
+     "speed": 0.997434,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 336.282717,
+     "speed": 11.939427,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 353.372112,
+     "speed": 1.945017,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 8.436149,
+     "speed": 1.241994,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 120.373123,
+     "speed": 0.043248,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 343.074602,
+     "speed": 0.239652,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 181.891561,
+     "speed": -0.077543,
+     "retrograde": true
+    },
+    "Rahu": {
+     "longitude": 289.093222,
+     "speed": -0.164375,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 109.093222,
+     "speed": -0.164375,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 54.125625,
+    "reykjavik": 297.505456,
+    "quito": 292.418724,
+    "sydney": 155.591214
+   }
+  },
+  {
+   "utc": "2010-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 186.556114,
+     "speed": 0.982219,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 80.078865,
+     "speed": 13.056671,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 173.313147,
+     "speed": 1.719284,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 221.916497,
+     "speed": 0.299891,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 220.056823,
+     "speed": 0.684563,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 357.284919,
+     "speed": -0.129999,
+     "retrograde": true
+    },
+    "Saturn": {
+     "longitude": 187.594752,
+     "speed": 0.123419,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 277.220716,
+     "speed": -0.017757,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 97.220716,
+     "speed": -0.017757,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 77.748053,
+    "reykjavik": 69.260992,
+    "quito": 312.845471,
+    "sydney": 187.568424
+   }
+  },
+  {
+   "utc": "2016-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 354.148812,
+     "speed": 0.996977,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 66.109024,
+     "speed": 14.117354,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 345.395806,
+     "speed": 1.819893,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 332.318987,
+     "speed": 1.23699,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 242.832444,
+     "speed": 0.320084,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 167.543569,
+     "speed": -0.128962,
+     "retrograde": true
+    },
+    "Saturn": {
+     "longitude": 256.302224,
+     "speed": 0.018559,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 171.785714,
+     "speed": -0.002641,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 351.785714,
+     "speed": -0.002641,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 54.785491,
+    "reykjavik": 299.332421,
+    "quito": 292.922848,
+    "sydney": 156.371384
+   }
+  },
+  {
+   "utc": "2016-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 187.083182,
+     "speed": 0.982914,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 173.794424,
+     "speed": 12.257462,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 169.314302,
+     "speed": 1.111746,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 217.559896,
+     "speed": 1.21818,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 271.629845,
+     "speed": 0.66005,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 184.381431,
+     "speed": 0.216198,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 251.531842,
+     "speed": 0.07103,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 162.696646,
+     "speed": -0.018197,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 342.696646,
+     "speed": -0.018197,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 78.280979,
+    "reykjavik": 70.466063,
+    "quito": 313.377935,
+    "sydney": 188.382407
+   }
+  },
+  {
+   "utc": "2022-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 353.69049,
+     "speed": 0.996977,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 126.06174,
+     "speed": 12.330431,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 336.81795,
+     "speed": 1.647994,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 307.302927,
+     "speed": 0.944946,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 306.015301,
+     "speed": 0.749421,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 347.081599,
+     "speed": 0.241086,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 320.274538,
+     "speed": 0.106756,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 54.612906,
+     "speed": -0.136147,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 234.612906,
+     "speed": -0.136147,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 54.230194,
+    "reykjavik": 297.789736,
+    "quito": 292.498664,
+    "sydney": 155.714926
+   }
+  },
+  {
+   "utc": "2022-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 186.644563,
+     "speed": 0.982428,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 235.191239,
+     "speed": 13.758647,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 174.762596,
+     "speed": -0.43455,
+     "retrograde": true
+    },
+    "Venus": {
+     "longitude": 180.616465,
+     "speed": 1.247037,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 79.668903,
+     "speed": 0.35406,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 3.291749,
+     "speed": -0.133549,
+     "retrograde": true
+    },
+    "Saturn": {
+     "longitude": 319.038354,
+     "speed": -0.037641,
+     "retrograde": true
+    },
+    "Rahu": {
+     "longitude": 43.807194,
+     "speed": 0.016106,
+     "retrograde": false
+    },
+    "Ketu": {
+     "longitude": 223.807194,
+     "speed": 0.016106,
+     "retrograde": false
+    }
+   },
+   "ascendant": {
+    "athens": 77.833623,
+    "reykjavik": 69.462307,
+    "quito": 312.93015,
+    "sydney": 187.69829
+   }
+  },
+  {
+   "utc": "2024-04-08T18:17:00Z",
+   "positions": {
+    "Sun": {
+     "longitude": 19.397813,
+     "speed": 0.98298,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 19.359704,
+     "speed": 14.994566,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 24.799561,
+     "speed": -0.638384,
+     "retrograde": true
+    },
+    "Venus": {
+     "longitude": 4.441799,
+     "speed": 1.235307,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 343.04935,
+     "speed": 0.777467,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 49.04521,
+     "speed": 0.221344,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 344.454992,
+     "speed": 0.107606,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 15.626003,
+     "speed": -0.001121,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 195.626003,
+     "speed": -0.001121,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 216.771463,
+    "reykjavik": 179.886657,
+    "quito": 120.991794,
+    "sydney": 354.053553
+   }
+  },
+  {
+   "utc": "2026-01-03T17:16:00Z",
+   "positions": {
+    "Sun": {
+     "longitude": 283.339316,
+     "speed": 1.018846,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 107.497374,
+     "speed": 14.803823,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 272.821778,
+     "speed": 1.541527,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 282.628211,
+     "speed": 1.258167,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 284.774694,
+     "speed": 0.768153,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 110.999584,
+     "speed": -0.132694,
+     "retrograde": true
+    },
+    "Saturn": {
+     "longitude": 356.331566,
+     "speed": 0.062475,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 340.542815,
+     "speed": -0.142003,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 160.542815,
+     "speed": -0.142003,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 128.472245,
+    "reykjavik": 118.574324,
+    "quito": 15.04798,
+    "sydney": 261.008797
+   }
+  },
+  {
+   "utc": "2026-07-06T05:00:00Z",
+   "positions": {
+    "Sun": {
+     "longitude": 104.167775,
+     "speed": 0.953372,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 354.520515,
+     "speed": 12.928709,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 114.717233,
+     "speed": -0.454364,
+     "retrograde": true
+    },
+    "Venus": {
+     "longitude": 146.069087,
+     "speed": 1.122334,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 65.24808,
+     "speed": 0.705631,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 121.283871,
+     "speed": 0.216668,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 14.389227,
+     "speed": 0.034693,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 330.720289,
+     "speed": 0.021704,
+     "retrograde": false
+    },
+    "Ketu": {
+     "longitude": 150.720289,
+     "speed": 0.021704,
+     "retrograde": false
+    }
+   },
+   "ascendant": {
+    "athens": 125.952488,
+    "reykjavik": 116.813522,
+    "quito": 11.65475,
+    "sydney": 257.919504
+   }
+  },
+  {
+   "utc": "2028-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 354.240053,
+     "speed": 0.996597,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 219.239345,
+     "speed": 14.150251,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 331.475012,
+     "speed": 1.470433,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 40.105336,
+     "speed": 1.041514,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 355.698197,
+     "speed": 0.782139,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 172.372253,
+     "speed": -0.13004,
+     "retrograde": true
+    },
+    "Saturn": {
+     "longitude": 26.353283,
+     "speed": 0.114529,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 300.856233,
+     "speed": -0.117701,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 120.856233,
+     "speed": -0.117701,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 54.90816,
+    "reykjavik": 299.643202,
+    "quito": 293.013818,
+    "sydney": 156.511258
+   }
+  },
+  {
+   "utc": "2028-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 187.187625,
+     "speed": 0.982282,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 325.120736,
+     "speed": 11.872112,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 192.725381,
+     "speed": -1.085224,
+     "retrograde": true
+    },
+    "Venus": {
+     "longitude": 146.967105,
+     "speed": 1.16255,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 135.655063,
+     "speed": 0.607028,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 187.735625,
+     "speed": 0.216332,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 40.106759,
+     "speed": -0.060378,
+     "retrograde": true
+    },
+    "Rahu": {
+     "longitude": 290.196379,
+     "speed": -0.105183,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 110.196379,
+     "speed": -0.105183,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 78.381164,
+    "reykjavik": 70.702619,
+    "quito": 313.475398,
+    "sydney": 188.532449
+   }
+  },
+  {
+   "utc": "2034-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 353.77998,
+     "speed": 0.997368,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 275.505003,
+     "speed": 12.577233,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 326.899474,
+     "speed": 1.189299,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 10.432524,
+     "speed": 1.240516,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 42.748754,
+     "speed": 0.690574,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 351.035814,
+     "speed": 0.241962,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 104.364202,
+     "speed": -0.00335,
+     "retrograde": true
+    },
+    "Rahu": {
+     "longitude": 183.095175,
+     "speed": -0.009276,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 3.095175,
+     "speed": -0.009276,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 54.343679,
+    "reykjavik": 298.167045,
+    "quito": 292.590182,
+    "sydney": 155.858288
+   }
+  },
+  {
+   "utc": "2034-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 186.737653,
+     "speed": 0.981743,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 30.024346,
+     "speed": 14.807816,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 208.111206,
+     "speed": 0.034439,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 216.10947,
+     "speed": 0.038505,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 172.830557,
+     "speed": 0.638599,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 9.216951,
+     "speed": -0.134024,
+     "retrograde": true
+    },
+    "Saturn": {
+     "longitude": 123.35239,
+     "speed": 0.08029,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 173.985086,
+     "speed": -0.023136,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 353.985086,
+     "speed": -0.023136,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 77.923074,
+    "reykjavik": 69.628859,
+    "quito": 313.026054,
+    "sydney": 187.842174
+   }
+  },
+  {
+   "utc": "2040-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 354.324664,
+     "speed": 0.997286,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 10.135994,
+     "speed": 13.594573,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 327.250428,
+     "speed": 0.737042,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 334.271813,
+     "speed": 1.239,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 99.007981,
+     "speed": 0.31669,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 177.262271,
+     "speed": -0.129706,
+     "retrograde": true
+    },
+    "Saturn": {
+     "longitude": 189.781734,
+     "speed": -0.073714,
+     "retrograde": true
+    },
+    "Rahu": {
+     "longitude": 66.473254,
+     "speed": -0.167751,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 246.473254,
+     "speed": -0.167751,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 55.010981,
+    "reykjavik": 299.962179,
+    "quito": 293.093992,
+    "sydney": 156.63594
+   }
+  },
+  {
+   "utc": "2040-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 187.267699,
+     "speed": 0.982596,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 114.963516,
+     "speed": 11.846468,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 213.007422,
+     "speed": 0.826138,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 219.380163,
+     "speed": 1.213388,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 210.211282,
+     "speed": 0.674228,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 191.128488,
+     "speed": 0.216334,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 194.086616,
+     "speed": 0.122133,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 55.935091,
+     "speed": -0.050338,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 235.935091,
+     "speed": -0.050338,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 78.464971,
+    "reykjavik": 70.881124,
+    "quito": 313.560139,
+    "sydney": 188.661426
+   }
+  },
+  {
+   "utc": "2046-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 353.878444,
+     "speed": 0.997445,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 66.958252,
+     "speed": 12.779035,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 334.031748,
+     "speed": -0.186591,
+     "retrograde": true
+    },
+    "Venus": {
+     "longitude": 307.269819,
+     "speed": 1.001509,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 216.168558,
+     "speed": -0.039834,
+     "retrograde": true
+    },
+    "Jupiter": {
+     "longitude": 354.857613,
+     "speed": 0.242128,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 262.951467,
+     "speed": 0.030284,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 312.701937,
+     "speed": -0.035079,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 132.701937,
+     "speed": -0.035079,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 54.465456,
+    "reykjavik": 298.452854,
+    "quito": 292.679623,
+    "sydney": 155.995391
+   }
+  },
+  {
+   "utc": "2046-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 186.83483,
+     "speed": 0.982433,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 182.805328,
+     "speed": 15.320112,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 211.093562,
+     "speed": 1.241266,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 182.671919,
+     "speed": 1.247413,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 255.153726,
+     "speed": 0.69394,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 14.932743,
+     "speed": -0.132186,
+     "retrograde": true
+    },
+    "Saturn": {
+     "longitude": 257.873776,
+     "speed": 0.061619,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 302.345271,
+     "speed": -0.145377,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 122.345271,
+     "speed": -0.145377,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 78.022914,
+    "reykjavik": 69.877285,
+    "quito": 313.12199,
+    "sydney": 187.990462
+   }
+  },
+  {
+   "utc": "2052-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 354.420957,
+     "speed": 0.996644,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 161.663862,
+     "speed": 12.658203,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 350.552149,
+     "speed": -0.962696,
+     "retrograde": true
+    },
+    "Venus": {
+     "longitude": 40.596144,
+     "speed": 1.00044,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 292.857683,
+     "speed": 0.708768,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 182.126786,
+     "speed": -0.127337,
+     "retrograde": true
+    },
+    "Saturn": {
+     "longitude": 326.716475,
+     "speed": 0.111538,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 194.316202,
+     "speed": -0.039912,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 14.316202,
+     "speed": -0.039912,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 55.125378,
+    "reykjavik": 300.366855,
+    "quito": 293.186442,
+    "sydney": 156.780786
+   }
+  },
+  {
+   "utc": "2052-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 187.371633,
+     "speed": 0.982505,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 263.700212,
+     "speed": 11.885446,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 207.361122,
+     "speed": 1.437187,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 148.513243,
+     "speed": 1.17437,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 43.015133,
+     "speed": -0.104153,
+     "retrograde": true
+    },
+    "Jupiter": {
+     "longitude": 194.507703,
+     "speed": 0.215776,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 326.488673,
+     "speed": -0.047159,
+     "retrograde": true
+    },
+    "Rahu": {
+     "longitude": 185.220231,
+     "speed": 0.002098,
+     "retrograde": false
+    },
+    "Ketu": {
+     "longitude": 5.220231,
+     "speed": 0.002098,
+     "retrograde": false
+    }
+   },
+   "ascendant": {
+    "athens": 78.555239,
+    "reykjavik": 71.04061,
+    "quito": 313.65704,
+    "sydney": 188.806383
+   }
+  },
+  {
+   "utc": "2058-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 353.955072,
+     "speed": 0.997102,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 221.351427,
+     "speed": 13.39502,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 7.842496,
+     "speed": -0.107845,
+     "retrograde": true
+    },
+    "Venus": {
+     "longitude": 12.41841,
+     "speed": 1.238716,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 343.021508,
+     "speed": 0.787271,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 358.800239,
+     "speed": 0.241864,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 33.551911,
+     "speed": 0.108456,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 78.837558,
+     "speed": -0.090636,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 258.837558,
+     "speed": -0.090636,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 54.567237,
+    "reykjavik": 298.766765,
+    "quito": 292.759574,
+    "sydney": 156.1199
+   }
+  },
+  {
+   "utc": "2058-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 186.922778,
+     "speed": 0.981648,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 336.054623,
+     "speed": 14.814224,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 200.518155,
+     "speed": 1.584162,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 208.309964,
+     "speed": -0.252645,
+     "retrograde": true
+    },
+    "Mars": {
+     "longitude": 124.636195,
+     "speed": 0.591946,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 20.844566,
+     "speed": -0.127177,
+     "retrograde": true
+    },
+    "Saturn": {
+     "longitude": 48.853741,
+     "speed": -0.048801,
+     "retrograde": true
+    },
+    "Rahu": {
+     "longitude": 67.870175,
+     "speed": -0.140771,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 247.870175,
+     "speed": -0.140771,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 78.105561,
+    "reykjavik": 70.053076,
+    "quito": 313.206389,
+    "sydney": 188.118674
+   }
+  },
+  {
+   "utc": "2064-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 354.511797,
+     "speed": 0.997315,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 313.653846,
+     "speed": 11.983499,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 12.697046,
+     "speed": 1.150394,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 336.249427,
+     "speed": 1.240647,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 31.016302,
+     "speed": 0.726744,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 186.849432,
+     "speed": -0.123697,
+     "retrograde": true
+    },
+    "Saturn": {
+     "longitude": 112.955332,
+     "speed": -0.017774,
+     "retrograde": true
+    },
+    "Rahu": {
+     "longitude": 324.709957,
+     "speed": 0.016821,
+     "retrograde": false
+    },
+    "Ketu": {
+     "longitude": 144.709957,
+     "speed": 0.016821,
+     "retrograde": false
+    }
+   },
+   "ascendant": {
+    "athens": 55.244809,
+    "reykjavik": 300.672418,
+    "quito": 293.274584,
+    "sydney": 156.916223
+   }
+  },
+  {
+   "utc": "2064-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 187.460441,
+     "speed": 0.982112,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 53.842001,
+     "speed": 11.99488,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 194.112462,
+     "speed": 1.695802,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 221.172932,
+     "speed": 1.207983,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 164.075676,
+     "speed": 0.631444,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 197.790708,
+     "speed": 0.21473,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 131.098733,
+     "speed": 0.089908,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 314.169934,
+     "speed": -0.129548,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 134.169934,
+     "speed": -0.129548,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 78.653432,
+    "reykjavik": 71.274312,
+    "quito": 313.75153,
+    "sydney": 188.952241
+   }
+  },
+  {
+   "utc": "2070-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 354.056853,
+     "speed": 0.997804,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 15.909257,
+     "speed": 14.401806,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 6.620181,
+     "speed": 1.862713,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 307.593449,
+     "speed": 1.045772,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 81.919542,
+     "speed": 0.480259,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 2.856521,
+     "speed": 0.241274,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 197.809023,
+     "speed": -0.06748,
+     "retrograde": true
+    },
+    "Rahu": {
+     "longitude": 205.768947,
+     "speed": -0.016366,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 25.768947,
+     "speed": -0.016366,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 54.685059,
+    "reykjavik": 299.151705,
+    "quito": 292.853437,
+    "sydney": 156.266512
+   }
+  },
+  {
+   "utc": "2070-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 187.019409,
+     "speed": 0.982124,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 131.622246,
+     "speed": 13.836952,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 185.162581,
+     "speed": 1.802205,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 184.720811,
+     "speed": 1.247452,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 200.204355,
+     "speed": 0.663226,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 26.877962,
+     "speed": -0.119668,
+     "retrograde": true
+    },
+    "Saturn": {
+     "longitude": 200.541113,
+     "speed": 0.119748,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 196.513209,
+     "speed": -0.019536,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 16.513209,
+     "speed": -0.019536,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 78.198635,
+    "reykjavik": 70.229422,
+    "quito": 313.305021,
+    "sydney": 188.266933
+   }
+  },
+  {
+   "utc": "2076-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 354.597072,
+     "speed": 0.997022,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 104.031182,
+     "speed": 11.814672,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 358.537215,
+     "speed": 1.975558,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 40.751011,
+     "speed": 0.948586,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 181.591686,
+     "speed": -0.377367,
+     "retrograde": true
+    },
+    "Jupiter": {
+     "longitude": 191.645577,
+     "speed": -0.118296,
+     "retrograde": true
+    },
+    "Saturn": {
+     "longitude": 269.403437,
+     "speed": 0.039668,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 91.755628,
+     "speed": -0.016905,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 271.755628,
+     "speed": -0.016905,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 55.346118,
+    "reykjavik": 301.027674,
+    "quito": 293.355813,
+    "sydney": 157.043277
+   }
+  },
+  {
+   "utc": "2076-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 187.550906,
+     "speed": 0.98263,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 205.659577,
+     "speed": 12.477025,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 177.705905,
+     "speed": 1.803887,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 150.126622,
+     "speed": 1.184645,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 242.297959,
+     "speed": 0.698609,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 201.161726,
+     "speed": 0.213638,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 264.195637,
+     "speed": 0.053044,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 79.796708,
+     "speed": -0.174981,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 259.796708,
+     "speed": -0.174981,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 78.73552,
+    "reykjavik": 71.432011,
+    "quito": 313.837054,
+    "sydney": 189.081174
+   }
+  },
+  {
+   "utc": "2082-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 354.14516,
+     "speed": 0.997055,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 168.59837,
+     "speed": 15.152698,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 348.358392,
+     "speed": 1.86527,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 14.406157,
+     "speed": 1.236843,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 277.901165,
+     "speed": 0.638786,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 6.915076,
+     "speed": 0.239421,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 332.766996,
+     "speed": 0.115578,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 336.106929,
+     "speed": -0.016389,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 156.106929,
+     "speed": -0.016389,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 54.803069,
+    "reykjavik": 299.435113,
+    "quito": 292.939997,
+    "sydney": 156.39922
+   }
+  },
+  {
+   "utc": "2082-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 187.117382,
+     "speed": 0.981851,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 286.950996,
+     "speed": 13.196802,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 170.289134,
+     "speed": 1.413657,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 198.536713,
+     "speed": -0.505161,
+     "retrograde": true
+    },
+    "Mars": {
+     "longitude": 334.858333,
+     "speed": -0.018224,
+     "retrograde": true
+    },
+    "Jupiter": {
+     "longitude": 32.783246,
+     "speed": -0.109678,
+     "retrograde": true
+    },
+    "Saturn": {
+     "longitude": 333.781028,
+     "speed": -0.056395,
+     "retrograde": true
+    },
+    "Rahu": {
+     "longitude": 326.329901,
+     "speed": 0.014754,
+     "retrograde": false
+    },
+    "Ketu": {
+     "longitude": 146.329901,
+     "speed": 0.014754,
+     "retrograde": false
+    }
+   },
+   "ascendant": {
+    "athens": 78.295818,
+    "reykjavik": 70.470019,
+    "quito": 313.397858,
+    "sydney": 188.410608
+   }
+  },
+  {
+   "utc": "2088-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 354.692316,
+     "speed": 0.997099,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 252.891671,
+     "speed": 11.820313,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 341.050798,
+     "speed": 1.721284,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 338.23216,
+     "speed": 1.241884,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 330.984987,
+     "speed": 0.783571,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 196.403833,
+     "speed": -0.111553,
+     "retrograde": true
+    },
+    "Saturn": {
+     "longitude": 40.483994,
+     "speed": 0.102538,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 217.647144,
+     "speed": 0.02202,
+     "retrograde": false
+    },
+    "Ketu": {
+     "longitude": 37.647144,
+     "speed": 0.02202,
+     "retrograde": false
+    }
+   },
+   "ascendant": {
+    "athens": 55.464995,
+    "reykjavik": 301.438389,
+    "quito": 293.450446,
+    "sydney": 157.191068
+   }
+  },
+  {
+   "utc": "2088-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 187.649356,
+     "speed": 0.981809,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 357.390315,
+     "speed": 13.330741,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 171.348936,
+     "speed": 0.283659,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 222.918656,
+     "speed": 1.202056,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 112.897279,
+     "speed": 0.561373,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 204.549935,
+     "speed": 0.212141,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 56.962651,
+     "speed": -0.037997,
+     "retrograde": true
+    },
+    "Rahu": {
+     "longitude": 207.768336,
+     "speed": -0.039974,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 27.768336,
+     "speed": -0.039974,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 78.830047,
+    "reykjavik": 71.605129,
+    "quito": 313.936885,
+    "sydney": 189.231024
+   }
+  },
+  {
+   "utc": "2094-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 354.229614,
+     "speed": 0.997917,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 321.368295,
+     "speed": 14.918108,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 333.438214,
+     "speed": 1.538204,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 308.200089,
+     "speed": 1.0807,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 18.63063,
+     "speed": 0.754131,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 10.907061,
+     "speed": 0.23723,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 121.093872,
+     "speed": -0.032412,
+     "retrograde": true
+    },
+    "Rahu": {
+     "longitude": 104.180469,
+     "speed": -0.10169,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 284.180469,
+     "speed": -0.10169,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 54.905092,
+    "reykjavik": 299.787239,
+    "quito": 293.022204,
+    "sydney": 156.527931
+   }
+  },
+  {
+   "utc": "2094-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 187.198069,
+     "speed": 0.981673,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 79.413195,
+     "speed": 12.944184,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 185.907852,
+     "speed": -1.097399,
+     "retrograde": true
+    },
+    "Venus": {
+     "longitude": 186.76497,
+     "speed": 1.247228,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 154.53309,
+     "speed": 0.624761,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 38.506142,
+     "speed": -0.097755,
+     "retrograde": true
+    },
+    "Saturn": {
+     "longitude": 138.178202,
+     "speed": 0.098968,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 92.492985,
+     "speed": -0.015605,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 272.492985,
+     "speed": -0.015605,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 78.377756,
+    "reykjavik": 70.626982,
+    "quito": 313.484017,
+    "sydney": 188.540304
+   }
+  },
+  {
+   "utc": "2100-03-14T07:23:11Z",
+   "positions": {
+    "Sun": {
+     "longitude": 353.786196,
+     "speed": 0.99805,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 30.398048,
+     "speed": 11.808881,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 327.959858,
+     "speed": 1.296841,
+     "retrograde": false
+    },
+    "Venus": {
+     "longitude": 39.610296,
+     "speed": 0.892852,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 67.20356,
+     "speed": 0.582965,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 201.296476,
+     "speed": -0.101508,
+     "retrograde": true
+    },
+    "Saturn": {
+     "longitude": 205.439748,
+     "speed": -0.059288,
+     "retrograde": true
+    },
+    "Rahu": {
+     "longitude": 347.368447,
+     "speed": -0.0155,
+     "retrograde": true
+    },
+    "Ketu": {
+     "longitude": 167.368447,
+     "speed": -0.0155,
+     "retrograde": true
+    }
+   },
+   "ascendant": {
+    "athens": 54.359351,
+    "reykjavik": 298.258448,
+    "quito": 292.605623,
+    "sydney": 155.883433
+   }
+  },
+  {
+   "utc": "2100-09-29T19:41:03Z",
+   "positions": {
+    "Sun": {
+     "longitude": 186.762168,
+     "speed": 0.981867,
+     "retrograde": false
+    },
+    "Moon": {
+     "longitude": 134.372912,
+     "speed": 13.471906,
+     "retrograde": false
+    },
+    "Mercury": {
+     "longitude": 204.413106,
+     "speed": -0.364623,
+     "retrograde": true
+    },
+    "Venus": {
+     "longitude": 150.621684,
+     "speed": 1.191798,
+     "retrograde": false
+    },
+    "Mars": {
+     "longitude": 190.532413,
+     "speed": 0.653263,
+     "retrograde": false
+    },
+    "Jupiter": {
+     "longitude": 207.778973,
+     "speed": 0.209838,
+     "retrograde": false
+    },
+    "Saturn": {
+     "longitude": 206.77482,
+     "speed": 0.116484,
+     "retrograde": false
+    },
+    "Rahu": {
+     "longitude": 338.042461,
+     "speed": 0.026478,
+     "retrograde": false
+    },
+    "Ketu": {
+     "longitude": 158.042461,
+     "speed": 0.026478,
+     "retrograde": false
+    }
+   },
+   "ascendant": {
+    "athens": 77.936858,
+    "reykjavik": 69.634194,
+    "quito": 313.04435,
+    "sydney": 187.868217
+   }
+  }
+ ]
+}
