@@ -9,6 +9,21 @@
 # packages, and plugins designed to encourage good coding practices.
 include: package:flutter_lints/flutter.yaml
 
+analyzer:
+  exclude:
+    # ⚠ Generated output, and on macOS it contains OTHER PEOPLE'S source.
+    #
+    # Swift Package Manager resolves dependencies into build/ios/SourcePackages,
+    # which includes each package's own `test/` directory — written against
+    # whatever mockito version that package uses, not this one. `flutter
+    # analyze` then reports eighty-odd errors in firebase_messaging's tests and
+    # fails, on a tree where nothing of ours is wrong.
+    #
+    # It does not happen on Linux, because that directory does not exist there
+    # — so the Linux gate passes and the Mac fails on identical code, which is
+    # the most misleading shape a CI failure can have.
+    - build/**
+
 linter:
   # The lint rules applied to this project can be customized in the
   # section below to disable rules from the `package:flutter_lints/flutter.yaml`

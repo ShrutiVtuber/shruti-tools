@@ -127,6 +127,24 @@ void main() {
     );
   });
 
+  test('generated output is not analysed', () {
+    // ⚠ It fails on macOS and passes on Linux, which is the most misleading
+    // shape a CI failure can have. Swift Package Manager resolves dependencies
+    // into build/ios/SourcePackages, each with its own `test/` directory
+    // written against a different mockito — so `flutter analyze` reports eighty
+    // errors in somebody else's tests, on a tree where nothing of ours is
+    // wrong. The directory does not exist on Linux, so the gate goes green and
+    // the Mac goes red on identical code.
+    final options = File('analysis_options.yaml').readAsStringSync();
+    expect(
+      options.contains('build/**'),
+      isTrue,
+      reason:
+          'the analyzer will walk build/, where macOS keeps other '
+          "people's package sources, and fail on their code",
+    );
+  });
+
   test('the licences screen follows the engine', () {
     // ⚠ A build that does not contain a library must not reproduce its notice.
     // That screen exists to be accurate about what the app is made of, and the
