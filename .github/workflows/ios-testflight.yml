@@ -1,142 +1,223 @@
-# Build Astrolabe for iOS and send it to TestFlight.
+name: TestFlight
+
+# Manual only, and deliberately so: macOS runners bill at 10x Linux minutes, and
+# an iOS build is a release act rather than a side effect of a push. Run it from
+# the Actions tab, or push an `ios-vX.Y.Z` tag at the commit you mean — the tag
+# is then the repo's own permanent record that iOS was brought up to that
+# version.
 #
-# ⚠ **Nothing here has been run.** It was written on a Linux machine with no
-# Apple account, so every step is reasoned from Apple's and Flutter's
-# documentation rather than from a green build. Expect the first run to fail on
-# something small — a certificate that will not import, a profile whose name
-# does not match — and read the log rather than assuming the shape is wrong.
+# Even then, the Mac is never the first to hear about a problem: a Linux gate
+# runs first and the macOS job refuses to start unless it passes. Her words, to
+# another project, 18 August 2026: "I don't want to pay for mac os runners if
+# things fail already in android."
 #
-# ⚠ **A macOS runner costs about ten times a Linux one** in GitHub Actions
-# minutes. That is why this does not run on every push: it runs when a version
-# tag is pushed, or when you press the button. A workflow that built on every
-# commit would quietly eat the free allowance in a fortnight.
-name: iOS → TestFlight
+# ⚠ **THE STEP SEQUENCE IS COPIED FROM astropractise, WHICH COPIED IT FROM
+# practiseapp, WHERE IT TOOK SEVEN ATTEMPTS.** Every comment marked with a
+# reason records a real failure on a real runner. Do not tidy them away; this
+# file is the only place that knowledge is written down.
+#
+# ── Shared across her whole Apple account, already in ~/keystores ────────────
+#
+#   * App Store Connect API key — AuthKey_32VS9C8RF8.p8
+#   * Apple Distribution certificate — theourgia-ios-dist.p12, and its password
+#     ⚠ A distribution certificate is per-ACCOUNT, not per-app: the one made
+#     for Theourgia signs this app too. It expires 2027-08-06; after that,
+#     remake it and refresh the secrets.
+#   * The team: L25T4F2NJ2
+#
+# ── Specific to Astrolabe, created once ─────────────────────────────────────
+#
+#   1. The bundle id `com.shrutivtuber.astrolabe`, registered at
+#      developer.apple.com. ⚠ Tick Push Notifications while registering it —
+#      adding the capability later means regenerating the profile.
+#   2. An App Store provisioning profile named exactly `Astrolabe`, against
+#      that bundle id and the EXISTING distribution certificate. The name is
+#      written in two places — PROVISIONING_PROFILE_SPECIFIER in
+#      ios/Runner.xcodeproj/project.pbxproj, and the ExportOptions plist below.
+#      A mismatch fails at export with an error that never mentions the profile.
+#   3. The app record in App Store Connect. ⚠ The one step the API cannot do.
+#
+# ── The Swiss Ephemeris ─────────────────────────────────────────────────────
+#
+# This app links the Swiss Ephemeris, dual-licensed AGPL-3.0 or commercial.
+# ⚠ Unlike her other apps, that question is already settled here and settled
+# the easy way: **Astrolabe is itself AGPL-3.0 and its source is public**, so
+# the obligation that attaches on distribution is already met. Shipping to
+# TestFlight testers or to the App Store changes nothing. See LICENSE, and
+# ASSETS-LICENCE for why the artwork is separate and why that is compatible.
 
 on:
+  workflow_dispatch:
   push:
-    tags: ['v*']          # v1.0.0, v1.0.1 — a deliberate release
-  workflow_dispatch: {}   # or the "Run workflow" button, for a test build
+    tags: ["ios-v*"]
+
+env:
+  # Keep in sync with the app's own toolchain.
+  FLUTTER_VERSION: "3.44.8"
+  JAVA_VERSION: "21"
+  TEAM_ID: L25T4F2NJ2
+  BUNDLE_ID: com.shrutivtuber.astrolabe
+  PROFILE_NAME: Astrolabe
 
 jobs:
-  build:
-    runs-on: macos-15
-    timeout-minutes: 60
+  # Nothing may reach the Mac that Linux could have refused for a tenth of the
+  # price. This is the whole of CI in one job — analyse, tests, and the Android
+  # RELEASE build, because the release compiler catches what the tests cannot
+  # and a tree that cannot build for Android has no business billing an hour of
+  # Mac time to fail for iOS.
+  gate:
+    name: The Linux gate before the Mac
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
 
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: ${{ env.JAVA_VERSION }}
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - run: flutter pub get
+
+      # ⚠ The same gate her other apps use. A formatting difference is not a
+      # bug, but an unformatted tree makes every later diff noisy, and finding
+      # that out on a macOS runner costs ten times as much as finding it here.
+      - name: Check formatting
+        run: dart format --output=none --set-exit-if-changed .
+
+      - run: flutter analyze
+      - run: flutter test
+
+      # ⚠ google-services.json is gitignored — it identifies her Firebase
+      # project — so CI has none and the Google Services Gradle plugin fails
+      # the build. The secret carries it; without it this step is the first
+      # thing to go red, with a message about the plugin rather than the file.
+      - name: Firebase configuration for the Android build
+        env:
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        run: |
+          if [ -n "$GOOGLE_SERVICES_JSON" ]; then
+            echo "$GOOGLE_SERVICES_JSON" | base64 -d > android/app/google-services.json
+          else
+            echo "::error::GOOGLE_SERVICES_JSON is not set; the Android build cannot sign in to Firebase"
+            exit 1
+          fi
+
+      - run: flutter build apk --release
+
+  testflight:
+    name: Build and upload to TestFlight
+    needs: gate
+    # ⚠ macos-26, not macos-15. Apple's upload validation requires the iOS 26
+    # SDK (Xcode 26+). practiseapp's attempt 7 compiled and signed an entire
+    # app on macos-15 and was refused only for its 18.5 SDK — toolchain, not
+    # code, and an hour of Mac time to find out.
+    runs-on: macos-26
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
 
       - uses: subosito/flutter-action@v2
         with:
-          # ⚠ Pinned, not "stable". A Flutter release lands mid-week and
-          # changes the Gradle or CocoaPods contract; a pinned version means a
-          # broken build is something you changed, not something that moved
-          # underneath you.
-          flutter-version: '3.44.8'
-          channel: stable
+          flutter-version: ${{ env.FLUTTER_VERSION }}
           cache: true
 
-      - name: Fetch packages
-        run: flutter pub get
-
-      - name: Check it still analyses and passes
-        # ⚠ Before spending twenty minutes of macOS time on an archive. A build
-        # that ships a failing test is worse than one that never started.
-        run: |
-          flutter analyze
-          flutter test
-
-      # ── signing ──────────────────────────────────────────────────────────
+      # Where every Apple tool looks for API keys. Still needed with manual
+      # signing: the export step's upload authenticates with it.
       #
-      # ⚠ Apple signing on a fresh runner needs three things and they are
-      # easy to confuse:
-      #   - a DISTRIBUTION CERTIFICATE (.p12), which says who you are
-      #   - a PROVISIONING PROFILE (.mobileprovision), which says this app,
-      #     signed by that certificate, may run
-      #   - an APP STORE CONNECT API KEY (.p8), which is how the upload
-      #     authenticates. It is NOT the same as the certificate and cannot
-      #     stand in for it.
-      - name: Put the certificate and profile on the runner
+      # ⚠ printf '%s', not echo. The .p8 must land byte-for-byte; echo can add
+      # a newline and mangle the PEM.
+      - name: Install the App Store Connect API key
         env:
-          CERT_P12: ${{ secrets.IOS_DIST_CERT_P12 }}
-          CERT_PASSWORD: ${{ secrets.IOS_DIST_CERT_PASSWORD }}
-          PROFILE: ${{ secrets.IOS_PROVISIONING_PROFILE }}
+          ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
         run: |
-          set -euo pipefail
-          CERT=$RUNNER_TEMP/cert.p12
-          PROF=$RUNNER_TEMP/profile.mobileprovision
-          KEYCHAIN=$RUNNER_TEMP/build.keychain
+          mkdir -p ~/private_keys
+          printf '%s' "$ASC_KEY_P8" > ~/private_keys/AuthKey_${{ secrets.ASC_KEY_ID }}.p8
 
-          echo "$CERT_P12"  | base64 --decode > "$CERT"
-          echo "$PROFILE"   | base64 --decode > "$PROF"
-
-          # A throwaway keychain, unlocked for this job only. The runner is
-          # destroyed afterwards, so the password is a formality — but an
-          # empty one makes `security` refuse.
-          security create-keychain -p runner "$KEYCHAIN"
-          security set-keychain-settings -lut 21600 "$KEYCHAIN"
-          security unlock-keychain -p runner "$KEYCHAIN"
-          security import "$CERT" -P "$CERT_PASSWORD" -A \
-            -t cert -f pkcs12 -k "$KEYCHAIN"
-          # ⚠ Without this, codesign stops to ask for permission — on a machine
-          # with nobody at it, which reads as a hang until the job times out.
-          security set-key-partition-list -S apple-tool:,apple: -k runner "$KEYCHAIN"
-          security list-keychain -d user -s "$KEYCHAIN"
-
-          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-          cp "$PROF" ~/Library/MobileDevice/Provisioning\ Profiles/
-
-      - name: Build the archive
+      # ⚠ Secrets arrive through `env:`, never interpolated straight into the
+      # shell — a secret containing a quote or a backtick would otherwise be
+      # executed rather than assigned.
+      - name: Install the signing identity
         env:
-          TEAM_ID: ${{ secrets.IOS_TEAM_ID }}
-          PROFILE_NAME: ${{ secrets.IOS_PROVISIONING_PROFILE_NAME }}
+          IOS_DIST_P12: ${{ secrets.IOS_DIST_P12 }}
+          IOS_DIST_P12_PASSWORD: ${{ secrets.IOS_DIST_P12_PASSWORD }}
+          IOS_PROFILE_B64: ${{ secrets.IOS_PROFILE_B64 }}
         run: |
-          set -euo pipefail
-          # ⚠ Manual signing, named explicitly. Automatic signing wants to talk
-          # to an Apple ID session the runner does not have, and fails with a
-          # message about "no signing certificate" that sends you looking at
-          # the certificate, which is fine.
-          cat > ios/ExportOptions.plist <<PLIST
+          echo "$IOS_DIST_P12" | base64 -d > /tmp/dist.p12
+          security create-keychain -p ci-keychain build.keychain
+          security default-keychain -s build.keychain
+          security unlock-keychain -p ci-keychain build.keychain
+          security set-keychain-settings -lut 3600 build.keychain
+          security import /tmp/dist.p12 -k build.keychain \
+            -P "$IOS_DIST_P12_PASSWORD" -T /usr/bin/codesign
+          # ⚠ Without this, codesign stops to ask permission — on a machine with
+          # nobody at it, which reads as a hang until the job times out.
+          security set-key-partition-list -S apple-tool:,apple: \
+            -s -k ci-keychain build.keychain > /dev/null
+          mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
+          echo "$IOS_PROFILE_B64" | base64 -d > \
+            "$HOME/Library/MobileDevice/Provisioning Profiles/astrolabe-appstore.mobileprovision"
+          rm /tmp/dist.p12
+
+      # ⚠ --no-codesign as well as --config-only: even config-only runs
+      # Flutter's signing preflight, and practiseapp's FIRST dispatch failed
+      # exactly there, before any compilation began.
+      - name: Flutter build (config only)
+        run: |
+          flutter pub get
+          flutter build ios --release --config-only --no-codesign
+
+      # ⚠ -destination generic/platform=iOS: without it the runner Mac plans to
+      # run the app on ITSELF — Apple-silicon Macs pose as iPads — and attempt 2
+      # failed there.
+      #
+      # ⚠ NO signing flags on this command line. Command-line overrides hit
+      # EVERY target, and plugin pods cannot take a provisioning profile:
+      # attempt 5 failed exactly there. The manual signing lives in the Runner
+      # target's own Release configuration, where only the Runner sees it.
+      - name: Archive
+        run: |
+          xcodebuild -workspace ios/Runner.xcworkspace \
+            -scheme Runner -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -archivePath build/Runner.xcarchive archive
+
+      # method app-store-connect + destination upload: the export hands the
+      # build straight to TestFlight, with no separate uploader tool.
+      - name: Export and upload
+        run: |
+          cat > /tmp/ExportOptions.plist <<PLIST
           <?xml version="1.0" encoding="UTF-8"?>
           <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
           <plist version="1.0">
           <dict>
             <key>method</key><string>app-store-connect</string>
-            <key>teamID</key><string>${TEAM_ID}</string>
+            <key>destination</key><string>upload</string>
             <key>signingStyle</key><string>manual</string>
+            <key>teamID</key><string>${{ env.TEAM_ID }}</string>
             <key>provisioningProfiles</key>
             <dict>
-              <key>com.shrutivtuber.astrolabe</key><string>${PROFILE_NAME}</string>
+              <key>${{ env.BUNDLE_ID }}</key><string>${{ env.PROFILE_NAME }}</string>
             </dict>
-            <key>uploadSymbols</key><true/>
           </dict>
           </plist>
           PLIST
+          xcodebuild -exportArchive \
+            -archivePath build/Runner.xcarchive \
+            -exportOptionsPlist /tmp/ExportOptions.plist \
+            -authenticationKeyPath ~/private_keys/AuthKey_${{ secrets.ASC_KEY_ID }}.p8 \
+            -authenticationKeyID ${{ secrets.ASC_KEY_ID }} \
+            -authenticationKeyIssuerID ${{ secrets.ASC_ISSUER_ID }}
 
-          flutter build ipa --release --export-options-plist=ios/ExportOptions.plist
-
-      - name: Send it to TestFlight
-        env:
-          ISSUER_ID: ${{ secrets.APPSTORE_ISSUER_ID }}
-          KEY_ID: ${{ secrets.APPSTORE_KEY_ID }}
-          PRIVATE_KEY: ${{ secrets.APPSTORE_PRIVATE_KEY }}
-        run: |
-          set -euo pipefail
-          # ⚠ altool looks for the key in this exact directory and by this
-          # exact filename. Anywhere else and it reports "No suitable
-          # application records were found", which sounds like an App Store
-          # Connect problem and is not one.
-          mkdir -p ~/private_keys
-          echo "$PRIVATE_KEY" > ~/private_keys/AuthKey_${KEY_ID}.p8
-
-          xcrun altool --upload-app -f build/ios/ipa/*.ipa -t ios \
-            --apiKey "$KEY_ID" --apiIssuer "$ISSUER_ID"
-
-      - name: Keep the build, whatever happened
+      - name: Remove keys and keychain from the runner
         if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: astrolabe-ios
-          path: |
-            build/ios/ipa/*.ipa
-          if-no-files-found: ignore
-          retention-days: 14
+        run: |
+          rm -f ~/private_keys/AuthKey_*.p8
+          security delete-keychain build.keychain || true
+          rm -f "$HOME/Library/MobileDevice/Provisioning Profiles/astrolabe-appstore.mobileprovision"

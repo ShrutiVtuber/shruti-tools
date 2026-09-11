@@ -79,9 +79,15 @@ class _HoroscopesScreenState extends State<HoroscopesScreen> {
               padding: EdgeInsets.all(Gap.lg),
               child: Column(
                 children: [
-                  Pressable(padding: EdgeInsets.all(14), child: Skeleton(lines: 2)),
+                  Pressable(
+                    padding: EdgeInsets.all(14),
+                    child: Skeleton(lines: 2),
+                  ),
                   SizedBox(height: 10),
-                  Pressable(padding: EdgeInsets.all(14), child: Skeleton(lines: 4)),
+                  Pressable(
+                    padding: EdgeInsets.all(14),
+                    child: Skeleton(lines: 4),
+                  ),
                 ],
               ),
             );
@@ -98,13 +104,15 @@ class _HoroscopesScreenState extends State<HoroscopesScreen> {
               child: EmptyState(
                 mark: '☾',
                 title: 'Her half is out of reach',
-                body: 'The instruments all still work. Her readings need her '
+                body:
+                    'The instruments all still work. Her readings need her '
                     'side, and it is not answering just now.',
               ),
             );
           }
 
-          final shown = _showing ??
+          final shown =
+              _showing ??
               (twelve.readings.isEmpty ? null : twelve.readings.first.sign);
           final reading = twelve.readings
               .where((r) => r.sign == shown)

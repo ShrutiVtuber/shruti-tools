@@ -486,7 +486,8 @@ class _WorkScreenState extends State<WorkScreen> {
                        is filtered and every remark shows. */
                     final here = [
                       for (final c in w.comments)
-                        if (!w.series || c.sign.isEmpty || c.sign == _showing) c,
+                        if (!w.series || c.sign.isEmpty || c.sign == _showing)
+                          c,
                     ];
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -510,12 +511,12 @@ class _WorkScreenState extends State<WorkScreen> {
                                 'A reading with no reply is a reading nobody '
                                 'argued with. Be the first to.',
                           ),
-                        for (final c in here) _Said(remark: c, series: w.series),
+                        for (final c in here)
+                          _Said(remark: c, series: w.series),
                       ],
                     );
                   },
                 ),
-
 
                 const SizedBox(height: Gap.lg),
                 if (signedIn) ...[

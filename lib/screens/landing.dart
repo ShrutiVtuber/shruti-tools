@@ -105,9 +105,11 @@ class _LandingScreenState extends State<LandingScreen> {
       return;
     }
     if (!mounted) return;
-    await Navigator.of(context).push(MaterialPageRoute(
-      builder: (_) => HoroscopesScreen(period: period, sign: sign),
-    ));
+    await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => HoroscopesScreen(period: period, sign: sign),
+      ),
+    );
   }
 
   Future<void> _open(String path) async {
@@ -313,7 +315,10 @@ class _LandingScreenState extends State<LandingScreen> {
                     // the archive lives. `_readHerReadings` decides, so the
                     // rule lives in one place rather than at every call.
                     onOpen: () => _readHerReadings(
-                      period: r.period, covers: r.covers, sign: r.sign),
+                      period: r.period,
+                      covers: r.covers,
+                      sign: r.sign,
+                    ),
                   ),
                 ),
 

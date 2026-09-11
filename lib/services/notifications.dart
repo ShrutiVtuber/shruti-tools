@@ -215,19 +215,22 @@ class Notifications extends ChangeNotifier {
   }
 
   Future<void> _startWatching() async {
-
     // ⚠ **initialize() FIRST, then the channel.** The other way round,
     // `resolvePlatformSpecificImplementation` has no platform to resolve and
     // returns null — so the `?.` swallows the call, no channel is created, and
     // Android quietly falls back to FCM's silent one. Nothing throws and
     // nothing is logged; the only symptom is a notification with no sound,
     // which reads as a phone setting rather than a bug.
-    await _local.initialize(const InitializationSettings(
-      android: AndroidInitializationSettings('ic_notification'),
-    ));
+    await _local.initialize(
+      const InitializationSettings(
+        android: AndroidInitializationSettings('ic_notification'),
+      ),
+    );
 
-    final android = _local.resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>();
+    final android = _local
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >();
     if (android == null) {
       debugPrint('notifications: no Android plugin to make a channel with');
       return;
@@ -243,7 +246,8 @@ class Notifications extends ChangeNotifier {
         note.body,
         NotificationDetails(
           android: AndroidNotificationDetails(
-            _channel.id, _channel.name,
+            _channel.id,
+            _channel.name,
             channelDescription: _channel.description,
             importance: Importance.high,
             priority: Priority.high,

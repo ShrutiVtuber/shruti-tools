@@ -311,9 +311,11 @@ class Practice {
   /// and as the site. The backend checks it against the work's own readings and
   /// falls back to the set rather than refusing, so a stale sign loses the
   /// label and never the remark.
-  Future<void> say(int workId, String what, {String sign = ''}) async =>
-      _send('POST', '/api/practice/$workId/comments',
-            {'body_md': what, 'sign': sign});
+  Future<void> say(int workId, String what, {String sign = ''}) async => _send(
+    'POST',
+    '/api/practice/$workId/comments',
+    {'body_md': what, 'sign': sign},
+  );
 
   Future<void> unsay(int commentId) async =>
       _send('DELETE', '/api/practice/comments/$commentId');

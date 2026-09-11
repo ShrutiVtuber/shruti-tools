@@ -303,7 +303,9 @@ class SignReading {
 /// Returns null when the site cannot be reached, which the screen shows as
 /// "her side is out of reach" rather than as "she has written nothing".
 Future<Twelve?> theTwelve({String period = 'monthly'}) async {
-  final body = await _get('/api/horoscopes?period=${Uri.encodeComponent(period)}');
+  final body = await _get(
+    '/api/horoscopes?period=${Uri.encodeComponent(period)}',
+  );
   if (body is! Map) return null;
   final rows = body['readings'];
   return Twelve(
@@ -332,7 +334,10 @@ Future<List<String>> periodsShePublishes() async {
   final body = await _get('/api/horoscopes');
   if (body is! Map) return const [];
   final list = body['availablePeriods'];
-  return [if (list is List) for (final p in list) p as String];
+  return [
+    if (list is List)
+      for (final p in list) p as String,
+  ];
 }
 
 /// An article from the journal.
