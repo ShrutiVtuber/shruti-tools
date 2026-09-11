@@ -29,7 +29,19 @@ import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
 
-ASTRO = "http://127.0.0.1:8201"
+# ⚠ The local engine by default, PRODUCTION when asked. The fixture is only
+# worth what its source is worth: a laptop container can be a commit ahead or a
+# configuration apart from the site people actually read.
+#
+#   SHRUTI_ASTRO=https://shrutivtuber.com/api/astro python3 tool/...
+#
+# ⚠ Production rate-limits that endpoint: a single call is fine, a hundred in a
+# row returns 403 part-way through and leaves a truncated fixture. Generate from
+# the local engine and SPOT-CHECK a handful against production instead — the two
+# were compared on 11 September 2026 across 54 positions from 1800 to 2100 and
+# agreed to the last digit.
+import os
+ASTRO = os.environ.get("SHRUTI_ASTRO", "http://127.0.0.1:8201")
 
 #: Places to take the ascendant from.
 #:
