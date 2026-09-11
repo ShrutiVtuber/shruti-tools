@@ -103,6 +103,11 @@ flutter:
     # It costs 116KB in the bundle and buys the one guarantee that matters:
     # a chart cast on a phone and on the website show the same degrees.
     - test/fixtures/ephemeris.json
+    # ⚠ And the stations, for the same reason and a harder-won one: the engine
+    # that computes them was wrong on every day at every latitude while the
+    # positions above were right to arcseconds. Both engines are now held to
+    # both files.
+    - test/fixtures/stations.json
 
   fonts:
     # Her two faces, taken from the site's own files rather than re-picked, so

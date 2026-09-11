@@ -26,6 +26,8 @@ import 'package:integration_test/integration_test.dart';
 import 'package:sweph/sweph.dart';
 
 import 'package:astrolabe/services/ephemeris.dart';
+import 'package:astrolabe/services/stations.dart';
+import 'package:astrolabe/sky/current.dart';
 
 /// How far apart the two engines may be, in degrees.
 ///
@@ -253,5 +255,83 @@ void main() {
         );
       }
     }
+  });
+
+  // ── the Sun's comings and goings ─────────────────────────────────────────
+  //
+  // ⚠ These did not exist until 11 September 2026, and their absence is the
+  // whole reason this section has a comment. The three tests above check
+  // POSITIONS, and positions were right to a few arcseconds while every
+  // sunrise this app computed on iOS was hours out and sunset came before it.
+  // The engine there is a different one, but the gap was the same gap: nothing
+  // above asks the sky when the Sun comes up.
+
+  testWidgets('every station agrees with the website', (tester) async {
+    await startEphemeris();
+    final rows =
+        (jsonDecode(await rootBundle.loadString('test/fixtures/stations.json'))
+                as Map<String, dynamic>)['rows']
+            as List;
+    const named = {
+      'sunrise': StationKind.dawn,
+      'sunset': StationKind.dusk,
+      'noon': StationKind.noon,
+      'midnight': StationKind.midnight,
+    };
+
+    final trouble = <String>[];
+    for (final row in rows.cast<Map<String, dynamic>>()) {
+      final want = row['at'] as String?;
+      if (want == null) continue;
+      final day = DateTime.parse('${row['date']}T12:00:00Z');
+      // ⚠ Through `stationsFor`, not through the engine directly: the day a
+      // station belongs to is decided in the service, and testing underneath it
+      // would leave the part that has actually been wrong untested.
+      final all = stationsFor(day, row['lat'] as double, row['lon'] as double);
+      final kind = named[row['station']]!;
+      final mine = all.where((s) => s.kind == kind).firstOrNull;
+      if (mine == null) {
+        trouble.add(
+          '${row['place']} ${row['date']} ${row['station']}: missing',
+        );
+        continue;
+      }
+      final off = mine.at
+          .difference(DateTime.parse(want).toUtc())
+          .inSeconds
+          .abs();
+      // ⚠ Generous above 60°, where the Sun grazes the horizon and the
+      // refraction model rather than the arithmetic decides the answer.
+      final allowed = (row['lat'] as double).abs() > 60 ? 360 : 60;
+      if (off > allowed) {
+        trouble.add(
+          '${row['place']} ${row['date']} ${row['station']}: ${off}s apart',
+        );
+      }
+    }
+    expect(trouble, isEmpty, reason: trouble.take(6).join('\n'));
+  });
+
+  testWidgets('the midheaven agrees, at every latitude', (tester) async {
+    await startEphemeris();
+    final fixture =
+        jsonDecode(await rootBundle.loadString('test/fixtures/ephemeris.json'))
+            as Map<String, dynamic>;
+    final places = (fixture['places'] as Map).cast<String, dynamic>();
+    final over = <String>[];
+    for (final s in (fixture['samples'] as List).cast<Map<String, dynamic>>()) {
+      final jd = sky.julianDay(DateTime.parse(s['utc'] as String));
+      for (final e in (s['midheaven'] as Map).entries) {
+        final c = (places[e.key] as List).cast<num>();
+        final off = apart(
+          sky.midheaven(jd, c[0].toDouble(), c[1].toDouble()),
+          (e.value as num).toDouble(),
+        );
+        if (off > tolerance) {
+          over.add('${e.key} ${s['utc']}: ${(off * 3600).toStringAsFixed(1)}"');
+        }
+      }
+    }
+    expect(over, isEmpty, reason: over.take(3).join('; '));
   });
 }
