@@ -85,12 +85,96 @@ double midheavenAt(double jdUt, double lon) {
   );
 }
 
-/// The Sun's declination and equation of time are not needed; rise and set come
-/// from its longitude, which the planets file already knows.
+/// The Sun's altitude above the horizon, in degrees, at [jd].
+///
+/// ⚠ Everything below is a root of this one function, which is the point. The
+/// version this replaces computed rise and set from a transit time and an hour
+/// angle, and got a systematic four minutes wrong in both hemispheres —
+/// because the Sun's place was read at one instant while the angle was measured
+/// from another, and no amount of staring at it made that visible. A crossing
+/// of a curve is a thing that can be checked by evaluating the curve.
+double sunAltitude(
+  double jd,
+  double Function(double) sunLongitudeAt, {
+  required double lat,
+  required double lon,
+}) {
+  final e = obliquity(jd) * radians;
+  final lambda = sunLongitudeAt(jd) * radians;
+  final declination = math.asin(math.sin(e) * math.sin(lambda));
+  final ra =
+      math.atan2(math.cos(e) * math.sin(lambda), math.cos(lambda)) * degrees;
+  // Local hour angle: how far west of the meridian the Sun is.
+  final h = turn(siderealTime(jd) + lon - ra) * radians;
+  final phi = lat * radians;
+  return math.asin(
+        math.sin(phi) * math.sin(declination) +
+            math.cos(phi) * math.cos(declination) * math.cos(h),
+      ) *
+      degrees;
+}
+
+/// How far the Sun is past the meridian, in degrees, folded to (-180, 180].
+///
+/// Zero at upper transit, ±180 at lower. Rises steadily through the day, so a
+/// sign change from negative to positive is a crossing.
+double _pastTheMeridian(
+  double jd,
+  double Function(double) sunLongitudeAt,
+  double lon, {
+  required bool upper,
+}) {
+  final e = obliquity(jd) * radians;
+  final lambda = sunLongitudeAt(jd) * radians;
+  final ra =
+      math.atan2(math.cos(e) * math.sin(lambda), math.cos(lambda)) * degrees;
+  final h = siderealTime(jd) + lon - ra;
+  return turn(h + (upper ? 180 : 0)) - 180;
+}
+
+/// ⚠ Ten minutes. Fine enough that no crossing inside a day is stepped over,
+/// including the brief dip below the horizon at high latitudes near midsummer,
+/// and coarse enough that a day costs 144 evaluations rather than thousands.
+const _step = 1 / 144;
+
+/// The first [t] in the UT day at [midnight] where [f] crosses zero upwards.
+double? _crossing(double midnight, double Function(double) f) {
+  var t0 = midnight;
+  var f0 = f(t0);
+  for (var i = 1; i <= 144; i++) {
+    final t1 = midnight + i * _step;
+    final f1 = f(t1);
+    if (f0 <= 0 && f1 > 0) {
+      // ⚠ Bisection, not Newton: the derivative near a grazing sunrise at high
+      // latitude is almost zero, which is where Newton throws the answer into
+      // the next week. Forty halvings of ten minutes is well under a second.
+      var lo = t0, hi = t1;
+      for (var k = 0; k < 40; k++) {
+        final mid = (lo + hi) / 2;
+        if (f(mid) > 0) {
+          hi = mid;
+        } else {
+          lo = mid;
+        }
+      }
+      return (lo + hi) / 2;
+    }
+    t0 = t1;
+    f0 = f1;
+  }
+  return null;
+}
+
+/// When the Sun rises or sets, or null when it does neither that day.
 ///
 /// ⚠ Null is a real answer. Above the Arctic and Antarctic circles the Sun does
 /// not always rise, and a caller that treats null as failure will report a bug
 /// on every midsummer in Reykjavík.
+///
+/// ⚠ The day is the UT day containing [jdUt], which is the website's own
+/// convention: for Anchorage on 4 May it reports a sunset at 06:11 UT, the
+/// evening before in local terms. Matching it is what makes the app and the
+/// site agree.
 double? sunTurn(
   double jdUt,
   double Function(double) sunLongitudeAt, {
@@ -102,59 +186,36 @@ double? sunTurn(
   // ⚠ The standard altitude: the Sun's centre is a little below the horizon
   // when its upper limb appears, because the atmosphere bends the light and
   // the disc has a radius. -0°50' is the convention both engines use.
-  final h0 = (refracted ? -0.8333 : 0.0) * radians;
-  final phi = lat * radians;
+  final h0 = refracted ? -0.8333 : 0.0;
+  final midnight = jdUt.floorToDouble() + 0.5;
 
-  // Start from local noon of the day [jdUt] falls in and iterate. Three passes
-  // is ample: each one lands within a few seconds of the last.
-  var guess = jdUt.floorToDouble() + 0.5 - lon / 360;
-
-  for (var pass = 0; pass < 4; pass++) {
-    final e = obliquity(guess) * radians;
-    final lambda = sunLongitudeAt(guess) * radians;
-    final declination = math.asin(math.sin(e) * math.sin(lambda));
-    final ra =
-        math.atan2(math.cos(e) * math.sin(lambda), math.cos(lambda)) * degrees;
-
-    final cosH =
-        (math.sin(h0) - math.sin(phi) * math.sin(declination)) /
-        (math.cos(phi) * math.cos(declination));
-    // ⚠ Out of range means it never happens today — circumpolar day or night.
-    if (cosH < -1 || cosH > 1) return null;
-
-    final hourAngle = math.acos(cosH) * degrees;
-    final transit = turn(ra - lon - siderealTime(guess)) / 360;
-    var when = guess.floorToDouble() + 0.5 + transit;
-    when += (rising ? -hourAngle : hourAngle) / 360;
-    guess = when;
+  double f(double t) {
+    final above = sunAltitude(t, sunLongitudeAt, lat: lat, lon: lon) - h0;
+    // Rising is the upward crossing; setting is the same curve inverted, so
+    // one search serves both.
+    return rising ? above : -above;
   }
-  return guess;
+
+  return _crossing(midnight, f);
 }
 
 /// When the Sun crosses the meridian — noon if [upper], midnight if not.
-///
-/// ⚠ Midnight is the LOWER transit, not "twelve hours after noon". The two
-/// differ by up to half a minute because the Sun's right ascension is not
-/// changing at a constant rate, and the difference is exactly the equation of
-/// time doing its work.
-///
-/// ⚠ Latitude does not enter it, which is the check that catches a mistake: a
-/// transit that moves with latitude is a transit computed wrongly.
 double sunTransit(
   double jdUt,
   double Function(double) sunLongitudeAt, {
   required double lon,
   required bool upper,
 }) {
-  var guess = jdUt.floorToDouble() + 0.5 - lon / 360;
-  for (var pass = 0; pass < 4; pass++) {
-    final e = obliquity(guess) * radians;
-    final lambda = sunLongitudeAt(guess) * radians;
-    final ra =
-        math.atan2(math.cos(e) * math.sin(lambda), math.cos(lambda)) * degrees;
-    final offset =
-        turn(ra - lon - siderealTime(guess) + (upper ? 0 : 180)) / 360;
-    guess = jdUt.floorToDouble() + 0.5 + offset;
+  final midnight = jdUt.floorToDouble() + 0.5;
+  final found = _crossing(
+    midnight,
+    (t) => _pastTheMeridian(t, sunLongitudeAt, lon, upper: upper),
+  );
+  // ⚠ A transit always happens; a null here would mean the search stepped over
+  // it. Falling back to the start of the day would be a silent wrong answer,
+  // so this says so instead.
+  if (found == null) {
+    throw StateError('no meridian crossing found in the day at $midnight');
   }
-  return guess;
+  return found;
 }

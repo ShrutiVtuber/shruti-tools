@@ -2,7 +2,7 @@
  "note": "Generated from shruti-astro \u2014 the WEBSITE's own ephemeris \u2014 by tool/make_ephemeris_fixture.py. Do not hand-edit: both engines are compared against this one file, so editing it to make one pass makes the other fail.",
  "zodiac": "tropical",
  "houseSystem": "whole_sign",
- "generated": "2026-09-11T12:54:03Z",
+ "generated": "2026-09-11T16:47:51Z",
  "places": {
   "athens": [
    37.9838,
@@ -76,6 +76,12 @@
     "reykjavik": 296.732474,
     "quito": 292.279571,
     "sydney": 155.365498
+   },
+   "midheaven": {
+    "athens": 303.867732,
+    "reykjavik": 261.293356,
+    "quito": 205.88738,
+    "sydney": 74.960513
    }
   },
   {
@@ -132,6 +138,12 @@
     "reykjavik": 69.208089,
     "quito": 312.697285,
     "sydney": 187.356427
+   },
+   "midheaven": {
+    "athens": 325.021069,
+    "reykjavik": 280.698618,
+    "quito": 227.58278,
+    "sydney": 94.395403
    }
   },
   {
@@ -188,6 +200,12 @@
     "reykjavik": 295.42101,
     "quito": 291.865726,
     "sydney": 154.728734
+   },
+   "midheaven": {
+    "athens": 303.441184,
+    "reykjavik": 260.88759,
+    "quito": 205.42132,
+    "sydney": 74.551187
    }
   },
   {
@@ -244,6 +262,12 @@
     "reykjavik": 68.081458,
     "quito": 312.25902,
     "sydney": 186.680336
+   },
+   "midheaven": {
+    "athens": 324.566214,
+    "reykjavik": 280.291702,
+    "quito": 227.142385,
+    "sydney": 93.990449
    }
   },
   {
@@ -300,6 +324,12 @@
     "reykjavik": 297.093165,
     "quito": 292.367718,
     "sydney": 155.503887
+   },
+   "midheaven": {
+    "athens": 303.958919,
+    "reykjavik": 261.378293,
+    "quito": 205.98425,
+    "sydney": 75.045889
    }
   },
   {
@@ -356,6 +386,12 @@
     "reykjavik": 69.366496,
     "quito": 312.789332,
     "sydney": 187.494606
+   },
+   "midheaven": {
+    "athens": 325.116474,
+    "reykjavik": 280.783223,
+    "quito": 227.672179,
+    "sydney": 94.479274
    }
   },
   {
@@ -412,6 +448,12 @@
     "reykjavik": 295.672399,
     "quito": 291.945631,
     "sydney": 154.851721
+   },
+   "midheaven": {
+    "athens": 303.523548,
+    "reykjavik": 260.965898,
+    "quito": 205.51125,
+    "sydney": 74.630174
    }
   },
   {
@@ -468,6 +510,12 @@
     "reykjavik": 68.307575,
     "quito": 312.344107,
     "sydney": 186.811839
+   },
+   "midheaven": {
+    "athens": 324.654527,
+    "reykjavik": 280.370763,
+    "quito": 227.228091,
+    "sydney": 94.06915
    }
   },
   {
@@ -524,6 +572,12 @@
     "reykjavik": 297.390674,
     "quito": 292.459992,
     "sydney": 155.645759
+   },
+   "midheaven": {
+    "athens": 304.054008,
+    "reykjavik": 261.46885,
+    "quito": 206.088293,
+    "sydney": 75.137259
    }
   },
   {
@@ -580,6 +634,12 @@
     "reykjavik": 69.609856,
     "quito": 312.887802,
     "sydney": 187.646236
+   },
+   "midheaven": {
+    "athens": 325.218666,
+    "reykjavik": 280.87459,
+    "quito": 227.770922,
+    "sydney": 94.57018
    }
   },
   {
@@ -636,6 +696,12 @@
     "reykjavik": 296.021694,
     "quito": 292.035113,
     "sydney": 154.991963
+   },
+   "midheaven": {
+    "athens": 303.616087,
+    "reykjavik": 261.052262,
+    "quito": 205.609847,
+    "sydney": 74.717016
    }
   },
   {
@@ -692,6 +758,12 @@
     "reykjavik": 68.477726,
     "quito": 312.437717,
     "sydney": 186.95274
+   },
+   "midheaven": {
+    "athens": 324.751565,
+    "reykjavik": 280.45686,
+    "quito": 227.319234,
+    "sydney": 94.154521
    }
   },
   {
@@ -748,6 +820,12 @@
     "reykjavik": 297.672911,
     "quito": 292.539764,
     "sydney": 155.769238
+   },
+   "midheaven": {
+    "athens": 304.136315,
+    "reykjavik": 261.546688,
+    "quito": 206.177509,
+    "sydney": 75.215701
    }
   },
   {
@@ -804,6 +882,12 @@
     "reykjavik": 69.810563,
     "quito": 312.972314,
     "sydney": 187.776
+   },
+   "midheaven": {
+    "athens": 325.30636,
+    "reykjavik": 280.952923,
+    "quito": 227.855371,
+    "sydney": 94.648087
    }
   },
   {
@@ -860,6 +944,12 @@
     "reykjavik": 296.294151,
     "quito": 292.126012,
     "sydney": 155.131198
+   },
+   "midheaven": {
+    "athens": 303.709702,
+    "reykjavik": 261.141711,
+    "quito": 205.712724,
+    "sydney": 74.807316
    }
   },
   {
@@ -916,6 +1006,12 @@
     "reykjavik": 68.736173,
     "quito": 312.534958,
     "sydney": 187.103133
+   },
+   "midheaven": {
+    "athens": 324.852499,
+    "reykjavik": 280.547244,
+    "quito": 227.417287,
+    "sydney": 94.244506
    }
   },
   {
@@ -972,6 +1068,12 @@
     "reykjavik": 298.051006,
     "quito": 292.630854,
     "sydney": 155.912087
+   },
+   "midheaven": {
+    "athens": 304.230529,
+    "reykjavik": 261.634527,
+    "quito": 206.277685,
+    "sydney": 75.304007
    }
   },
   {
@@ -1028,6 +1130,12 @@
     "reykjavik": 69.972964,
     "quito": 313.067714,
     "sydney": 187.919122
+   },
+   "midheaven": {
+    "athens": 325.405235,
+    "reykjavik": 281.040625,
+    "quito": 227.948039,
+    "sydney": 94.73503
    }
   },
   {
@@ -1084,6 +1192,12 @@
     "reykjavik": 296.573578,
     "quito": 292.205837,
     "sydney": 155.254917
+   },
+   "midheaven": {
+    "athens": 303.792086,
+    "reykjavik": 261.219494,
+    "quito": 205.80184,
+    "sydney": 74.885681
    }
   },
   {
@@ -1140,6 +1254,12 @@
     "reykjavik": 68.934919,
     "quito": 312.619285,
     "sydney": 187.232349
+   },
+   "midheaven": {
+    "athens": 324.939989,
+    "reykjavik": 280.625345,
+    "quito": 227.501324,
+    "sydney": 94.322157
    }
   },
   {
@@ -1196,6 +1316,12 @@
     "reykjavik": 298.338958,
     "quito": 292.720455,
     "sydney": 156.049592
+   },
+   "midheaven": {
+    "athens": 304.322828,
+    "reykjavik": 261.72263,
+    "quito": 206.37898,
+    "sydney": 75.392935
    }
   },
   {
@@ -1252,6 +1378,12 @@
     "reykjavik": 70.218131,
     "quito": 313.163776,
     "sydney": 188.067606
+   },
+   "midheaven": {
+    "athens": 325.50495,
+    "reykjavik": 281.12988,
+    "quito": 228.044829,
+    "sydney": 94.823886
    }
   },
   {
@@ -1308,6 +1440,12 @@
     "reykjavik": 296.935217,
     "quito": 292.298145,
     "sydney": 155.399297
+   },
+   "midheaven": {
+    "athens": 303.887512,
+    "reykjavik": 261.308721,
+    "quito": 205.903732,
+    "sydney": 74.975429
    }
   },
   {
@@ -1364,6 +1502,12 @@
     "reykjavik": 69.112155,
     "quito": 312.716009,
     "sydney": 187.378029
+   },
+   "midheaven": {
+    "athens": 325.040255,
+    "reykjavik": 280.714362,
+    "quito": 227.595663,
+    "sydney": 94.410443
    }
   },
   {
@@ -1420,6 +1564,12 @@
     "reykjavik": 298.6524,
     "quito": 292.800605,
     "sydney": 156.174436
+   },
+   "midheaven": {
+    "athens": 304.405621,
+    "reykjavik": 261.800398,
+    "quito": 206.467889,
+    "sydney": 75.471216
    }
   },
   {
@@ -1476,6 +1626,12 @@
     "reykjavik": 70.394649,
     "quito": 313.248478,
     "sydney": 188.196441
+   },
+   "midheaven": {
+    "athens": 325.592801,
+    "reykjavik": 281.208137,
+    "quito": 228.128532,
+    "sydney": 94.901619
    }
   },
   {
@@ -1532,6 +1688,12 @@
     "reykjavik": 297.201172,
     "quito": 292.386231,
     "sydney": 155.534097
+   },
+   "midheaven": {
+    "athens": 303.978211,
+    "reykjavik": 261.395499,
+    "quito": 206.003575,
+    "sydney": 75.063052
    }
   },
   {
@@ -1588,6 +1750,12 @@
     "reykjavik": 69.367609,
     "quito": 312.810413,
     "sydney": 187.52444
+   },
+   "midheaven": {
+    "athens": 325.138262,
+    "reykjavik": 280.802199,
+    "quito": 227.691194,
+    "sydney": 94.497929
    }
   },
   {
@@ -1644,6 +1812,12 @@
     "reykjavik": 299.038954,
     "quito": 292.894077,
     "sydney": 156.320619
+   },
+   "midheaven": {
+    "athens": 304.50225,
+    "reykjavik": 261.890747,
+    "quito": 206.570997,
+    "sydney": 75.562088
    }
   },
   {
@@ -1700,6 +1874,12 @@
     "reykjavik": 70.566274,
     "quito": 313.346679,
     "sydney": 188.344011
+   },
+   "midheaven": {
+    "athens": 325.694586,
+    "reykjavik": 281.298496,
+    "quito": 228.224195,
+    "sydney": 94.991228
    }
   },
   {
@@ -1756,6 +1936,12 @@
     "reykjavik": 297.512917,
     "quito": 292.466945,
     "sydney": 155.659998
+   },
+   "midheaven": {
+    "athens": 304.06161,
+    "reykjavik": 261.473704,
+    "quito": 206.092951,
+    "sydney": 75.141751
    }
   },
   {
@@ -1812,6 +1998,12 @@
     "reykjavik": 69.543458,
     "quito": 312.895416,
     "sydney": 187.653531
+   },
+   "midheaven": {
+    "athens": 325.226414,
+    "reykjavik": 280.88068,
+    "quito": 227.775,
+    "sydney": 94.575863
    }
   },
   {
@@ -1868,6 +2060,12 @@
     "reykjavik": 299.323526,
     "quito": 292.980787,
     "sydney": 156.453674
+   },
+   "midheaven": {
+    "athens": 304.591565,
+    "reykjavik": 261.976045,
+    "quito": 206.669084,
+    "sydney": 75.648193
    }
   },
   {
@@ -1924,6 +2122,12 @@
     "reykjavik": 70.804658,
     "quito": 313.43966,
     "sydney": 188.487952
+   },
+   "midheaven": {
+    "athens": 325.791115,
+    "reykjavik": 281.384932,
+    "quito": 228.318055,
+    "sydney": 95.077297
    }
   },
   {
@@ -1980,6 +2184,12 @@
     "reykjavik": 173.243286,
     "quito": 110.006841,
     "sydney": 344.322397
+   },
+   "midheaven": {
+    "athens": 121.66761,
+    "reykjavik": 79.192794,
+    "quito": 23.472028,
+    "sydney": 252.840318
    }
   },
   {
@@ -2036,6 +2246,12 @@
     "reykjavik": 294.849828,
     "quito": 291.633281,
     "sydney": 154.377107
+   },
+   "midheaven": {
+    "athens": 303.202305,
+    "reykjavik": 260.656666,
+    "quito": 205.154828,
+    "sydney": 74.317629
    }
   },
   {
@@ -2092,6 +2308,12 @@
     "reykjavik": 67.289171,
     "quito": 312.013668,
     "sydney": 186.294991
+   },
+   "midheaven": {
+    "athens": 324.311372,
+    "reykjavik": 280.062196,
+    "quito": 226.889932,
+    "sydney": 93.761425
    }
   },
   {
@@ -2148,6 +2370,12 @@
     "reykjavik": 296.426791,
     "quito": 292.133782,
     "sydney": 155.147195
+   },
+   "midheaven": {
+    "athens": 303.718199,
+    "reykjavik": 261.147156,
+    "quito": 205.718011,
+    "sydney": 74.812365
    }
   },
   {
@@ -2204,6 +2432,12 @@
     "reykjavik": 68.658322,
     "quito": 312.542961,
     "sydney": 187.110594
+   },
+   "midheaven": {
+    "athens": 324.860642,
+    "reykjavik": 280.55355,
+    "quito": 227.421296,
+    "sydney": 94.250354
    }
   },
   {
@@ -2260,6 +2494,12 @@
     "reykjavik": 295.08116,
     "quito": 291.71823,
     "sydney": 154.506518
+   },
+   "midheaven": {
+    "athens": 303.289715,
+    "reykjavik": 260.74057,
+    "quito": 205.251445,
+    "sydney": 74.402391
    }
   },
   {
@@ -2316,6 +2556,12 @@
     "reykjavik": 67.560492,
     "quito": 312.104738,
     "sydney": 186.436852
+   },
+   "midheaven": {
+    "athens": 324.405925,
+    "reykjavik": 280.147112,
+    "quito": 226.982662,
+    "sydney": 93.846059
    }
   },
   {
@@ -2372,6 +2618,12 @@
     "reykjavik": 296.767945,
     "quito": 292.228296,
     "sydney": 155.293988
+   },
+   "midheaven": {
+    "athens": 303.815783,
+    "reykjavik": 261.239065,
+    "quito": 205.823213,
+    "sydney": 74.904923
    }
   },
   {
@@ -2428,6 +2680,12 @@
     "reykjavik": 68.866584,
     "quito": 312.642743,
     "sydney": 187.262082
+   },
+   "midheaven": {
+    "athens": 324.964118,
+    "reykjavik": 280.64566,
+    "quito": 227.519613,
+    "sydney": 94.341814
    }
   },
   {
@@ -2484,6 +2742,12 @@
     "reykjavik": 295.389801,
     "quito": 291.800948,
     "sydney": 154.635791
+   },
+   "midheaven": {
+    "athens": 303.375217,
+    "reykjavik": 260.820587,
+    "quito": 205.342886,
+    "sydney": 74.482889
    }
   },
   {
@@ -2540,6 +2804,12 @@
     "reykjavik": 67.738215,
     "quito": 312.191255,
     "sydney": 186.567925
+   },
+   "midheaven": {
+    "athens": 324.495635,
+    "reykjavik": 280.226882,
+    "quito": 227.067598,
+    "sydney": 93.925231
    }
   },
   {
@@ -2596,6 +2866,12 @@
     "reykjavik": 297.019018,
     "quito": 292.311883,
     "sydney": 155.421868
+   },
+   "midheaven": {
+    "athens": 303.901847,
+    "reykjavik": 261.321408,
+    "quito": 205.917944,
+    "sydney": 74.988067
    }
   },
   {
@@ -2652,6 +2928,12 @@
     "reykjavik": 69.115636,
     "quito": 312.732405,
     "sydney": 187.40137
+   },
+   "midheaven": {
+    "athens": 325.057206,
+    "reykjavik": 280.729148,
+    "quito": 227.610557,
+    "sydney": 94.424991
    }
   },
   {
@@ -2708,6 +2990,12 @@
     "reykjavik": 295.707548,
     "quito": 291.895591,
     "sydney": 154.782191
+   },
+   "midheaven": {
+    "athens": 303.472865,
+    "reykjavik": 260.912919,
+    "quito": 205.448722,
+    "sydney": 74.575936
    }
   },
   {
@@ -2764,6 +3052,12 @@
     "reykjavik": 67.966338,
     "quito": 312.291278,
     "sydney": 186.720548
+   },
+   "midheaven": {
+    "athens": 324.599383,
+    "reykjavik": 280.31938,
+    "quito": 227.166748,
+    "sydney": 94.017138
    }
   },
   {
@@ -2820,6 +3114,12 @@
     "reykjavik": 297.360878,
     "quito": 292.395956,
     "sydney": 155.553671
+   },
+   "midheaven": {
+    "athens": 303.988799,
+    "reykjavik": 261.402492,
+    "quito": 206.010433,
+    "sydney": 75.069584
    }
   },
   {
@@ -2876,6 +3176,12 @@
     "reykjavik": 69.275775,
     "quito": 312.82044,
     "sydney": 187.533869
+   },
+   "midheaven": {
+    "athens": 325.14846,
+    "reykjavik": 280.810167,
+    "quito": 227.696393,
+    "sydney": 94.505343
    }
   },
   {
@@ -2932,6 +3238,12 @@
     "reykjavik": 295.948041,
     "quito": 291.977981,
     "sydney": 154.90817
+   },
+   "midheaven": {
+    "athens": 303.557694,
+    "reykjavik": 260.994077,
+    "quito": 205.542082,
+    "sydney": 74.65788
    }
   },
   {
@@ -2988,6 +3300,12 @@
     "reykjavik": 68.217861,
     "quito": 312.379306,
     "sydney": 186.857361
+   },
+   "midheaven": {
+    "athens": 324.690772,
+    "reykjavik": 280.401379,
+    "quito": 227.256113,
+    "sydney": 94.098839
    }
   },
   {
@@ -3044,6 +3362,12 @@
     "reykjavik": 297.693629,
     "quito": 292.490523,
     "sydney": 155.699942
+   },
+   "midheaven": {
+    "athens": 304.086363,
+    "reykjavik": 261.494787,
+    "quito": 206.116208,
+    "sydney": 75.162599
    }
   },
   {
@@ -3100,6 +3424,12 @@
     "reykjavik": 69.497313,
     "quito": 312.920769,
     "sydney": 187.686892
+   },
+   "midheaven": {
+    "athens": 325.252528,
+    "reykjavik": 280.902961,
+    "quito": 227.795877,
+    "sydney": 94.59755
    }
   },
   {
@@ -3156,6 +3486,12 @@
     "reykjavik": 296.285271,
     "quito": 292.063392,
     "sydney": 155.042064
+   },
+   "midheaven": {
+    "athens": 303.646029,
+    "reykjavik": 261.076465,
+    "quito": 205.636096,
+    "sydney": 74.740713
    }
   },
   {
@@ -3212,6 +3548,12 @@
     "reykjavik": 68.384036,
     "quito": 312.468651,
     "sydney": 186.991929
+   },
+   "midheaven": {
+    "athens": 324.783388,
+    "reykjavik": 280.4836,
+    "quito": 227.343235,
+    "sydney": 94.180381
    }
   },
   {
@@ -3268,6 +3610,12 @@
     "reykjavik": 297.958863,
     "quito": 292.572021,
     "sydney": 155.825168
+   },
+   "midheaven": {
+    "athens": 304.17034,
+    "reykjavik": 261.574797,
+    "quito": 206.208125,
+    "sydney": 75.243331
    }
   },
   {
@@ -3324,6 +3672,12 @@
     "reykjavik": 69.72447,
     "quito": 313.00776,
     "sydney": 187.821452
+   },
+   "midheaven": {
+    "athens": 325.342827,
+    "reykjavik": 280.98383,
+    "quito": 227.883646,
+    "sydney": 94.67807
    }
   },
   {
@@ -3380,6 +3734,12 @@
     "reykjavik": 296.591909,
     "quito": 292.157327,
     "sydney": 155.186772
+   },
+   "midheaven": {
+    "athens": 303.742874,
+    "reykjavik": 261.168432,
+    "quito": 205.741637,
+    "sydney": 74.833457
    }
   },
   {
@@ -3436,6 +3796,12 @@
     "reykjavik": 68.624591,
     "quito": 312.568598,
     "sydney": 187.145168
+   },
+   "midheaven": {
+    "athens": 324.887083,
+    "reykjavik": 280.576215,
+    "quito": 227.442969,
+    "sydney": 94.272477
    }
   },
   {
@@ -3492,6 +3858,12 @@
     "reykjavik": 298.329976,
     "quito": 292.65918,
     "sydney": 155.962064
+   },
+   "midheaven": {
+    "athens": 304.260517,
+    "reykjavik": 261.658695,
+    "quito": 206.303709,
+    "sydney": 75.327641
    }
   },
   {
@@ -3548,6 +3920,12 @@
     "reykjavik": 69.877141,
     "quito": 313.098753,
     "sydney": 187.957743
+   },
+   "midheaven": {
+    "athens": 325.437124,
+    "reykjavik": 281.067458,
+    "quito": 227.971914,
+    "sydney": 94.760963
    }
   },
   {
@@ -3604,6 +3982,12 @@
     "reykjavik": 296.849241,
     "quito": 292.237885,
     "sydney": 155.310601
+   },
+   "midheaven": {
+    "athens": 303.825893,
+    "reykjavik": 261.247457,
+    "quito": 205.832393,
+    "sydney": 74.913181
    }
   },
   {
@@ -3660,6 +4044,12 @@
     "reykjavik": 68.851557,
     "quito": 312.654517,
     "sydney": 187.277963
+   },
+   "midheaven": {
+    "athens": 324.97626,
+    "reykjavik": 280.656076,
+    "quito": 227.529582,
+    "sydney": 94.351983
    }
   },
   {
@@ -3716,6 +4106,12 @@
     "reykjavik": 298.651705,
     "quito": 292.752473,
     "sydney": 156.105866
+   },
+   "midheaven": {
+    "athens": 304.356702,
+    "reykjavik": 261.750038,
+    "quito": 206.40852,
+    "sydney": 75.419758
    }
   },
   {
@@ -3772,6 +4168,12 @@
     "reykjavik": 70.109159,
     "quito": 313.1982,
     "sydney": 188.110189
+   },
+   "midheaven": {
+    "athens": 325.540305,
+    "reykjavik": 281.159613,
+    "quito": 228.071171,
+    "sydney": 94.852606
    }
   },
   {
@@ -3828,6 +4230,12 @@
     "reykjavik": 297.210427,
     "quito": 292.326538,
     "sydney": 155.449658
+   },
+   "midheaven": {
+    "athens": 303.917592,
+    "reykjavik": 261.332906,
+    "quito": 205.929836,
+    "sydney": 74.999077
    }
   },
   {
@@ -3884,6 +4292,12 @@
     "reykjavik": 69.013358,
     "quito": 312.747073,
     "sydney": 187.416869
+   },
+   "midheaven": {
+    "athens": 325.072186,
+    "reykjavik": 280.74117,
+    "quito": 227.619509,
+    "sydney": 94.436342
    }
   },
   {
@@ -3940,6 +4354,12 @@
     "reykjavik": 187.633358,
     "quito": 134.233834,
     "sydney": 5.427857
+   },
+   "midheaven": {
+    "athens": 146.726144,
+    "reykjavik": 102.217276,
+    "quito": 49.206089,
+    "sydney": 275.903791
    }
   },
   {
@@ -3996,6 +4416,12 @@
     "reykjavik": 291.462632,
     "quito": 290.397368,
     "sydney": 152.488909
+   },
+   "midheaven": {
+    "athens": 301.929786,
+    "reykjavik": 259.439869,
+    "quito": 203.755323,
+    "sydney": 73.089187
    }
   },
   {
@@ -4052,6 +4478,12 @@
     "reykjavik": 298.940014,
     "quito": 292.832625,
     "sydney": 156.229752
+   },
+   "midheaven": {
+    "athens": 304.43938,
+    "reykjavik": 261.82833,
+    "quito": 206.498263,
+    "sydney": 75.498674
    }
   },
   {
@@ -4108,6 +4540,12 @@
     "reykjavik": 70.312761,
     "quito": 313.28348,
     "sydney": 188.241219
+   },
+   "midheaven": {
+    "athens": 325.628799,
+    "reykjavik": 281.238703,
+    "quito": 228.156526,
+    "sydney": 94.931283
    }
   },
   {
@@ -4164,6 +4602,12 @@
     "reykjavik": 297.505456,
     "quito": 292.418724,
     "sydney": 155.591214
+   },
+   "midheaven": {
+    "athens": 304.012575,
+    "reykjavik": 261.423427,
+    "quito": 206.033827,
+    "sydney": 75.090417
    }
   },
   {
@@ -4220,6 +4664,12 @@
     "reykjavik": 69.260992,
     "quito": 312.845471,
     "sydney": 187.568424
+   },
+   "midheaven": {
+    "athens": 325.1743,
+    "reykjavik": 280.832515,
+    "quito": 227.718289,
+    "sydney": 94.527239
    }
   },
   {
@@ -4276,6 +4726,12 @@
     "reykjavik": 299.332421,
     "quito": 292.922848,
     "sydney": 156.371384
+   },
+   "midheaven": {
+    "athens": 304.53272,
+    "reykjavik": 261.915199,
+    "quito": 206.597207,
+    "sydney": 75.585973
    }
   },
   {
@@ -4332,6 +4788,12 @@
     "reykjavik": 70.466063,
     "quito": 313.377935,
     "sydney": 188.382407
+   },
+   "midheaven": {
+    "athens": 325.726673,
+    "reykjavik": 281.325485,
+    "quito": 228.248011,
+    "sydney": 95.017288
    }
   },
   {
@@ -4388,6 +4850,12 @@
     "reykjavik": 297.789736,
     "quito": 292.498664,
     "sydney": 155.714926
+   },
+   "midheaven": {
+    "athens": 304.095057,
+    "reykjavik": 261.5014,
+    "quito": 206.12316,
+    "sydney": 75.168989
    }
   },
   {
@@ -4444,6 +4912,12 @@
     "reykjavik": 69.462307,
     "quito": 312.93015,
     "sydney": 187.69829
+   },
+   "midheaven": {
+    "athens": 325.262157,
+    "reykjavik": 280.910999,
+    "quito": 227.802847,
+    "sydney": 94.605291
    }
   },
   {
@@ -4500,6 +4974,12 @@
     "reykjavik": 179.886657,
     "quito": 120.991794,
     "sydney": 354.053553
+   },
+   "midheaven": {
+    "athens": 133.007604,
+    "reykjavik": 89.819228,
+    "quito": 35.577966,
+    "sydney": 263.531045
    }
   },
   {
@@ -4556,6 +5036,12 @@
     "reykjavik": 118.574324,
     "quito": 15.04798,
     "sydney": 261.008797
+   },
+   "midheaven": {
+    "athens": 28.068795,
+    "reykjavik": 338.788639,
+    "quito": 282.769291,
+    "sydney": 151.534228
    }
   },
   {
@@ -4612,6 +5098,12 @@
     "reykjavik": 116.813522,
     "quito": 11.65475,
     "sydney": 257.919504
+   },
+   "midheaven": {
+    "athens": 24.749323,
+    "reykjavik": 335.443961,
+    "quito": 279.863678,
+    "sydney": 148.243996
    }
   },
   {
@@ -4668,6 +5160,12 @@
     "reykjavik": 299.643202,
     "quito": 293.013818,
     "sydney": 156.511258
+   },
+   "midheaven": {
+    "athens": 304.626463,
+    "reykjavik": 262.004491,
+    "quito": 206.699765,
+    "sydney": 75.676067
    }
   },
   {
@@ -4724,6 +5222,12 @@
     "reykjavik": 70.702619,
     "quito": 313.475398,
     "sydney": 188.532449
+   },
+   "midheaven": {
+    "athens": 325.827821,
+    "reykjavik": 281.415938,
+    "quito": 228.345803,
+    "sydney": 95.107296
    }
   },
   {
@@ -4780,6 +5284,12 @@
     "reykjavik": 298.167045,
     "quito": 292.590182,
     "sydney": 155.858288
+   },
+   "midheaven": {
+    "athens": 304.189699,
+    "reykjavik": 261.589696,
+    "quito": 206.223852,
+    "sydney": 75.257761
    }
   },
   {
@@ -4836,6 +5346,12 @@
     "reykjavik": 69.628859,
     "quito": 313.026054,
     "sydney": 187.842174
+   },
+   "midheaven": {
+    "athens": 325.361551,
+    "reykjavik": 280.999196,
+    "quito": 227.896074,
+    "sydney": 94.692733
    }
   },
   {
@@ -4892,6 +5408,12 @@
     "reykjavik": 299.962179,
     "quito": 293.093992,
     "sydney": 156.63594
+   },
+   "midheaven": {
+    "athens": 304.709258,
+    "reykjavik": 262.082367,
+    "quito": 206.788798,
+    "sydney": 75.754472
    }
   },
   {
@@ -4948,6 +5470,12 @@
     "reykjavik": 70.881124,
     "quito": 313.560139,
     "sydney": 188.661426
+   },
+   "midheaven": {
+    "athens": 325.915713,
+    "reykjavik": 281.494282,
+    "quito": 228.429695,
+    "sydney": 95.185133
    }
   },
   {
@@ -5004,6 +5532,12 @@
     "reykjavik": 298.452854,
     "quito": 292.679623,
     "sydney": 155.995391
+   },
+   "midheaven": {
+    "athens": 304.28182,
+    "reykjavik": 261.677679,
+    "quito": 206.324995,
+    "sydney": 75.346572
    }
   },
   {
@@ -5060,6 +5594,12 @@
     "reykjavik": 69.877285,
     "quito": 313.12199,
     "sydney": 187.990462
+   },
+   "midheaven": {
+    "athens": 325.46113,
+    "reykjavik": 281.08837,
+    "quito": 227.992815,
+    "sydney": 94.781516
    }
   },
   {
@@ -5116,6 +5656,12 @@
     "reykjavik": 300.366855,
     "quito": 293.186442,
     "sydney": 156.780786
+   },
+   "midheaven": {
+    "athens": 304.804868,
+    "reykjavik": 262.171526,
+    "quito": 206.890389,
+    "sydney": 75.8441
    }
   },
   {
@@ -5172,6 +5718,12 @@
     "reykjavik": 71.04061,
     "quito": 313.65704,
     "sydney": 188.806383
+   },
+   "midheaven": {
+    "athens": 326.016124,
+    "reykjavik": 281.583365,
+    "quito": 228.523717,
+    "sydney": 95.27344
    }
   },
   {
@@ -5228,6 +5780,12 @@
     "reykjavik": 298.766765,
     "quito": 292.759574,
     "sydney": 156.1199
+   },
+   "midheaven": {
+    "athens": 304.364409,
+    "reykjavik": 261.755226,
+    "quito": 206.413613,
+    "sydney": 75.424623
    }
   },
   {
@@ -5284,6 +5842,12 @@
     "reykjavik": 70.053076,
     "quito": 313.206389,
     "sydney": 188.118674
+   },
+   "midheaven": {
+    "athens": 325.548657,
+    "reykjavik": 281.166341,
+    "quito": 228.076152,
+    "sydney": 94.858959
    }
   },
   {
@@ -5340,6 +5904,12 @@
     "reykjavik": 300.672418,
     "quito": 293.274584,
     "sydney": 156.916223
+   },
+   "midheaven": {
+    "athens": 304.895682,
+    "reykjavik": 262.258124,
+    "quito": 206.989892,
+    "sydney": 75.931494
    }
   },
   {
@@ -5396,6 +5966,12 @@
     "reykjavik": 71.274312,
     "quito": 313.75153,
     "sydney": 188.952241
+   },
+   "midheaven": {
+    "athens": 326.114205,
+    "reykjavik": 281.671137,
+    "quito": 228.618833,
+    "sydney": 95.360812
    }
   },
   {
@@ -5452,6 +6028,12 @@
     "reykjavik": 299.151705,
     "quito": 292.853437,
     "sydney": 156.266512
+   },
+   "midheaven": {
+    "athens": 304.461424,
+    "reykjavik": 261.846007,
+    "quito": 206.517215,
+    "sydney": 75.515939
    }
   },
   {
@@ -5508,6 +6090,12 @@
     "reykjavik": 70.229422,
     "quito": 313.305021,
     "sydney": 188.266933
+   },
+   "midheaven": {
+    "athens": 325.650886,
+    "reykjavik": 281.257137,
+    "quito": 228.172334,
+    "sydney": 94.949013
    }
   },
   {
@@ -5564,6 +6152,12 @@
     "reykjavik": 301.027674,
     "quito": 293.355813,
     "sydney": 157.043277
+   },
+   "midheaven": {
+    "athens": 304.979661,
+    "reykjavik": 262.336583,
+    "quito": 207.07934,
+    "sydney": 76.010392
    }
   },
   {
@@ -5620,6 +6214,12 @@
     "reykjavik": 71.432011,
     "quito": 313.837054,
     "sydney": 189.081174
+   },
+   "midheaven": {
+    "athens": 326.202864,
+    "reykjavik": 281.749971,
+    "quito": 228.702603,
+    "sydney": 95.439044
    }
   },
   {
@@ -5676,6 +6276,12 @@
     "reykjavik": 299.435113,
     "quito": 292.939997,
     "sydney": 156.39922
+   },
+   "midheaven": {
+    "athens": 304.550577,
+    "reykjavik": 261.931174,
+    "quito": 206.615128,
+    "sydney": 75.601913
    }
   },
   {
@@ -5732,6 +6338,12 @@
     "reykjavik": 70.470019,
     "quito": 313.397858,
     "sydney": 188.410608
+   },
+   "midheaven": {
+    "athens": 325.747259,
+    "reykjavik": 281.343465,
+    "quito": 228.266091,
+    "sydney": 95.034979
    }
   },
   {
@@ -5788,6 +6400,12 @@
     "reykjavik": 301.438389,
     "quito": 293.450446,
     "sydney": 157.191068
+   },
+   "midheaven": {
+    "athens": 305.077468,
+    "reykjavik": 262.42812,
+    "quito": 207.183754,
+    "sydney": 76.102468
    }
   },
   {
@@ -5844,6 +6462,12 @@
     "reykjavik": 71.605129,
     "quito": 313.936885,
     "sydney": 189.231024
+   },
+   "midheaven": {
+    "athens": 326.306329,
+    "reykjavik": 281.841875,
+    "quito": 228.799925,
+    "sydney": 95.530198
    }
   },
   {
@@ -5900,6 +6524,12 @@
     "reykjavik": 299.787239,
     "quito": 293.022204,
     "sydney": 156.527931
+   },
+   "midheaven": {
+    "athens": 304.635584,
+    "reykjavik": 262.010502,
+    "quito": 206.705552,
+    "sydney": 75.681669
    }
   },
   {
@@ -5956,6 +6586,12 @@
     "reykjavik": 70.626982,
     "quito": 313.484017,
     "sydney": 188.540304
+   },
+   "midheaven": {
+    "athens": 325.836567,
+    "reykjavik": 281.42283,
+    "quito": 228.35029,
+    "sydney": 95.113716
    }
   },
   {
@@ -6012,6 +6648,12 @@
     "reykjavik": 298.258448,
     "quito": 292.605623,
     "sydney": 155.883433
+   },
+   "midheaven": {
+    "athens": 304.205785,
+    "reykjavik": 261.604053,
+    "quito": 206.239962,
+    "sydney": 75.272082
    }
   },
   {
@@ -6068,6 +6710,12 @@
     "reykjavik": 69.634194,
     "quito": 313.04435,
     "sydney": 187.868217
+   },
+   "midheaven": {
+    "athens": 325.380463,
+    "reykjavik": 281.015719,
+    "quito": 227.912747,
+    "sydney": 94.708996
    }
   }
  ]

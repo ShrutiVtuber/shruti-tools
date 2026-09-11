@@ -151,4 +151,37 @@ void main() {
     );
     expect(over, isEmpty, reason: over.take(3).join('; '));
   });
+
+  test('the midheaven agrees, at every latitude', () {
+    // ⚠ This was the one method on the Sky interface that nothing checked.
+    // Five of six were covered and the sixth was not — which is the same shape
+    // of gap that let a broken sunrise ship: a suite can be green and silent
+    // about a whole function.
+    //
+    // ⚠ Latitude must not enter the answer, but it is still checked at four of
+    // them: the midheaven is where the meridian meets the ecliptic, and a
+    // version that wrongly used latitude would be right at the equator and
+    // wrong everywhere else.
+    final places = (fixture['places'] as Map).cast<String, dynamic>();
+    var worst = 0.0;
+    final over = <String>[];
+    for (final s in samples) {
+      final jd = sky.julianDay(DateTime.parse(s['utc'] as String));
+      for (final e in (s['midheaven'] as Map).entries) {
+        final c = (places[e.key] as List).cast<num>();
+        final off = apart(
+          sky.midheaven(jd, c[0].toDouble(), c[1].toDouble()),
+          (e.value as num).toDouble(),
+        );
+        if (off > worst) worst = off;
+        if (off > tolerance) {
+          over.add('${e.key} ${s['utc']}: ${(off * 3600).toStringAsFixed(1)}"');
+        }
+      }
+    }
+    printOnFailure(
+      'midheaven worst ${(worst * 3600).toStringAsFixed(1)} arcsec',
+    );
+    expect(over, isEmpty, reason: over.take(3).join('; '));
+  });
 }

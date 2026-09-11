@@ -110,14 +110,20 @@ def main():
             }
 
         ascendants = {}
+        # ⚠ The midheaven too. It was the one method on the Sky interface with
+        # no test of any kind — five of six were checked and the sixth was not,
+        # which is exactly the shape of gap that shipped a broken sunrise.
+        midheavens = {}
         for name, (lat, lon) in PLACES.items():
             c = here if name == "athens" else chart(at, lat, lon)
             ascendants[name] = round(c["angles"]["ascendant"], 6)
+            midheavens[name] = round(c["angles"]["midheaven"], 6)
 
         samples.append({
             "utc": at.strftime("%Y-%m-%dT%H:%M:%SZ"),
             "positions": positions,
             "ascendant": ascendants,
+            "midheaven": midheavens,
         })
 
     json.dump({
