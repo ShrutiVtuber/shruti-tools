@@ -49,6 +49,18 @@
 	</dict>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<!-- ⚠ Declared so TestFlight never holds a build hostage to the export
+	     compliance questionnaire. Without it, every single upload sits in
+	     "Missing Compliance" until somebody answers the same question by hand,
+	     and the build cannot be installed until they do.
+
+	     `false` is the true answer, not a convenience: the app uses ordinary
+	     HTTPS and Apple's own push transport, both of which are the exempt
+	     category. It ships no cryptography of its own.
+
+	     Copied from practiseapp and rebetichord, which both learned it. -->
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

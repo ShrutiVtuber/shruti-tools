@@ -180,6 +180,62 @@ void main() {
     );
   });
 
+  test('export compliance is declared, so TestFlight does not stall', () {
+    // ⚠ Learned by rebetichord and practiseapp before this app existed.
+    // Without this key EVERY upload sits in "Missing Compliance" until
+    // somebody answers the same questionnaire by hand, and the build cannot be
+    // installed until they do. `false` is the true answer: ordinary HTTPS and
+    // Apple's own push transport are both the exempt category.
+    final plist = File('ios/Runner/Info.plist').readAsStringSync();
+    expect(
+      plist.contains('ITSAppUsesNonExemptEncryption'),
+      isTrue,
+      reason:
+          'every TestFlight build will stall on the encryption '
+          'questionnaire until somebody answers it by hand',
+    );
+  });
+
+  test('the app icon is hers, and has no alpha channel', () {
+    // ⚠ Two separate traps in one file.
+    //
+    // Flutter's template ships its own blue logo, and a build that reaches
+    // TestFlight wearing it looks like an unfinished sample — which is what
+    // this app was about to do.
+    //
+    // And an iOS icon with an alpha channel is REJECTED AT UPLOAD, after the
+    // whole archive has been built and signed, with a message about
+    // transparency rather than about which file.
+    final icon = File(
+      'ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-1024x1024@1x.png',
+    );
+    expect(icon.existsSync(), isTrue, reason: 'no 1024 icon at all');
+
+    final bytes = icon.readAsBytesSync();
+    // PNG header: colour type is the 26th byte. 2 = RGB, 6 = RGB+alpha.
+    final colourType = bytes[25];
+    expect(
+      colourType,
+      equals(2),
+      reason:
+          'the icon has an alpha channel (colour type $colourType); '
+          'Apple rejects that at upload, after the build has been made',
+    );
+
+    // ⚠ Whether the drawing is HERS cannot be checked from bytes without
+    // decoding the image, and a test that pretends to is worse than none —
+    // the first version of this line was `expect(x || true, isTrue)`, which
+    // cannot fail. The mechanical half is the alpha channel, above. The
+    // "is it still Flutter's blue logo" half is a human looking at it, and it
+    // was looked at: it is the crescent-and-star placeholder from
+    // assets/art/icon-1024.png, per the artwork spec.
+    expect(
+      bytes.length,
+      greaterThan(1000),
+      reason: 'the icon file is too small to be a real 1024 image',
+    );
+  });
+
   test('the Podfile and the project agree on the floor', () {
     // ⚠ Three places have to say the same number: the project setting governs
     // the app, the Podfile's platform line governs the pods, and the
