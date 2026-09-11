@@ -126,7 +126,7 @@ class LicencesScreen extends StatelessWidget {
                     decoration: const BoxDecoration(
                       border: Border(top: BorderSide(color: Tone.line)),
                     ),
-                    child: const Column(
+                    child: Column(
                       children: [
                         Fact(
                           label: 'This build',

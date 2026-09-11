@@ -5,9 +5,12 @@
 // Whole sign houses throughout, as everywhere else in her work. The method
 // does not change and there is no setting for it: a house system is a claim
 // about how the sky is divided, not a preference.
-import 'package:sweph/sweph.dart';
 
 import '../models/place.dart';
+import '../sky/current.dart';
+// ⚠ Prefixed: this file has its own `Body`, which is a body ON a chart —
+// name, longitude, retrograde — while the sky's is which body to ask for.
+import '../sky/sky.dart' as celestial;
 
 /// One body, where it is.
 class Body {
@@ -63,16 +66,7 @@ class Chart {
 /// The **true** node rather than the mean — where the Moon's path actually
 /// crosses the ecliptic. Ketu is derived from Rahu by opposition and never
 /// computed separately, so the two cannot disagree with each other.
-const _bodies = <String, HeavenlyBody>{
-  'Sun': HeavenlyBody.SE_SUN,
-  'Moon': HeavenlyBody.SE_MOON,
-  'Mercury': HeavenlyBody.SE_MERCURY,
-  'Venus': HeavenlyBody.SE_VENUS,
-  'Mars': HeavenlyBody.SE_MARS,
-  'Jupiter': HeavenlyBody.SE_JUPITER,
-  'Saturn': HeavenlyBody.SE_SATURN,
-  'Rahu': HeavenlyBody.SE_TRUE_NODE,
-};
+const _bodies = celestial.Body.values;
 
 // ⚠ **No Uranus, Neptune or Pluto, and that is the tradition rather than an
 // omission.** Her practice is Hellenistic, which has seven wandering stars and
@@ -92,19 +86,7 @@ const _bodies = <String, HeavenlyBody>{
 /// Through `swe_utc_to_jd`, which applies leap seconds. Building one from
 /// calendar fields by hand silently drops that correction — small, and wrong
 /// in a way nothing reports.
-double _julianDay(DateTime utc) {
-  final jd = Sweph.swe_utc_to_jd(
-    utc.year,
-    utc.month,
-    utc.day,
-    utc.hour,
-    utc.minute,
-    utc.second + utc.millisecond / 1000,
-    CalendarType.SE_GREG_CAL,
-  );
-  // [TT, UT1]. Positions are asked for in UT.
-  return jd[1];
-}
+double _julianDay(DateTime utc) => sky.julianDay(utc);
 
 /// Cast a chart.
 ///
@@ -129,18 +111,17 @@ Chart castChart({
     timeKnown ? when.minute : 0,
   );
   final jd = _julianDay(local.toUtc());
-  final flags = SwephFlag.SEFLG_SWIEPH | SwephFlag.SEFLG_SPEED;
 
   final bodies = <Body>[];
-  for (final entry in _bodies.entries) {
-    final c = Sweph.swe_calc_ut(jd, entry.value, flags);
+  for (final which in _bodies) {
+    final placed = sky.at(jd, which);
     bodies.add(
       Body(
-        name: entry.key,
-        longitude: (c.longitude % 360 + 360) % 360,
+        name: which.label,
+        longitude: placed.longitude,
         // The nodes always move backwards; saying so on every chart is noise,
         // so only the planets carry the mark.
-        retrograde: c.speedInLongitude < 0 && entry.key != 'Rahu',
+        retrograde: placed.retrograde && which != celestial.Body.rahu,
       ),
     );
   }
@@ -164,11 +145,10 @@ Chart castChart({
     );
   }
 
-  final houses = Sweph.swe_houses(jd, place.lat, place.lon, Hsys.W);
   return Chart(
     bodies: bodies,
-    ascendant: houses.ascmc[0],
-    midheaven: houses.ascmc[1],
+    ascendant: sky.ascendant(jd, place.lat, place.lon),
+    midheaven: sky.midheaven(jd, place.lat, place.lon),
     timeKnown: true,
   );
 }

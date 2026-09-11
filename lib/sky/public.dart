@@ -32,9 +32,13 @@ class PublicSky implements Sky {
   const PublicSky();
 
   @override
-  Future<void> begin() async {
+  String get engine => 'VSOP87 and ELP-2000/82';
+
+  @override
+  Future<void> begin({String? into}) async {
     // ⚠ Nothing to load, and that is the point. No data files, no native
-    // library, no asset path to get wrong — the theory is the code.
+    // library, no asset path to get wrong — the theory is the code, and
+    // [into] is ignored because there is nothing to put there.
     //
     // ⚠ The one honest caveat, recorded here because there is nowhere better:
     // beyond about 2050 this engine and the Swiss Ephemeris disagree about ΔT,
@@ -75,6 +79,9 @@ class PublicSky implements Sky {
       ascendantAt(jd, lat, lon);
 
   @override
+  double midheaven(double jd, double lat, double lon) => midheavenAt(jd, lon);
+
+  @override
   double? turn(
     double jd,
     Turn which,
@@ -82,12 +89,8 @@ class PublicSky implements Sky {
     double lon, {
     bool refracted = true,
   }) {
-    if (which == Turn.transit) {
-      // ⚠ Not implemented, and it says so rather than returning something
-      // plausible. Nothing in this app asks for the Sun's culmination; the
-      // stations screen asks only for rise and set. A wrong answer here would
-      // be worse than none.
-      return null;
+    if (which == Turn.noon || which == Turn.midnight) {
+      return sunTransit(jd, sunLongitude, lon: lon, upper: which == Turn.noon);
     }
     return sunTurn(
       jd,

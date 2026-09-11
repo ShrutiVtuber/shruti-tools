@@ -190,7 +190,7 @@ class SettingsScreen extends StatelessWidget {
             ],
           ),
           const SizedBox(height: Gap.md),
-          const Padding(
+          Padding(
             padding: EdgeInsets.symmetric(horizontal: Gap.xs),
             child: Column(
               children: [

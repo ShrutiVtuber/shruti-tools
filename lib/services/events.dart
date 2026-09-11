@@ -18,9 +18,11 @@
 // The same method her engine uses, and the same step sizes: the Moon moves
 // thirteen degrees a day and needs a quarter-day step, Jupiter outward can be
 // sampled daily without stepping over a sign.
-import 'package:sweph/sweph.dart';
 
 import 'chart.dart';
+import '../sky/current.dart';
+// ⚠ Prefixed: chart.dart exports its own `Body`.
+import '../sky/sky.dart' as celestial;
 
 enum EventKind { ingress, retrograde, direct, newMoon, fullMoon }
 
@@ -75,39 +77,26 @@ const _step = <String, double>{
   'Pluto': 1.0,
 };
 
-const _scanned = <String, HeavenlyBody>{
-  'Sun': HeavenlyBody.SE_SUN,
-  'Moon': HeavenlyBody.SE_MOON,
-  'Mercury': HeavenlyBody.SE_MERCURY,
-  'Venus': HeavenlyBody.SE_VENUS,
-  'Mars': HeavenlyBody.SE_MARS,
-  'Jupiter': HeavenlyBody.SE_JUPITER,
-  'Saturn': HeavenlyBody.SE_SATURN,
-};
+/// ⚠ The node is not scanned. It has no stations and no ingresses worth
+/// listing — it moves backwards at a steady degree a fortnight — so including
+/// it would fill the list with nothing happening.
+const _scanned = [
+  celestial.Body.sun,
+  celestial.Body.moon,
+  celestial.Body.mercury,
+  celestial.Body.venus,
+  celestial.Body.mars,
+  celestial.Body.jupiter,
+  celestial.Body.saturn,
+];
 
-double _jd(DateTime utc) => Sweph.swe_julday(
-  utc.year,
-  utc.month,
-  utc.day,
-  utc.hour + utc.minute / 60 + utc.second / 3600,
-  CalendarType.SE_GREG_CAL,
-);
+double _jd(DateTime utc) => sky.julianDay(utc);
 
-DateTime _at(double jd) {
-  final d = Sweph.swe_revjul(jd, CalendarType.SE_GREG_CAL);
-  return DateTime.utc(d.year, d.month, d.day, d.hour, d.minute, d.second);
-}
+DateTime _at(double jd) => sky.instant(jd);
 
-double _lon(double jd, HeavenlyBody b) {
-  final c = Sweph.swe_calc_ut(jd, b, SwephFlag.SEFLG_SWIEPH);
-  return (c.longitude % 360 + 360) % 360;
-}
+double _lon(double jd, celestial.Body b) => sky.at(jd, b).longitude;
 
-double _speed(double jd, HeavenlyBody b) => Sweph.swe_calc_ut(
-  jd,
-  b,
-  SwephFlag.SEFLG_SWIEPH | SwephFlag.SEFLG_SPEED,
-).speedInLongitude;
+double _speed(double jd, celestial.Body b) => sky.at(jd, b).speed;
 
 /// A separation folded into (-180, 180].
 double _wrapped(double delta) => ((delta + 180) % 360) - 180;
@@ -144,9 +133,8 @@ List<SkyEvent> _ingressesAndStations(DateTime from, DateTime to) {
   final end = _jd(to.toUtc());
   final out = <SkyEvent>[];
 
-  for (final entry in _scanned.entries) {
-    final name = entry.key;
-    final body = entry.value;
+  for (final body in _scanned) {
+    final name = body.label;
     final step = _step[name] ?? 0.5;
 
     var jd = start;
@@ -223,10 +211,10 @@ List<SkyEvent> _lunations(DateTime from, DateTime to) {
   const step = 0.25;
 
   double elong(double jd) =>
-      _wrapped(_lon(jd, HeavenlyBody.SE_MOON) - _lon(jd, HeavenlyBody.SE_SUN));
+      _wrapped(_lon(jd, celestial.Body.moon) - _lon(jd, celestial.Body.sun));
   // Folded the other way, so the full moon is the zero crossing of THIS.
   double opposition(double jd) => _wrapped(
-    _lon(jd, HeavenlyBody.SE_MOON) - _lon(jd, HeavenlyBody.SE_SUN) - 180,
+    _lon(jd, celestial.Body.moon) - _lon(jd, celestial.Body.sun) - 180,
   );
 
   var jd = start;
@@ -247,7 +235,7 @@ List<SkyEvent> _lunations(DateTime from, DateTime to) {
           kind: EventKind.newMoon,
           at: _at(t),
           body: 'Moon',
-          sign: (_lon(t, HeavenlyBody.SE_SUN) ~/ 30) % 12,
+          sign: (_lon(t, celestial.Body.sun) ~/ 30) % 12,
         ),
       );
     }
@@ -258,7 +246,7 @@ List<SkyEvent> _lunations(DateTime from, DateTime to) {
           kind: EventKind.fullMoon,
           at: _at(t),
           body: 'Moon',
-          sign: (_lon(t, HeavenlyBody.SE_MOON) ~/ 30) % 12,
+          sign: (_lon(t, celestial.Body.moon) ~/ 30) % 12,
         ),
       );
     }

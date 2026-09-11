@@ -71,6 +71,20 @@ double ascendantAt(double jdUt, double lat, double lon) {
   return turn(math.atan2(y, x) * degrees);
 }
 
+/// The degree culminating — the midheaven, in degrees.
+///
+/// ⚠ Latitude does not enter it. The midheaven is where the meridian crosses
+/// the ecliptic, and the meridian is a function of time and longitude only —
+/// which is why somebody in Athens and somebody in Cape Town at the same
+/// instant share a midheaven and not an ascendant.
+double midheavenAt(double jdUt, double lon) {
+  final e = obliquity(jdUt) * radians;
+  final ramc = turn(siderealTime(jdUt) + lon) * radians;
+  return turn(
+    math.atan2(math.sin(ramc), math.cos(ramc) * math.cos(e)) * degrees,
+  );
+}
+
 /// The Sun's declination and equation of time are not needed; rise and set come
 /// from its longitude, which the planets file already knows.
 ///
@@ -113,6 +127,34 @@ double? sunTurn(
     var when = guess.floorToDouble() + 0.5 + transit;
     when += (rising ? -hourAngle : hourAngle) / 360;
     guess = when;
+  }
+  return guess;
+}
+
+/// When the Sun crosses the meridian — noon if [upper], midnight if not.
+///
+/// ⚠ Midnight is the LOWER transit, not "twelve hours after noon". The two
+/// differ by up to half a minute because the Sun's right ascension is not
+/// changing at a constant rate, and the difference is exactly the equation of
+/// time doing its work.
+///
+/// ⚠ Latitude does not enter it, which is the check that catches a mistake: a
+/// transit that moves with latitude is a transit computed wrongly.
+double sunTransit(
+  double jdUt,
+  double Function(double) sunLongitudeAt, {
+  required double lon,
+  required bool upper,
+}) {
+  var guess = jdUt.floorToDouble() + 0.5 - lon / 360;
+  for (var pass = 0; pass < 4; pass++) {
+    final e = obliquity(guess) * radians;
+    final lambda = sunLongitudeAt(guess) * radians;
+    final ra =
+        math.atan2(math.cos(e) * math.sin(lambda), math.cos(lambda)) * degrees;
+    final offset =
+        turn(ra - lon - siderealTime(guess) + (upper ? 0 : 180)) / 360;
+    guess = jdUt.floorToDouble() + 0.5 + offset;
   }
   return guess;
 }

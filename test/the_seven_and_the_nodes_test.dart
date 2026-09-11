@@ -33,28 +33,56 @@ String _code(String s) => s
 const outer = ['SE_URANUS', 'SE_NEPTUNE', 'SE_PLUTO'];
 
 void main() {
-  test('the chart draws the seven and the nodes', () {
-    final code = _code(File('lib/services/chart.dart').readAsStringSync());
-    for (final body in outer) {
+  test('one enum defines the bodies, and it is the Hellenistic set', () {
+    // ⚠ Stronger than checking each service. The body list used to be written
+    // out in four places — the chart, the month's sky, the events scan and the
+    // sky drawer — and four copies of a doctrine is four chances to disagree
+    // with it. There is one now, and this is it.
+    // ⚠ Comments stripped first, then sliced at the brace. The enum's own
+    // documentation explains why the outer planets are absent — by naming them
+    // — so a search of the raw file finds exactly the words it is looking for
+    // and passes when the enum is wrong.
+    final code = _code(File('lib/sky/sky.dart').readAsStringSync());
+    final from = code.indexOf('enum Body');
+    final body = code.substring(from, code.indexOf('}', from));
+
+    for (final wanted in [
+      'sun',
+      'moon',
+      'mercury',
+      'venus',
+      'mars',
+      'jupiter',
+      'saturn',
+      'rahu',
+    ]) {
+      expect(body.contains('  $wanted'), isTrue, reason: '$wanted is missing');
+    }
+    for (final unwanted in ['uranus', 'neptune', 'pluto']) {
       expect(
-        code.contains(body),
+        body.contains(unwanted),
         isFalse,
-        reason:
-            '$body is in the natal chart, which reads Hellenistically '
-            'and which the website does not return',
+        reason: '$unwanted is in the enum, so every service can ask for it',
       );
     }
-    for (final body in [
-      'SE_SUN',
-      'SE_MOON',
-      'SE_MERCURY',
-      'SE_VENUS',
-      'SE_MARS',
-      'SE_JUPITER',
-      'SE_SATURN',
-      'SE_TRUE_NODE',
+  });
+
+  test('no service keeps its own list of bodies', () {
+    // ⚠ The way the doctrine comes undone is not by someone adding Pluto to the
+    // enum — it is by a service quietly keeping its own list again.
+    for (final path in [
+      'lib/services/chart.dart',
+      'lib/services/period_sky.dart',
+      'lib/services/events.dart',
     ]) {
-      expect(code.contains(body), isTrue, reason: '$body is missing');
+      final code = _code(File(path).readAsStringSync());
+      expect(
+        code.contains('HeavenlyBody.SE_'),
+        isFalse,
+        reason:
+            '$path names library constants directly again, so it can '
+            'ask for a body the enum does not offer',
+      );
     }
   });
 

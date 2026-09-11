@@ -13,10 +13,28 @@
 // runtime switch is not enough: a package listed in pubspec.yaml has its pod
 // compiled in whether or not anything calls it. The iOS variant removes the
 // dependency, which removes this file with it.
+import 'dart:typed_data';
+
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:path_provider/path_provider.dart';
 import 'package:sweph/sweph.dart';
 
-import '../services/ephemeris.dart' show startEphemeris;
 import 'sky.dart';
+
+class _BundleLoader implements AssetLoader {
+  @override
+  Future<Uint8List> load(String assetPath) async {
+    final data = await rootBundle.load(assetPath);
+    return data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+  }
+}
+
+/// The files the arithmetic needs: planets, Moon, and the leap-second table.
+const _assets = [
+  'packages/sweph/assets/ephe/sepl_18.se1',
+  'packages/sweph/assets/ephe/semo_18.se1',
+  'packages/sweph/assets/ephe/seleapsec.txt',
+];
 
 /// What the library calls each of the bodies she reads.
 const _swiss = <Body, HeavenlyBody>{
@@ -36,7 +54,27 @@ class SwissSky implements Sky {
   const SwissSky();
 
   @override
-  Future<void> begin() => startEphemeris();
+  String get engine => 'Swiss Ephemeris 2.10.03';
+
+  /// Unpack the ephemeris and point the library at it.
+  ///
+  /// ⚠ **The path must be ABSOLUTE.**
+  ///
+  /// `Sweph.init` defaults it to the relative string 'ephe_files' and uses it
+  /// verbatim. On a desktop the working directory is the project folder, so the
+  /// relative path happens to resolve and everything passes. On Android the
+  /// working directory is '/', the copy fails with "Read-only file system", and
+  /// the app ships with a green suite and no ephemeris at all.
+  @override
+  Future<void> begin({String? into}) async {
+    final path =
+        into ?? '${(await getApplicationSupportDirectory()).path}/ephe_files';
+    await Sweph.init(
+      epheAssets: _assets,
+      assetLoader: _BundleLoader(),
+      epheFilesPath: path,
+    );
+  }
 
   @override
   double julianDay(DateTime utc) {
@@ -80,6 +118,10 @@ class SwissSky implements Sky {
       Sweph.swe_houses(jd, lat, lon, Hsys.W).ascmc[0];
 
   @override
+  double midheaven(double jd, double lat, double lon) =>
+      Sweph.swe_houses(jd, lat, lon, Hsys.W).ascmc[1];
+
+  @override
   double? turn(
     double jd,
     Turn which,
@@ -90,14 +132,21 @@ class SwissSky implements Sky {
     final what = switch (which) {
       Turn.rise => RiseSetTransitFlag.SE_CALC_RISE,
       Turn.set => RiseSetTransitFlag.SE_CALC_SET,
-      Turn.transit => RiseSetTransitFlag.SE_CALC_MTRANSIT,
+      Turn.noon => RiseSetTransitFlag.SE_CALC_MTRANSIT,
+      Turn.midnight => RiseSetTransitFlag.SE_CALC_ITRANSIT,
     };
+    // ⚠ The convention applies to rise and set only. A transit is the body
+    // crossing the meridian — there is no limb and no refraction in that, so
+    // bending it would answer a question nobody asked.
+    final bendable = which == Turn.rise || which == Turn.set;
     try {
       return Sweph.swe_rise_trans(
         jd,
         HeavenlyBody.SE_SUN,
         SwephFlag.SEFLG_SWIEPH,
-        refracted ? what : (what | RiseSetTransitFlag.SE_BIT_NO_REFRACTION),
+        (refracted || !bendable)
+            ? what
+            : (what | RiseSetTransitFlag.SE_BIT_HINDU_RISING),
         GeoPosition(lon, lat, 0),
         0, // atmospheric pressure: 0 means "use the standard"
         0, // temperature, likewise

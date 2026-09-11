@@ -12,7 +12,8 @@
 // sun's disc, which are the two things a hand-rolled version gets wrong — and
 // gets wrong by minutes, which is exactly the size of error that makes someone
 // miss a dawn without ever realising the table was lying.
-import 'package:sweph/sweph.dart';
+import '../sky/current.dart';
+import '../sky/sky.dart';
 
 /// One station: what it is, and when.
 class Station {
@@ -64,22 +65,13 @@ enum StationKind {
 }
 
 /// Julian day (UT) for an instant.
-double _jd(DateTime utc) => Sweph.swe_julday(
-  utc.year,
-  utc.month,
-  utc.day,
-  utc.hour + utc.minute / 60 + utc.second / 3600,
-  CalendarType.SE_GREG_CAL,
-);
+double _jd(DateTime utc) => sky.julianDay(utc);
 
 /// `swe_revjul` already hands back a DateTime, but a LOCAL one — the fields
 /// are UT and the flag is not set. Reading it as local would shift every
 /// station by the phone's own offset, which looks entirely plausible and is
 /// wrong by hours.
-DateTime _fromJd(double jd) {
-  final d = Sweph.swe_revjul(jd, CalendarType.SE_GREG_CAL);
-  return DateTime.utc(d.year, d.month, d.day, d.hour, d.minute, d.second);
-}
+DateTime _fromJd(double jd) => sky.instant(jd);
 
 /// Sunrise, noon, sunset and midnight for the local day containing [when].
 ///
@@ -101,44 +93,27 @@ List<Station> stationsFor(
   // Start the search from the previous midnight UT, so a call late in the day
   // still finds today's dawn rather than tomorrow's.
   final from = _jd(DateTime.utc(utc.year, utc.month, utc.day));
-  final at = GeoPosition(lon, lat, 0);
 
-  // The convention applies to RISE and SET only. A transit is the body
-  // crossing the meridian — there is no limb and no refraction in that, so
-  // adding the flag there would be answering a question nobody asked.
-  final bend = convention == RiseConvention.hindu
-      ? RiseSetTransitFlag.SE_BIT_HINDU_RISING
-      : null;
+  // ⚠ The convention is one flag rather than a library constant: the visible
+  // disc (upper limb, refracted), or the centre of the disc with no refraction,
+  // which is what the Indian tradition computes with. It applies to rise and
+  // set only — a transit has no limb and no refraction in it, and the engine
+  // ignores the flag there.
+  final refracted = convention != RiseConvention.hindu;
 
-  Station? one(
-    StationKind kind,
-    RiseSetTransitFlag what, {
-    bool bendable = false,
-  }) {
-    try {
-      final jd = Sweph.swe_rise_trans(
-        from,
-        HeavenlyBody.SE_SUN,
-        SwephFlag.SEFLG_SWIEPH,
-        bendable && bend != null ? (what | bend) : what,
-        at,
-        0, // atmospheric pressure: 0 means "use the standard"
-        0, // temperature, likewise
-      );
-      // Null rather than a throw is how this reports "it does not happen
-      // today" — the circumpolar case, which is a fact about the latitude and
-      // not a failure.
-      return jd == null ? null : Station(kind, _fromJd(jd));
-    } catch (_) {
-      return null;
-    }
+  Station? one(StationKind kind, Turn what) {
+    // ⚠ Null rather than a throw is how this reports "it does not happen
+    // today" — the circumpolar case, which is a fact about the latitude and
+    // not a failure.
+    final jd = sky.turn(from, what, lat, lon, refracted: refracted);
+    return jd == null ? null : Station(kind, _fromJd(jd));
   }
 
   final found = <Station>[
-    ?one(StationKind.dawn, RiseSetTransitFlag.SE_CALC_RISE, bendable: true),
-    ?one(StationKind.noon, RiseSetTransitFlag.SE_CALC_MTRANSIT),
-    ?one(StationKind.dusk, RiseSetTransitFlag.SE_CALC_SET, bendable: true),
-    ?one(StationKind.midnight, RiseSetTransitFlag.SE_CALC_ITRANSIT),
+    ?one(StationKind.dawn, Turn.rise),
+    ?one(StationKind.noon, Turn.noon),
+    ?one(StationKind.dusk, Turn.set),
+    ?one(StationKind.midnight, Turn.midnight),
   ];
   found.sort((a, b) => a.at.compareTo(b.at));
   return found;

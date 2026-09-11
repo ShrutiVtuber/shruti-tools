@@ -13,11 +13,13 @@
 // the website must be about the same sky.
 import 'dart:math' as math;
 
-import 'package:sweph/sweph.dart';
-
 import '../models/place.dart';
 import 'chart.dart';
 import 'events.dart';
+import '../sky/current.dart';
+// ⚠ Prefixed: chart.dart exports its own `Body`, which is a body drawn ON a
+// chart rather than one to ask the sky about.
+import '../sky/sky.dart' as celestial;
 
 /// One day's worth: where each body was at midnight, and the Moon's phase.
 class SkyDay {
@@ -48,23 +50,15 @@ const periodBodies = [
   'Moon',
 ];
 
-const _swe = {
-  'Sun': HeavenlyBody.SE_SUN,
-  'Moon': HeavenlyBody.SE_MOON,
-  'Mercury': HeavenlyBody.SE_MERCURY,
-  'Venus': HeavenlyBody.SE_VENUS,
-  'Mars': HeavenlyBody.SE_MARS,
-  'Jupiter': HeavenlyBody.SE_JUPITER,
-  'Saturn': HeavenlyBody.SE_SATURN,
-};
+/// ⚠ Every body the app reads, which is the Hellenistic seven and the node.
+/// Taken from the enum rather than listed again, so the two cannot drift.
+const _swe = celestial.Body.values;
 
-double _julian(DateTime utc) => Sweph.swe_julday(
-  utc.year,
-  utc.month,
-  utc.day,
-  utc.hour + utc.minute / 60 + utc.second / 3600,
-  CalendarType.SE_GREG_CAL,
-);
+/// ⚠ Through the engine, which applies leap seconds. This used to build a
+/// Julian day from calendar fields directly — the very thing the chart's own
+/// comment warns against — so the month's sky was computed from a slightly
+/// different time than the chart was.
+double _julian(DateTime utc) => sky.julianDay(utc);
 
 /// The days between two dates, inclusive of both.
 ///
@@ -84,12 +78,10 @@ List<SkyDay> skyAcross(DateTime from, DateTime to) {
   while (!day.isAfter(last) && guard < 400) {
     guard++;
     final jd = _julian(day);
-    final flags = SwephFlag.SEFLG_SWIEPH | SwephFlag.SEFLG_SPEED;
 
     final longitudes = <String, double>{};
-    for (final entry in _swe.entries) {
-      final c = Sweph.swe_calc_ut(jd, entry.value, flags);
-      longitudes[entry.key] = (c.longitude % 360 + 360) % 360;
+    for (final which in _swe) {
+      longitudes[which.label] = sky.at(jd, which).longitude;
     }
 
     // The illuminated fraction, from the elongation. A phase angle of 0 is

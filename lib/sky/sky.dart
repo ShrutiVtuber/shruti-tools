@@ -74,7 +74,10 @@ class Placed {
 }
 
 /// Which of the day's turning points is wanted.
-enum Turn { rise, set, transit }
+/// ⚠ Four, not three. The stations screen shows dawn, noon, dusk and midnight,
+/// and midnight is the LOWER transit — the Sun crossing the meridian beneath
+/// the horizon — rather than twelve hours after noon, which it is not.
+enum Turn { rise, set, noon, midnight }
 
 /// An engine that can say where the sky was.
 ///
@@ -84,9 +87,19 @@ enum Turn { rise, set, transit }
 /// against a fixture generated from the site's own engine. See
 /// `integration_test/agrees_with_the_website_test.dart`.
 abstract interface class Sky {
-  /// Anything that must be loaded before the first question. Safe to call
-  /// more than once.
-  Future<void> begin();
+  /// What this engine is, for the licences screen.
+  ///
+  /// ⚠ Asked rather than typed. The two builds do not use the same theory, and
+  /// a hard-coded name would be wrong on one of them — on the screen whose
+  /// entire purpose is to be accurate about what the app is made of.
+  String get engine;
+
+  /// Anything that must be loaded before the first question. Safe to call more
+  /// than once.
+  ///
+  /// [into] is where an engine that needs data files should unpack them. An
+  /// engine that needs none ignores it.
+  Future<void> begin({String? into});
 
   /// Julian day (UT) from a UTC instant.
   ///
@@ -107,10 +120,23 @@ abstract interface class Sky {
   /// the rest follow round. No cusp arithmetic, no house system to choose.
   double ascendant(double jd, double lat, double lon);
 
+  /// The degree culminating — the midheaven.
+  ///
+  /// ⚠ Not used by whole-sign houses, which need only the ascendant. It is
+  /// shown on the chart screen as an angle in its own right, which is why it is
+  /// here rather than derived where it is drawn.
+  double midheaven(double jd, double lat, double lon);
+
   /// When the Sun rises, sets or culminates after [jd].
   ///
   /// ⚠ Null is a real answer, not a failure: above the Arctic circle the Sun
   /// does not always rise, and that is a fact about the latitude.
+  ///
+  /// ⚠ `refracted` is the difference between the two conventions this app
+  /// offers. True is the visible disc — the upper limb, with the atmosphere
+  /// bending the light, which is when somebody standing there would say the Sun
+  /// rose. False is the centre of the disc with no refraction, which is what
+  /// the Indian tradition computes with.
   double? turn(
     double jd,
     Turn which,

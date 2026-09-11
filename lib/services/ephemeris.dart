@@ -1,73 +1,40 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 //
-// Starting Swiss Ephemeris, once, before anything asks it a question.
-import 'dart:typed_data';
-
-import 'package:flutter/services.dart' show rootBundle;
-import 'package:path_provider/path_provider.dart';
-import 'package:sweph/sweph.dart';
+// Getting the sky ready, once, before anything asks it a question.
+//
+// ⚠ **This file no longer knows which engine answers.** It used to start the
+// Swiss Ephemeris directly, which meant nineteen files imported a library only
+// one of them needed — and the iOS build cannot contain that library at all.
+// Everything engine-specific now lives behind `Sky.begin`, and what is left
+// here is what every build needs whichever engine it carries.
 import 'package:timezone/data/latest.dart' as tzdata;
 import 'package:timezone/timezone.dart' as tz;
 
-class _BundleLoader implements AssetLoader {
-  @override
-  Future<Uint8List> load(String assetPath) async {
-    final data = await rootBundle.load(assetPath);
-    return data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-  }
-}
-
-/// The files the arithmetic needs: planets, Moon, and the leap-second table.
-const _assets = [
-  'packages/sweph/assets/ephe/sepl_18.se1',
-  'packages/sweph/assets/ephe/semo_18.se1',
-  'packages/sweph/assets/ephe/seleapsec.txt',
-];
+import '../sky/current.dart';
 
 bool _ready = false;
 
 /// What the arithmetic was done by, named once.
 ///
-/// ⚠ This string appears on every instrument screen, and the licence requires
-/// the notice be preserved on all copies — so it is a constant, not a sentence
-/// re-typed on six screens where one of them will eventually say the wrong
-/// version.
-const engineVersion = 'Swiss Ephemeris 2.10.03';
+/// ⚠ This string appears on every instrument screen, and a licence notice must
+/// be preserved on all copies — so it is asked of the engine rather than typed,
+/// because the two builds do not use the same one and a hard-coded name would
+/// be a lie on one of them.
+String get engineVersion => sky.engine;
 
 /// ⚠ Kept in step with pubspec.yaml by hand, and named here so the one place
 /// that shows it is not six places that disagree.
 const appVersion = '1.0.0 (1)';
 
-/// Unpack the ephemeris and point the library at it.
+/// Make the sky answerable.
 ///
-/// ⚠ **`epheFilesPath` must be ABSOLUTE.**
-///
-/// `Sweph.init` defaults it to the relative string 'ephe_files' and uses it
-/// verbatim. On a desktop the working directory is the project folder, so the
-/// relative path happens to resolve and everything passes. On Android the
-/// working directory is '/', and the copy fails with "Read-only file system" —
-/// so the whole app ships with a green suite and no ephemeris at all.
-///
-/// This is inherited knowledge: astropractise hit it, wrote it down, and the
-/// note is the only reason it is not being rediscovered here.
-/// [into] overrides where the files are unpacked. The app never passes it —
-/// it is for tests, which have no platform channels and so cannot ask
-/// path_provider anything. Without this the suite can only run against a fake,
-/// and a fake ephemeris proves the arithmetic around it and nothing about the
-/// arithmetic itself.
+/// ⚠ The timezone rules are loaded here rather than inside an engine, because
+/// they are not an engine's business: a station computed for a place is told in
+/// that place's time whichever theory found it.
 Future<void> startEphemeris({String? into}) async {
   if (_ready) return;
-  final path =
-      into ?? '${(await getApplicationSupportDirectory()).path}/ephe_files';
-  // The zone rules, so a station computed for a place can be told in that
-  // place's time rather than in the phone's. Loaded here because it is the
-  // same kind of thing — data the arithmetic needs before anything asks.
   tzdata.initializeTimeZones();
   tz.setLocalLocation(tz.getLocation('UTC'));
-  await Sweph.init(
-    epheAssets: _assets,
-    assetLoader: _BundleLoader(),
-    epheFilesPath: path,
-  );
+  await sky.begin(into: into);
   _ready = true;
 }
