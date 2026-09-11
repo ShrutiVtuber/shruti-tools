@@ -61,6 +61,19 @@ dart format --output=none --set-exit-if-changed .
 The station times are checked against the US Naval Observatory's tables, not
 against whatever the code returns today.
 
+⚠ **Wake the phone before a device run.** A dozing screen stops the engine
+producing frames, so `pumpAndSettle` waits for a settle that can never arrive
+and the test dies as "did not complete" with no error and no stack — it looks
+exactly like a hang in the code under test. Short files finish inside the
+window the install opens and pass; the long ones fail, which makes it look
+worse still, like a test that only breaks under load. Check with
+`adb shell dumpsys power | grep mWakefulness` and hold it open for the run:
+
+```bash
+adb shell input keyevent KEYCODE_WAKEUP
+adb shell svc power stayon usb     # svc power stayon false afterwards
+```
+
 ## The device
 
 ```bash

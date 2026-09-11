@@ -108,7 +108,11 @@ void main() {
     });
 
     test('still gives every planet a sign', () {
-      expect(vague.bodies.length, 12);
+      // ⚠ Nine: the seven wandering stars, Rahu and Ketu. It was twelve until
+      // 11 September 2026, when Uranus, Neptune and Pluto came out — her
+      // practice is Hellenistic and does not read them, and the website never
+      // returned them either.
+      expect(vague.bodies.length, 9);
       // Noon, so the Sun is close to where it was at 14:30 but not identical.
       expect(vague.bodies.first.longitude, closeTo(43.7, 0.3));
     });
