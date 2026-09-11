@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- ⚠ "production", because this app is only ever signed with the App
+	     Store distribution profile, and that profile declares production. A
+	     mismatch here is not a warning: codesign refuses the build, saying the
+	     profile does not match the entitlements. TestFlight counts as
+	     production — "development" is for a build signed with a development
+	     profile from a Mac, which is not how this app is ever built. -->
+	<key>aps-environment</key>
+	<string>production</string>
+</dict>
+</plist>

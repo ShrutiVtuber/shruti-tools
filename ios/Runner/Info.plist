@@ -47,6 +47,13 @@
 			</array>
 		</dict>
 	</dict>
+	<!-- ⚠ Without this, iOS hands a data-only push to the app only when it
+	     happens to be in the foreground. Her readings arrive as data so the
+	     app can draw them itself, which is exactly the case that needs it. -->
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<!-- ⚠ Declared so TestFlight never holds a build hostage to the export

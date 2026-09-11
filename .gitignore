@@ -9,6 +9,11 @@ build/
 android/local.properties
 android/key.properties
 android/app/google-services.json
+# ⚠ Same reasoning as the line above: Firebase client configuration is written
+# at build time from a repository secret, never committed. This repository is
+# public, and a config file in it is an invitation to point somebody else's
+# app at her project.
+ios/Runner/GoogleService-Info.plist
 ios/Flutter/Generated.xcconfig
 ios/Podfile.lock
 ios/Pods/

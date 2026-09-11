@@ -224,18 +224,31 @@ class Notifications extends ChangeNotifier {
     await _local.initialize(
       const InitializationSettings(
         android: AndroidInitializationSettings('ic_notification'),
+        // ⚠ All three false. `FirebaseMessaging.requestPermission()` has
+        // already asked, and iOS shows the same prompt again for this plugin —
+        // two dialogues for one permission, the second of which looks like the
+        // app failing to remember the answer to the first.
+        iOS: DarwinInitializationSettings(
+          requestAlertPermission: false,
+          requestBadgePermission: false,
+          requestSoundPermission: false,
+        ),
       ),
     );
 
+    // ⚠ The channel is an Android idea, and asking for it on an iPhone
+    // resolves to null — so this MUST NOT return early on null, which it did
+    // until 11 September 2026. iOS took that branch every time, meaning the
+    // foreground listener below was never registered at all and a notification
+    // arriving with the app open was silently dropped. The one platform this
+    // whole method was written for was the one platform it skipped.
     final android = _local
         .resolvePlatformSpecificImplementation<
           AndroidFlutterLocalNotificationsPlugin
         >();
-    if (android == null) {
-      debugPrint('notifications: no Android plugin to make a channel with');
-      return;
+    if (android != null) {
+      await android.createNotificationChannel(_channel);
     }
-    await android.createNotificationChannel(_channel);
 
     FirebaseMessaging.onMessage.listen((message) {
       final note = message.notification;
@@ -252,6 +265,14 @@ class Notifications extends ChangeNotifier {
             importance: Importance.high,
             priority: Priority.high,
             icon: 'ic_notification',
+          ),
+          // ⚠ Without this the banner is drawn on iOS with no sound and no
+          // badge — the same silent arrival the Android channel exists to
+          // prevent, reached by a different route.
+          iOS: DarwinNotificationDetails(
+            presentAlert: true,
+            presentBadge: true,
+            presentSound: true,
           ),
         ),
         payload: message.data['url'] as String?,

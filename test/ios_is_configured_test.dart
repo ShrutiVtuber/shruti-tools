@@ -269,4 +269,98 @@ void main() {
       reason: 'no post_install hook forcing every pod to the same floor',
     );
   });
+
+  // ── Push, which has four separate ways of being absent ──────────────────
+
+  test('the iPhone is given a Firebase configuration to read', () {
+    // ⚠ The plist is written from a secret at build time, never committed —
+    // this repository is public. So the check is that the WORKFLOW writes it
+    // and that the Xcode project would carry it, not that the file is here.
+    final flow = File(
+      '.github/workflows/ios-testflight.yml',
+    ).readAsStringSync();
+    expect(
+      flow.contains('GOOGLE_SERVICE_INFO_PLIST'),
+      isTrue,
+      reason: 'nothing writes GoogleService-Info.plist on the Mac',
+    );
+    expect(
+      File(
+        '.gitignore',
+      ).readAsStringSync().contains('ios/Runner/GoogleService-Info.plist'),
+      isTrue,
+      reason: 'the iOS Firebase config is not ignored, so it can be committed',
+    );
+  });
+
+  test('the configuration is actually put INSIDE the app', () {
+    // ⚠ The distinction that costs an afternoon: a file sitting in ios/Runner
+    // is not in the bundle. Only membership of the Resources build phase puts
+    // it there, and a build with the file present but unreferenced starts,
+    // runs, and has no notifications — exactly like a build with no file.
+    final pbx = File('ios/Runner.xcodeproj/project.pbxproj').readAsStringSync();
+    // ⚠ ' = {', because the same identifier appears twice: once in the
+    // target's list of build phases, and once as the phase itself. Anchoring
+    // on the bare id finds the list, whose block ends long before the files do.
+    final phase = pbx.substring(
+      pbx.indexOf('97C146EC1CF9000F007C117D /* Resources */ = {'),
+    );
+    expect(
+      phase.substring(0, phase.indexOf('};')).contains('GoogleService-Info'),
+      isTrue,
+      reason: 'the plist is not in the Runner Resources build phase',
+    );
+  });
+
+  test('the push entitlement matches the profile it is signed with', () {
+    // ⚠ Not a warning — codesign refuses the build outright when these differ.
+    // The App Store profile declares production, and this app is never signed
+    // with anything else, so "development" here would fail every build.
+    final ent = File('ios/Runner/Runner.entitlements').readAsStringSync();
+    expect(ent.contains('aps-environment'), isTrue);
+    expect(
+      ent.contains('<string>production</string>'),
+      isTrue,
+      reason: 'the entitlement is not production, but the profile is',
+    );
+    final pbx = File('ios/Runner.xcodeproj/project.pbxproj').readAsStringSync();
+    expect(
+      pbx.contains('CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;'),
+      isTrue,
+      reason: 'the entitlements file exists but no configuration uses it',
+    );
+  });
+
+  test('iOS is allowed to wake for a notification', () {
+    final info = File('ios/Runner/Info.plist').readAsStringSync();
+    expect(
+      info.contains('UIBackgroundModes') &&
+          info.contains('<string>remote-notification</string>'),
+      isTrue,
+      reason: 'without this iOS delivers a push only while the app is open',
+    );
+  });
+
+  test('the drawing code knows about iOS as well as Android', () {
+    final source = File('lib/services/notifications.dart').readAsStringSync();
+    expect(
+      source.contains('DarwinInitializationSettings'),
+      isTrue,
+      reason: 'the local notification plugin is not initialised for iOS',
+    );
+    expect(
+      source.contains('DarwinNotificationDetails'),
+      isTrue,
+      reason: 'a foreground notification would be drawn silently on iOS',
+    );
+    // ⚠ The regression this replaces: resolving the Android plugin returns
+    // null on iOS, and the code returned early on that — so the listener that
+    // draws foreground notifications was never registered on the one platform
+    // that reaches this line.
+    expect(
+      source.contains("debugPrint('notifications: no Android plugin"),
+      isFalse,
+      reason: 'a null Android plugin must not stop the listener being set up',
+    );
+  });
 }

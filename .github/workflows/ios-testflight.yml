@@ -154,6 +154,27 @@ jobs:
           flutter analyze
           flutter test
 
+      # ⚠ The iOS half of Firebase, and the reason notifications were silent
+      # on the iPhone while working on Android: there was no configuration in
+      # the bundle at all. `Firebase.initializeApp()` is wrapped in a try in
+      # notifications.dart, so a missing file is not a crash — it is a switch
+      # that will not turn on, which is a far quieter thing to miss.
+      #
+      # Written here rather than committed, for the same reason as the Android
+      # one: this repository is public.
+      - name: Firebase configuration for the iOS build
+        env:
+          GOOGLE_SERVICE_INFO_PLIST: ${{ secrets.GOOGLE_SERVICE_INFO_PLIST }}
+        run: |
+          if [ -z "$GOOGLE_SERVICE_INFO_PLIST" ]; then
+            echo "::error::GOOGLE_SERVICE_INFO_PLIST is not set; the iPhone would take no notifications"
+            exit 1
+          fi
+          echo "$GOOGLE_SERVICE_INFO_PLIST" | base64 -d > ios/Runner/GoogleService-Info.plist
+          # ⚠ Proven, not assumed. A file that decodes to nothing still leaves
+          # a file behind, and the build would carry on without a word.
+          plutil -lint ios/Runner/GoogleService-Info.plist
+
       # Where every Apple tool looks for API keys. Still needed with manual
       # signing: the export step's upload authenticates with it.
       #
