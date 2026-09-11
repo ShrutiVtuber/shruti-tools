@@ -256,6 +256,17 @@ jobs:
 
       # method app-store-connect + destination upload: the export hands the
       # build straight to TestFlight, with no separate uploader tool.
+      # ⚠ **Nothing here sets the build number, and nothing needs to.**
+      # pubspec.yaml has said `1.0.0+1` since the beginning, so every archive
+      # carries CFBundleVersion 1 — yet TestFlight holds builds 1, 2, 3 and 4.
+      # The reason is `manageAppVersionAndBuildNumber`, which defaults to TRUE
+      # for `-exportArchive`: Xcode bumps the number to the next free one on
+      # the way up.
+      #
+      # Written down because it is invisible and because the failure mode is
+      # nasty: set that key to false "for reproducibility" and every upload
+      # after the first is refused for a duplicate version — on the Mac, after
+      # the whole build, which is the most expensive place to find out.
       - name: Export and upload
         run: |
           cat > /tmp/ExportOptions.plist <<PLIST
