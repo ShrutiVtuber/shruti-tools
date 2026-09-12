@@ -56,6 +56,9 @@ class _AccountScreenState extends State<AccountScreen> {
   List<Consent>? _consents;
   final Map<String, bool> _granted = {};
 
+  /// Whether to offer "send it again" — set when an address needs confirming.
+  bool _canResend = false;
+
   @override
   void dispose() {
     _email.dispose();
@@ -127,17 +130,51 @@ class _AccountScreenState extends State<AccountScreen> {
           name: _name.text,
           granted: _granted,
         );
+        // ⚠ Always, now. Signing up no longer signs anybody in: the address
+        // has to be confirmed first, and the answer is the same whether the
+        // address was new or already had an account — which is the point.
         if (how == SignUpOutcome.checkEmail && mounted) {
-          setState(
-            () => _said =
-                'Check your email. If that address can have an account, one is '
-                'waiting there.',
-          );
+          setState(() {
+            _said =
+                'Check your email. A link is on its way, and following it '
+                'confirms the address and signs you in. It lasts twenty '
+                'minutes.';
+            _canResend = true;
+          });
         }
       } else {
         await account.signIn(email: _email.text, password: _password.text);
       }
       if (mounted) _password.clear();
+    } on AccountTrouble catch (e) {
+      if (mounted) {
+        setState(() {
+          _trouble = e.message;
+          // ⚠ A button, not just a paragraph. Somebody whose link expired is
+          // stuck with a correct password that will not work, and telling them
+          // why without offering the way out is half an answer.
+          _canResend = e.needsConfirming;
+        });
+      }
+    } finally {
+      if (mounted) setState(() => _busy = false);
+    }
+  }
+
+  /// Send the confirmation link again.
+  Future<void> _resend(Account account) async {
+    setState(() {
+      _busy = true;
+      _trouble = null;
+    });
+    try {
+      await account.resendConfirmation(_email.text);
+      if (mounted) {
+        setState(() {
+          _said = 'Sent. Check your email again — it lasts twenty minutes.';
+          _canResend = false;
+        });
+      }
     } on AccountTrouble catch (e) {
       if (mounted) setState(() => _trouble = e.message);
     } finally {
@@ -235,6 +272,18 @@ class _AccountScreenState extends State<AccountScreen> {
           if (_said != null) ...[
             const SizedBox(height: Gap.lg),
             NoticeBar(tone: BannerTone.note, text: _said!),
+          ],
+          // ⚠ Offered after signing up AND after a sign-in refused for an
+          // unconfirmed address. The second is the one that matters: that
+          // person has the right password, is being told it will not work,
+          // and without this has nowhere to go.
+          if (_canResend) ...[
+            const SizedBox(height: Gap.sm),
+            Push(
+              label: 'Send the link again',
+              full: true,
+              onTap: _busy ? null : () => _resend(AccountScope.of(context)),
+            ),
           ],
 
           const SizedBox(height: Gap.xl),

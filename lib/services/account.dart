@@ -78,8 +78,19 @@ class Reader {
 
 /// What went wrong, in words worth showing somebody.
 class AccountTrouble implements Exception {
-  const AccountTrouble(this.message);
+  const AccountTrouble(this.message, {this.status});
   final String message;
+
+  /// ⚠ The status, so a screen can tell ONE failure apart from the rest
+  /// without reading the sentence. An unconfirmed address comes back 403 and
+  /// deserves a button, not just a paragraph; matching on the wording instead
+  /// would break the first time somebody edits the wording.
+  final int? status;
+
+  /// The address exists and the password was right — it has just never been
+  /// confirmed.
+  bool get needsConfirming => status == 403;
+
   @override
   String toString() => message;
 }
@@ -169,6 +180,16 @@ class Account extends ChangeNotifier {
     }
     await _keep(token);
     await refresh();
+  }
+
+  /// Ask for the confirmation link again.
+  ///
+  /// ⚠ The answer is the same whether or not there is an unconfirmed account
+  /// at that address — the same rule as everywhere else here. Whether somebody
+  /// has an account, and whether they have confirmed it, are not things a form
+  /// tells a stranger.
+  Future<void> resendConfirmation(String email) async {
+    await _post('/api/account/verify/resend', {'email': email.trim()});
   }
 
   /// Ask the site to email a link for setting a password.
@@ -279,6 +300,7 @@ class Account extends ChangeNotifier {
       // like which consent is missing.
       throw AccountTrouble(
         _detail(map) ?? 'That did not work (${r.statusCode}).',
+        status: r.statusCode,
       );
     }
     return map;
