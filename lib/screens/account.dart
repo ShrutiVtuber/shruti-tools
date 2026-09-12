@@ -231,6 +231,10 @@ class _AccountScreenState extends State<AccountScreen> {
           Field(
             label: 'Password',
             controller: _password,
+            // ⚠ Dots, not characters. Until today this field showed the
+            // password in the clear — caught in the screen recording made for
+            // App Review, where hers is legible on the video.
+            secret: true,
             helper: _makingOne ? 'Ten characters or more.' : null,
           ),
 

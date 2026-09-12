@@ -358,6 +358,7 @@ class Field extends StatelessWidget {
     this.prefix,
     this.suffix,
     this.onChanged,
+    this.secret = false,
   });
 
   final String? label;
@@ -376,6 +377,17 @@ class Field extends StatelessWidget {
   final Widget? prefix;
   final Widget? suffix;
   final ValueChanged<String>? onChanged;
+
+  /// Dots instead of characters — for a password.
+  ///
+  /// ⚠ **This did not exist until 12 September 2026**, so every password in
+  /// the app was typed in the clear. She spotted it in the screen recording
+  /// made for App Review, where her own password is legible on the video.
+  ///
+  /// ⚠ It also turns off autocorrect and suggestions. A password is not a
+  /// word, and a keyboard that offers to complete it puts it in a strip above
+  /// the keys — which is how one ends up in a screenshot somebody else takes.
+  final bool secret;
 
   @override
   Widget build(BuildContext context) {
@@ -420,6 +432,9 @@ class Field extends StatelessWidget {
                   child: TextField(
                     controller: controller,
                     enabled: enabled,
+                    obscureText: secret,
+                    autocorrect: !secret,
+                    enableSuggestions: !secret,
                     maxLines: multiline ? rows : 1,
                     minLines: multiline ? rows : 1,
                     maxLength: maxLength,
