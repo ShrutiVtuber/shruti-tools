@@ -288,6 +288,79 @@ class _SignedIn extends StatelessWidget {
   const _SignedIn({required this.account});
   final Account account;
 
+  /// ⚠ Typed, not tapped.
+  ///
+  /// This is immediate and irreversible and reaches the nativity, so a single
+  /// "are you sure" on a row somebody's thumb can find by accident is not
+  /// enough. Writing the word is two seconds and it is the only thing between
+  /// a mis-tap and losing a birth chart.
+  Future<void> _askDelete(BuildContext context) async {
+    final typed = TextEditingController();
+    var ready = false;
+
+    final go = await showDialog<bool>(
+      context: context,
+      builder: (ask) => StatefulBuilder(
+        builder: (context, setDialog) => AlertDialog(
+          backgroundColor: Tone.card,
+          title: const Text('Delete this account?'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Your account, your email address, your saved nativity and '
+                'the monthly letter all go, immediately, and none of it can '
+                'be brought back.\n\n'
+                'What stays is an anonymous note that you agreed and then '
+                'withdrew, with no birth data in it — that is the record the '
+                'law asks for.\n\n'
+                'Type DELETE to confirm.',
+                style: TextStyle(
+                  fontFamily: Face.body,
+                  fontFamilyFallback: [Face.glyph],
+                  fontSize: Type.caption,
+                  height: 1.5,
+                ),
+              ),
+              const SizedBox(height: Gap.md),
+              Field(
+                label: 'Type DELETE',
+                controller: typed,
+                onChanged: (v) =>
+                    setDialog(() => ready = v.trim().toUpperCase() == 'DELETE'),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(ask).pop(false),
+              child: const Text('Keep my account'),
+            ),
+            TextButton(
+              onPressed: ready ? () => Navigator.of(ask).pop(true) : null,
+              child: const Text('Delete it'),
+            ),
+          ],
+        ),
+      ),
+    );
+
+    if (go != true || !context.mounted) return;
+    final tell = ScaffoldMessenger.of(context);
+    try {
+      await account.deleteAccount();
+      // ⚠ No navigation afterwards. Deleting signs out, the screen rebuilds
+      // itself into the signed-out form on its own, and popping as well would
+      // take the person off the account screen entirely.
+      tell.showSnackBar(
+        const SnackBar(content: Text('Your account has been deleted.')),
+      );
+    } on AccountTrouble catch (e) {
+      tell.showSnackBar(SnackBar(content: Text(e.message)));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final reader = account.reader;
@@ -388,6 +461,16 @@ class _SignedIn extends StatelessWidget {
               ListRow(
                 label: 'Sign out of this device',
                 onTap: account.signOut,
+                trailing: const SizedBox.shrink(),
+              ),
+              // ⚠ In the app, not on a website. Apple's guideline 5.1.1(v):
+              // an account that can be made here must be unmakeable here. It
+              // is also simply right — an account you can only close in a
+              // browser is a door that opens one way.
+              ListRow(
+                label: 'Delete this account',
+                description: 'Everything goes, and it cannot be undone',
+                onTap: () => _askDelete(context),
                 trailing: const SizedBox.shrink(),
               ),
             ],

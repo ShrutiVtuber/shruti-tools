@@ -192,6 +192,46 @@ class Account extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Delete the account, from inside the app.
+  ///
+  /// ⚠ **Required by Apple, and it was missing.** Guideline 5.1.1(v): an app
+  /// that lets somebody create an account must let them delete it there too —
+  /// not on a website, not by emailing anybody. Version 1.0.0 was rejected on
+  /// 12 September 2026 partly for this, and the reviewer asked to be shown the
+  /// flow on video.
+  ///
+  /// ⚠ It is also the right thing on its own terms. An account you can make in
+  /// the app and can only unmake in a browser is a door that opens one way.
+  ///
+  /// Immediate and irreversible on the server: the account, the address, the
+  /// preferences, the nativity and the newsletter subscription all go. What
+  /// survives is an anonymised record that consent was given and withdrawn,
+  /// which is the evidence the law asks for and carries no birth data.
+  ///
+  /// Signs out locally whatever the server said, because an account that is
+  /// gone must not leave a phone claiming to be signed in to it.
+  Future<void> deleteAccount() async {
+    final http.Response r;
+    try {
+      r = await http
+          .delete(_at('/api/account/'), headers: headers)
+          .timeout(_timeout);
+    } catch (_) {
+      throw const AccountTrouble(
+        'Could not reach shrutivtuber.com. Nothing has been deleted.',
+      );
+    }
+    // ⚠ 401 means the token is already dead — the account is gone, or the
+    // session expired. Either way there is nothing left to delete and the
+    // honest local answer is the same as success.
+    if (r.statusCode != 200 && r.statusCode != 401) {
+      throw const AccountTrouble(
+        'The site refused. Nothing has been deleted — try again in a moment.',
+      );
+    }
+    await signOut();
+  }
+
   /// Ask the site who this token belongs to.
   ///
   /// A token the site no longer accepts signs the reader out here rather than
