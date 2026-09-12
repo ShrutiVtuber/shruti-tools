@@ -80,9 +80,12 @@ The video is in Photos. Attach it to the Resolution Center reply below.
 > Thank you for the review.
 >
 > A screen recording is attached. It was taken on an iPhone 12 Pro Max running
-> the current iOS, begins with the app launching, and shows account
-> registration, sign-in, the user-generated content area with its reporting and
-> blocking controls, and account deletion.
+> the current iOS, begins with the app launching, and shows: account
+> registration including the confirmation email and the link that activates the
+> account; signing in; the practice room with its reporting and blocking
+> controls, a person being blocked and then unblocked; account deletion; and an
+> attempt to sign in afterwards, which is refused — demonstrating that deletion
+> removes the account rather than only hiding it.
 >
 > Since the previous build we have added account deletion inside the app
 > (Settings → Account → Delete this account), added a link to the privacy
