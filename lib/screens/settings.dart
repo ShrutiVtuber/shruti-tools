@@ -143,24 +143,25 @@ class SettingsScreen extends StatelessWidget {
           const SizedBox(height: Gap.sm),
           ListGroup(
             children: [
-              _Away(
-                label: 'Support her work',
-                detail: 'Opens your browser',
-                url: '$siteOrigin/support',
-              ),
-              _Away(
-                label: 'The shop',
-                detail: 'Prints, and other made things',
-                url: '$siteOrigin/shop',
-              ),
-              _Away(
-                label: 'Classes',
-                detail: 'When they are open',
-                url: '$siteOrigin/classes',
-              ),
+              // ⚠ **No links to anything that charges.** There were three —
+              // support, the shop, classes — and Apple's guideline 3.1.1
+              // forbids an app from pointing at a way to buy digital things
+              // outside its own store. The Swara tiers unlock a members
+              // channel, the schedule early and monthly notes, which is
+              // digital content however modest it is.
+              //
+              // Taking that money through Apple instead would mean StoreKit
+              // subscriptions, the paid-apps agreement, and 15-30% — and two
+              // subscription systems for one tier, to be reconciled forever.
+              // Her decision, made long before this: nothing takes money
+              // inside the app.
+              //
+              // So the app points at the site and the site does the rest.
+              // Linking to your own website is not the thing 3.1.1 prohibits;
+              // a call to action to buy is.
               _Away(
                 label: 'shrutivtuber.com',
-                detail: 'The site itself',
+                detail: 'Schedule, videos, horoscopes and everything else',
                 url: siteOrigin,
               ),
               const _Away(
