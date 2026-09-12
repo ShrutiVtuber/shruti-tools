@@ -24,16 +24,29 @@ to answer their six questions and are now there for every future submission.
 
 Apple asked for a screen recording taken on a physical device, beginning with
 the app launching. ⚠ It has to show account creation, sign-in, **deletion**, and
-the reporting and blocking controls. Deletion did not exist before build 6,
-which is why the build came first.
+the reporting and blocking controls.
 
-1. Launch the app from the home screen
-2. **Settings → Account** → make a new account (any address)
-3. **Sign out**, then sign back in
-4. **Practice** → open "Aries, week of 7 September" by Practice Sample
-5. Its **⋮ menu** → show **Report this reading** and **Block Practice Sample**
-6. Block them → **Settings → Blocked** → **Unblock**
-7. **Settings → Account → Delete this account** → type DELETE → confirm
+⚠ **Use an address you can actually read on the phone.** Confirming is now part
+of signing up, so the recording includes opening the email. A Gmail plus-alias
+works and is a distinct address —
+`sophiawillowood+appreview@gmail.com` — and delivers straight to your inbox.
+Do NOT use an address that already has an account: yours,
+`appreview@shrutivtuber.com` and `sample@shrutivtuber.com` are all taken, and
+the app will say "check your email" without sending anything.
+
+⚠ Leave the newsletter box unticked. It is the only consent that sends a second
+email, and it would confuse the recording.
+
+ 1. Launch the app from the home screen
+ 2. **Settings → Account** → sign up with the plus-alias address
+ 3. The app says **check your email**
+ 4. Open Mail, follow the confirmation link — it opens the site and signs you in
+ 5. Back to the app → **sign in** with the same address
+ 6. **Practice** → open "Aries, week of 7 September" by Practice Sample
+ 7. Its **⋮ menu** → show **Report this reading** and **Block Practice Sample**
+ 8. Block them → **Settings → Blocked** → **Unblock**
+ 9. **Settings → Privacy** — show the policy opens (Apple asks for this too)
+10. **Settings → Account → Delete this account** → type DELETE → confirm
 
 ⚠ Delete the account you just made, not `appreview@shrutivtuber.com`. Deleting
 the demo account locks the next reviewer out of the practice room.
@@ -54,9 +67,10 @@ then swipe down from the top-right corner and press the record button.
 >
 > Since the previous build we have added account deletion inside the app
 > (Settings → Account → Delete this account), added a link to the privacy
-> policy inside the app (Settings → Privacy), and removed the links that led to
-> pages where something could be bought. Nothing in the app now directs anyone
-> to a purchase of any kind.
+> policy inside the app (Settings → Privacy), removed the links that led to
+> pages where something could be bought, and added email confirmation: a new
+> account now sends a link to the address and does not work until that link is
+> followed. Nothing in the app directs anyone to a purchase of any kind.
 >
 > Answers to your questions 2 to 6 are below, and have also been added to the
 > App Review Information notes for future submissions.
