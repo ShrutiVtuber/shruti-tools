@@ -20,39 +20,58 @@ to answer their six questions and are now there for every future submission.
 
 ---
 
-## The video — one continuous recording, on the iPhone
+## The video — step by step
 
-Apple asked for a screen recording taken on a physical device, beginning with
-the app launching. ⚠ It has to show account creation, sign-in, **deletion**, and
-the reporting and blocking controls.
+One continuous recording on the iPhone, about two minutes. Apple needs to see
+registration, sign-in, deletion, and the reporting and blocking controls.
 
-⚠ **Use an address you can actually read on the phone.** Confirming is now part
-of signing up, so the recording includes opening the email. A Gmail plus-alias
-works and is a distinct address —
-`sophiawillowood+appreview@gmail.com` — and delivers straight to your inbox.
-Do NOT use an address that already has an account: yours,
-`appreview@shrutivtuber.com` and `sample@shrutivtuber.com` are all taken, and
-the app will say "check your email" without sending anything.
+### Before you start
 
-⚠ Leave the newsletter box unticked. It is the only consent that sends a second
-email, and it would confuse the recording.
+- **TestFlight → Shruti's Astrolabe → Update**, so you are on build 7
+- ⚠ **Turn on Do Not Disturb.** A screen recording captures notification
+  banners, and this video goes to a stranger at Apple
+- **Settings → Control Centre → add Screen Recording**, if it is not there
+- Decide the address: `sophiawillowood+appreview@gmail.com`
+  ⚠ It must be one you can read ON THE PHONE, and must not already have an
+  account — yours, `appreview@` and `sample@` are all taken
 
- 1. Launch the app from the home screen
- 2. **Settings → Account** → sign up with the plus-alias address
- 3. The app says **check your email**
- 4. Open Mail, follow the confirmation link — it opens the site and signs you in
- 5. Back to the app → **sign in** with the same address
- 6. **Practice** → open "Aries, week of 7 September" by Practice Sample
- 7. Its **⋮ menu** → show **Report this reading** and **Block Practice Sample**
- 8. Block them → **Settings → Blocked** → **Unblock**
- 9. **Settings → Privacy** — show the policy opens (Apple asks for this too)
-10. **Settings → Account → Delete this account** → type DELETE → confirm
+### Recording
 
-⚠ Delete the account you just made, not `appreview@shrutivtuber.com`. Deleting
-the demo account locks the next reviewer out of the practice room.
+Swipe down from the top-right corner, press the **record** button, wait for the
+countdown, then go to the home screen.
 
-Screen recording on iOS: Settings → Control Centre → add **Screen Recording**,
-then swipe down from the top-right corner and press the record button.
+ 1. **Tap the Astrolabe icon.** Let it open and sit for a second.
+ 2. **Settings** tab, bottom right.
+ 3. Tap **Account**.
+ 4. Tap **I need an account** — the small text button below the form.
+ 5. Fill in **Name**, **Email** (the plus-alias), **Password**.
+    ⚠ Leave the newsletter tick-box **unticked**. Leave the account one ticked.
+ 6. Tap **Make the account**.
+ 7. You should see: *"Check your email. A link is on its way…"* — pause here so
+    it is readable.
+ 8. **Leave the app**, open **Mail**, find "Confirm your address".
+ 9. **Tap the link.** Safari opens, confirms, and lands you on your account
+    page signed in. Pause.
+10. **Back to the app.** Settings → Account → **Sign in** with the same address
+    and password.
+11. **Practice** tab.
+12. Open **"Aries, week of 7 September"** by Practice Sample.
+13. Tap the **⋮** at the top right (labelled "Report or block").
+14. The sheet shows **Report this reading** and **Block Practice Sample** —
+    pause so both are readable. This is the shot Apple most needs.
+15. Tap **Block Practice Sample** → **Block** in the dialog.
+16. **Settings → Blocked** → tap **Unblock** next to Practice Sample.
+17. **Settings → Privacy** — show the policy opening. Come back.
+18. **Settings → Account → Delete this account.**
+19. Type **DELETE**, tap **Delete it**.
+20. Stop the recording — swipe down, tap the red timer, **Stop**.
+
+⚠ Delete the account you made in step 5, **not** `appreview@shrutivtuber.com`.
+Deleting the demo account locks the next reviewer out of the practice room.
+
+### Then
+
+The video is in Photos. Attach it to the Resolution Center reply below.
 
 ---
 
