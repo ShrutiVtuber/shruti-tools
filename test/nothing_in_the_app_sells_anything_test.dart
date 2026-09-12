@@ -74,4 +74,27 @@ void main() {
     expect(settings.contains('shrutivtuber.com'), isTrue);
     expect(settings.contains('url: siteOrigin'), isTrue);
   });
+
+  test('the privacy policy is reachable from inside the app', () {
+    // ⚠ **Guideline 5.1.1(i).** The policy must be linked in App Store Connect
+    // AND within the app. It was in neither at first, then in Connect only —
+    // which is half of a requirement and none of a pass.
+    final settings = File('lib/screens/settings.dart').readAsStringSync();
+    expect(
+      settings.contains(r"$siteOrigin/privacy"),
+      isTrue,
+      reason: 'nothing in the app links to the privacy policy',
+    );
+  });
+
+  test('the policy it links to actually covers the app', () {
+    // ⚠ Pointing at a policy that describes only the website is the failure
+    // this replaced, not a fix for it. The section is keyed `app` and is
+    // seeded by the site, so its presence there is the thing to hold.
+    final seed = File('../shurtiwebsite/backend/scripts/seed_legal.py');
+    if (!seed.existsSync()) return; // not checked out
+    final text = seed.readAsStringSync();
+    expect(text.contains('("app", "If you use the app"'), isTrue);
+    expect(text.contains("Shruti's Astrolabe"), isTrue);
+  });
 }

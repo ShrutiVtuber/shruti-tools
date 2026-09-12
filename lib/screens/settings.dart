@@ -177,16 +177,37 @@ class SettingsScreen extends StatelessWidget {
             ],
           ),
           const SizedBox(height: Gap.sm),
-          const _Note(
-            'Nothing is bought inside Astrolabe. These open your browser, '
-            'where the address bar says whose checkout it is.',
-          ),
+          // ⚠ Reworded when the support, shop and class links came out. It
+          // used to say "nothing is bought inside Astrolabe … the address bar
+          // says whose checkout it is", which described checkouts that no
+          // longer have links here. A true sentence about a removed feature is
+          // still a false one about the app.
+          const _Note('These open your browser.'),
 
           const SizedBox(height: Gap.xl),
           const Eyebrow('About'),
           const SizedBox(height: Gap.sm),
           ListGroup(
             children: [
+              // ⚠ **Guideline 5.1.1(i).** A privacy policy must be reachable
+              // in App Store Connect AND "within the app in an easily
+              // accessible manner". There was no link to it anywhere in the
+              // app at all, which is its own rejection whatever else is right.
+              //
+              // The policy covers the app explicitly as of 11 September 2026 —
+              // its own section says what stays on the phone, that charts are
+              // computed on the device, and what turning notifications on
+              // registers.
+              _Away(
+                label: 'Privacy',
+                detail: 'What is kept, what is not, and what leaves the phone',
+                url: '$siteOrigin/privacy',
+              ),
+              _Away(
+                label: 'Terms',
+                detail: 'What you are agreeing to by using it',
+                url: '$siteOrigin/terms',
+              ),
               ListRow(
                 label: 'Licences',
                 description:
