@@ -136,3 +136,72 @@ The video is in Photos. Attach it to the Resolution Center reply below.
 
 Resubmit. ⚠ The open submission sits in `UNRESOLVED_ISSUES` and may need
 cancelling first — check before assuming a fresh submission will attach.
+
+---
+
+# Second verdict, 15 September 2026 — Guideline 4.3(b), Design, Spam
+
+Version 1.0.0 (8), reviewed on an iPad Air 11-inch (M3). Not a defect and not
+an information request: a category judgement. "The app primarily features
+astrology, horoscopes … that duplicate the content and functionality of
+similar apps that are already widely available." They suggest a web app, or a
+new concept. The message carries the standard "extended review" warning about
+repeated submissions.
+
+## What it means
+
+- A 4.3(b) verdict is about what the app is FOR in the reviewer's eyes, so a
+  rebuild with the same shape gets the same answer. Nothing technical is wrong.
+- ⚠ Do not resubmit the same binary, and do not resubmit with cosmetic changes:
+  the warning about repeated submissions is boilerplate on 4.3 rejections, but
+  the account-level consequence in it is real.
+- TestFlight with internal testers (you, as a team member) does not go through
+  App Review. Squirrel Guides can be built to TestFlight and held on the phone
+  without touching this.
+
+## The three moves, in order
+
+1. **Reply in Resolution Center** (below), once, factually. Reversals of 4.3(b)
+   happen for apps that are a companion to an existing community or service
+   rather than a standalone horoscope app, and that is what this one is.
+2. If the reply is refused: **appeal to the App Review Board** once, with the
+   same facts. Then stop pushing this shape.
+3. The durable answer, with or without the appeal: **make the app the companion
+   to the stream and the community, not an astrology app with a community in
+   it.** The practice room, stream notices, the letters and her hand-written
+   monthly horoscopes are the primary surface; the chart, the hours and the
+   sunrise are instruments inside it; the name says whose it is. Whether
+   Squirrel Guides folds into that same companion is her call — one app for one
+   world is the strongest 4.3 argument there is.
+
+## The reply to paste into Resolution Center
+
+Thank you for the review. I would like to ask you to look at this one again,
+because it is not a horoscope or zodiac-report app and does not duplicate one.
+
+Shruti's Astrolabe is the companion app to shrutivtuber.com and to a live
+streaming community that already exists. Its primary surfaces are:
+
+- The practice room: a moderated space where members of the community post
+  their own readings and study notes, with reporting and blocking built in
+  (this is what the demo account opens onto).
+- Stream notices: push notifications when the stream goes live and when a
+  letter is published.
+- The letters and monthly horoscopes: written by one person, by hand, for
+  this community — the same texts that appear on the website. There is no
+  generated horoscope feed and no daily "your sign today" content.
+
+The astrological instruments in the app are tools for a practice, not
+reports: a whole-sign natal chart drawn to one tradition's conventions,
+planetary hours and sunrise/sunset stations for the person's own place, a
+transit wheel for the events page, isopsephy and a sigil builder. They are
+computed by our own server (Swiss Ephemeris, licensed) and are the same
+instruments the website offers — the app exists so this community can carry
+them and its room in a pocket.
+
+There are no ads, no purchases and no subscriptions in the app; nothing in
+it is sold. The demo account in App Review Information opens the practice
+room directly.
+
+If a particular screen gave the impression of a generic zodiac app, I would
+be glad to know which, and to adjust it. Thank you for your time.
