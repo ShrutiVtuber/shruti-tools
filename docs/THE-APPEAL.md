@@ -711,6 +711,92 @@ make anyway.
 
 ---
 
+# The mediation route
+
+## What it is
+
+Not a court, and not binding on anybody. A mediator is a neutral third party who
+sits between you and Apple and tries to get you to an agreement. Nobody rules.
+Nobody can order Apple to publish the app.
+
+What it does give you, and this is the whole point, is **a named person at Apple
+in a conversation with a neutral present**. For a solo developer that is the only
+forum in the entire process where Apple has to engage with the substance rather
+than send a letter. Every step before it can be answered with boilerplate. This
+one cannot.
+
+## Who runs it and what it costs
+
+The **Centre for Effective Dispute Resolution**, CEDR, administers a mediation
+scheme for Apple under the Digital Markets Act.
+
+`cedr.com/mediation-services/schemes/platform-to-business-services/apple-eu-mediation/`
+
+It is **free to you. Apple bears the cost of the mediation.** You pay only for any
+legal help you choose to bring, and you do not need any.
+
+Separately, Apple also names CEDR as its panel of mediators for the purposes of
+Article 12 of the P2B Regulation, in the Developer Program Licence Agreement
+itself. Same administrator, overlapping routes, and not worth untangling unless
+someone asks you to. ⚠ The address Apple names is in London, outside the Union.
+
+## Who is eligible
+
+Per CEDR's page:
+
+- A developer **established in the EU** who offers or **intends to offer**
+  applications to customers located in the EU. You are in Belgium, so yes. Note
+  "intends to offer", which on its face does not require the app to have been
+  published, and that matters here because yours never was.
+- ⚠ **The dispute must be about an App Review Board decision made on or after
+  7 March 2024.** This is the gate, and it is why the appeal had to come first.
+  Until the Board answers, there is nothing to mediate.
+- The subject must concern access to **EU storefronts of the App Store**, or the
+  Notarization process.
+
+## How it runs
+
+An online application form asking for your name, developer ID, contact details,
+the app, your availability, and **a summary of the facts in at most 500 words**.
+The compressed version of Draft A, further up this file, is 434 words and is
+almost exactly that summary. It will need its opening changed from an appeal to a
+description of the dispute, and a line added about what the Board answered.
+
+Then, per CEDR's page:
+
+| Step | Time |
+|---|---|
+| Apple decides whether to agree to mediate | 15 working days |
+| Mediator contacts both parties after appointment | 5 working days |
+| The session itself, from an eligible application | typically 30 to 45 business days |
+
+⚠ **Those figures are CEDR's page as it read on 25 September 2026, and were not
+checked against the scheme rules document.** Read the scheme rules before relying
+on any deadline.
+
+⚠ **Apple has to agree.** The form goes in, and Apple has fifteen working days to
+decide whether to engage. Nothing found says they must.
+
+## What to expect from it, honestly
+
+Most likely: an explanation, and possibly a route. Someone tells you what the
+objection actually was, which is the thing you have been asking for since
+15 September and have never been given. If the screenshots were the problem, this
+is where you would find that out for certain.
+
+Least likely: Apple agreeing to publish this build as it stands.
+
+That is worth knowing before you spend the effort, and it is still worth doing,
+because an explanation is what you asked for and it is what the next app needs.
+
+## When to start it
+
+**Only after the Board answers.** Log the answer verbatim first. If the answer
+names an app or gives real reasons, you may not want mediation at all, because you
+will have got the thing mediation was for.
+
+---
+
 ## Sources
 
 Everything quoted above, with a URL and a fetch date for every claim, is in
