@@ -167,6 +167,52 @@ security finding does not. That is the asymmetry to press.
 
 ---
 
+## ⚠ Check the screenshots before you file
+
+`BEFORE-THE-APP-STORE.md` records the instruction for the listing screenshots as:
+
+> Three shots: the **Sky** tab, a **Chart**, the **Practice** room
+
+If that is the order on the listing, then two of the three things a reviewer sees
+first are astrological instruments, and the practice room is last. **That is very
+likely the answer to the question you asked them and they would not answer.** A
+reviewer scanning a listing whose first two images are a sky and a natal chart
+sees an astrology app, and would have refused it correctly on what was in front
+of them. The App Store listing is where this rejection probably happened, not in
+the binary.
+
+**Do this before you file:**
+
+1. Open the listing in App Store Connect and look at the screenshots in order.
+2. If the practice room is not first, **put it first**, and give it a caption that
+   says what it is. Something like "Post a reading. Get it read back." Her words,
+   not mine.
+3. Screenshots and captions are **metadata**. Changing them needs no new build, so
+   it does not touch the do-not-resubmit rule, and a reordered listing is not a
+   resubmission of the same shape.
+4. Check the subtitle and the keywords the same way. If the subtitle names
+   astrology before it names the community, it is doing the rejection's work for
+   it.
+
+⚠ **Do not quietly change it and let the appeal describe the old listing.** If you
+reorder before filing, add one sentence to Draft A, at the end of section 4:
+
+> Since the review I have reordered the listing so that the practice room is the
+> first screenshot rather than the third, because on reflection the listing led
+> with the instruments and that is a fair thing to have been misled by.
+
+That sentence costs you nothing and it gives the Board something to say yes to. A
+reviewer who was misled by a listing can be shown a corrected listing. A reviewer
+who is told they were wrong has to defend themselves.
+
+⚠ **This does not make the appeal unnecessary.** The safety and security finding,
+the unnamed comparison and the set-aside exception all stand whatever the
+screenshots show. But if the screenshots are the cause, the appeal has a much
+better chance with them fixed, and you will have found the answer they refused to
+give you.
+
+---
+
 # How to file it
 
 ## Before you open the form
