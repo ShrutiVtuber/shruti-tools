@@ -711,6 +711,101 @@ make anyway.
 
 ---
 
+# The content plan, and the one claim to drop
+
+She intends to write about this publicly, distribute outside the App Store, sell
+from her own site, and ship on Android. Most of that is hers to do and costs her
+nothing. This section is about the two parts that need care.
+
+## ⚠ Drop the Christian-reviewer claim
+
+The intention was to write that biased Christian reviewers are unfair to
+pagan-based applications. Do not publish that, and here is the reason, which is
+tactical rather than moral.
+
+**There is no evidence for it.** App reviewers are anonymous. Nothing in either
+message, the review device, the timing or the wording indicates anything about who
+read the app or what they believe. It is a guess about a stranger's religion.
+
+**It would cost the documented case.** Everything else in the story is quotable
+from Apple's own text: a rule with an exception the letter sets aside, a
+comparison never made, a safety finding that contradicts the previous message, and
+a nine-day reply about game design. A reader who reaches an unevidenced claim
+about reviewers' religion has been handed a reason to dismiss all of it. It also
+converts a documented account into an accusation against unnamed individuals,
+which is the one shape of this story Apple's lawyers can respond to and its policy
+people cannot.
+
+**And it is not the strongest version of the point she actually has.**
+
+## The critique that is documented, and is worse for Apple
+
+The bias is not in a reviewer's head. It is in the text of the rule. Guideline
+4.3(b), verbatim:
+
+> Certain kinds of apps, such as **dating, flashlight, sound effects, wallpaper,
+> simple timers, and fortune telling**, are well established on the App Store and
+> we will not accept new submissions unless they offer a meaningfully different or
+> improved experience.
+
+That is the sentence to publish. Apple's rulebook files divination in a list with
+flashlights, wallpapers and simple timers: a commodity, presumptively
+interchangeable, one of a kind of thing there is already enough of. A practice
+with two thousand years of written tradition and a scholarly literature is, in the
+only document that governs whether it may be distributed, a genre of utility app.
+
+⚠ **Be accurate about which list.** Fortune telling is in the "well established"
+list. The harsher sentence — "mediocre, low-quality, or low-effort" — belongs to a
+**second** list: drinking games, Kama Sutra, fart and burp apps. Do not merge
+them. The accurate version is damning enough and the inaccurate version is
+checkable in thirty seconds by anyone who wants to discredit the post.
+
+The rejection letter is the second quotable thing:
+
+> The app primarily features astrology, horoscopes, palm reading, fortune telling
+> or zodiac reports
+
+One template sentence flattens a computational ephemeris, a whole-sign chart drawn
+to one tradition's conventions, and a room where people critique each other's
+written work, into the same object as a fairground palm reader. That is a real
+criticism of how the category is administered, it is fully sourced, and it needs
+no speculation about anybody's faith.
+
+## ⚠ Timing: do not publish while the appeal is live
+
+Not because Apple forbids it. Because a hostile post published while the Board is
+deciding gives them a reason to disengage, and because mediation, if it comes,
+works on the assumption that both sides are trying to resolve something.
+
+The order that keeps everything: let the Board answer. Log the answer. Then
+publish, with the answer in it. The post is better with an ending, and the ending
+is worth waiting a week or two for.
+
+⚠ Note also that the review correspondence is already committed to a public
+repository, and the Developer Program Licence Agreement contains a confidentiality
+provision. What it names is being checked. Publishing rejection letters is
+extremely common developer practice and Apple does not appear to act on it, but do
+not treat the question as settled until the note beside this file says so.
+
+## What is simply hers, with no caveat
+
+- **Ship on Android now.** Google Play has no equivalent saturation rule, and the
+  Android build already carries the real ephemeris rather than the substitute. This
+  is the win available today and it does not depend on Apple at all.
+- **Sell from her own site, keep all of it.** No Apple cut, no Apple rules, and it
+  is already how hosting is sold.
+- **Write the account.** A dated, sourced, first-person record of a review process
+  is hers to publish and it is good material. The documents make it strong. The
+  speculation would make it weak.
+
+⚠ **Costing Apple money is not a reason to mediate, and must never be written
+down.** Mediation is free to her because Apple bears the cost, which is a fact
+about the scheme, not a lever. A mediation entered to impose cost reads as exactly
+that within minutes, and Apple has fifteen working days to decide whether to
+engage at all.
+
+---
+
 # The mediation route
 
 ## What it is
