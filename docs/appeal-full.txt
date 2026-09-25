@@ -1,0 +1,183 @@
+Appeal of the rejection of Shruti's Astrolabe under Guideline 4.3(b)
+
+Submission ID: 8a45fcfb-0fda-47c8-a247-11bf367e6d33
+App: Shruti's Astrolabe, version 1.0.0 (8)
+Reviewed: 15 September 2026, iPad Air 11-inch (M3)
+
+I am appealing on both of the grounds Apple states for an appeal: that the app's
+concept and functionality were misunderstood, and that I was treated unfairly in
+the course of the review. I have responded to every request for additional
+information, and the earlier Guideline 2.1 issues were resolved in full before
+this rejection was issued.
+
+I am asking the Board for four things:
+
+(a) That Guideline 4.3(b) be applied as written, including its exception.
+(b) The apps the duplication finding refers to, or the finding set aside.
+(c) Confirmation that the demo account was used to open the practice room, which
+    is the app's primary surface and cannot be reached without signing in.
+(d) The basis for the safety and security finding in the same message, or a
+    record that there is none.
+
+
+1. THE INCONSISTENCIES I AM ASKING THE BOARD TO RESOLVE
+
+I have set these out plainly because each is a matter of record rather than of
+opinion, and because I have not been able to get any of them addressed in the
+review conversation.
+
+1.1 The rejection sets aside the exception in the guideline it cites. Guideline
+4.3(b) reads: "Certain kinds of apps, such as dating, flashlight, sound effects,
+wallpaper, simple timers, and fortune telling, are well established on the App
+Store and we will not accept new submissions unless they offer a meaningfully
+different or improved experience." Being meaningfully different is therefore the
+test. The rejection instead reads: "there are already enough of these apps on the
+App Store." That is a different standard from the one the guideline sets.
+
+1.2 The same paragraph concedes the exception's premise and then dismisses it.
+"the app may include features or characteristics that distinguish it. However,
+there are already enough of these apps on the App Store." Under the guideline as
+written, if the app includes features that distinguish it, that is the beginning
+of the analysis and not the end of it. I have never been told what was weighed.
+
+1.3 The rejection reasons by duplication, and duplication is 4.3(a), not 4.3(b).
+The stated issue is that the app's features "duplicate the content and
+functionality of similar apps that are already widely available". Duplication of
+one's own app across multiple Bundle IDs is the entire subject of 4.3(a). 4.3(b)
+contains no duplication test; its test is whether the app is indistinguishable
+from what is already widely available, which is a comparison to named things.
+
+1.4 The category named in the rejection is not a category the guideline names.
+4.3(b)'s list is dating, flashlight, sound effects, wallpaper, simple timers and
+fortune telling. The words astrology, horoscope, tarot and divination do not
+appear in Guideline 4.3 at all.
+
+1.5 The rejection describes features the app does not have. It cites "astrology,
+horoscopes, palm reading, fortune telling or zodiac reports". The app contains no
+palm reading and no fortune telling. It publishes no zodiac report, no horoscope
+feed and no daily sign content of any kind. It computes positions and draws
+charts, and it predicts nothing about anybody's life.
+
+1.6 The two review messages cannot both be true. The message of 12 September was
+an information request under Guideline 2.1 and reported no defect, no crash and
+no issue with the app itself. The message of 15 September states that the app
+"was found to include one or more issues that present significant safety,
+security, or quality concerns to users". Between those two dates the only changes
+to the app were subtractions and additions I made at Apple's request: account
+deletion added, a privacy policy link added, and the links that led to pages
+where something could be bought removed. Nothing was introduced that could create
+a safety or security issue, and the 15 September rejection itself identifies none.
+I have also not been able to find that sentence in any published Apple document.
+
+1.7 The reply of 24 September recommends material for a different kind of app and
+engages with nothing I wrote. Nine days after a detailed submission, the answer
+was to "consider ways to make the app stand out", with links to Essential Design
+Principles, Design Tips for Great Games, and the Human Interface Guidelines. This
+app is not a game. The reply does not mention the practice room, the community,
+the absence of a horoscope feed, or any other point raised.
+
+1.8 The objection that ended the submission required nothing the submission
+produced. A 4.3(b) judgement rests on what the app is and what it offers: the
+name, the description, the screenshots, the category and the review notes. All of
+those were in front of the first reviewer on 12 September. In-app account
+deletion, an in-app privacy link, the removal of the support links and a video
+shot on a physical device change such a judgement by nothing. If the concept was
+never going to be accepted, it could have been said on 12 September.
+
+I am not asking the Board to agree that Apple must publish my app. I am asking
+for the guideline to be applied as it is written, and for the questions above to
+be answered rather than replaced.
+
+
+2. WHAT THE APP IS, AND A CORRECTION I WOULD RATHER MAKE MYSELF
+
+Shruti's Astrolabe is the companion app to shrutivtuber.com and to a live
+streaming community that already exists. It is free, open to anyone who finds it,
+and needs no invitation. Its surfaces are:
+
+- The practice room. A moderated space where members post readings they have
+  written themselves and receive feedback from other people learning the same
+  craft. Reporting and blocking are built into it. The demo account in App Review
+  Information opens directly onto it. This is the app's primary surface and the
+  reason it exists.
+- Stream notices. A push notification when the stream goes live and when a letter
+  is published. Off until the person asks for them.
+- The letters and the monthly horoscopes, written by one person by hand for this
+  community, the same texts that are on the website. There is no generated feed.
+- Instruments for a practice rather than reports: a whole-sign natal chart drawn
+  to one tradition's conventions, planetary hours and the sunrise and sunset
+  stations for the person's own place, a transit wheel, Greek letter-reckoning
+  and a sigil builder.
+
+A correction to my reply of 15 September, which I would rather make myself than
+leave standing. I wrote there that the instruments are computed by our server
+using the Swiss Ephemeris. That is true of the website and not of the iOS app,
+which computes every position on the device from two published analytic theories,
+VSOP87 and ELP-2000/82, and requests no chart from any server. This is what I
+told you in answer to your question 4 on 12 September, and it is the accurate
+one. The iOS build contains no third-party ephemeris.
+
+There is nothing to buy in the app. No advertising, no analytics, no tracking, no
+purchases, no subscriptions, no third-party authentication, no AI service.
+
+
+3. THE DUPLICATION FINDING NAMES NO APP
+
+I searched the App Store for another app in which people write astrological
+readings for one another and receive feedback on them, and did not find one. I
+asked which apps the finding refers to on 15 September, and again on
+25 September. Neither reply named an app.
+
+I cannot answer a comparison that has not been made, and I cannot change my app
+to stop resembling apps I have not been shown. I am asking the Board either to
+name them or to set the finding aside.
+
+
+4. WHAT THE REVIEW APPEARS TO HAVE EXERCISED
+
+The practice room is behind a sign-in. Everything else in the app opens on
+launch: the sky, the chart, the hours, the letters. So a review that does not use
+the demo account sees only the instruments, and the instruments on their own are
+much closer to the thing 4.3(b) describes.
+
+I am not asserting that this is what happened. I am asking to be told whether the
+demo account in App Review Information was used, because if it was not, the
+surface the whole submission rests on was never seen.
+
+The submission was reviewed on an iPad Air 11-inch (M3). If any part of the app
+presented badly at that size I would like to know, and I will fix it. That is a
+report I can act on, and it is not what either message contained.
+
+Since the review I have reordered the listing so that the practice room is the
+first screenshot rather than the third. On reflection the listing led with the
+instruments, and that is a fair thing to have been misled by.
+
+
+5. THE SAFETY AND SECURITY FINDING
+
+Point 1.6 above sets out why the two messages cannot both be true. I want to be
+plain about why this matters more to me than the rejection does.
+
+If there is a safety or security issue in this app, I want to know what it is
+more than I want this appeal, and I will fix it today. If there is not, I am
+asking for it to be recorded that there is not. As it stands, an unexplained
+safety finding and a warning about removal from the Apple Developer Program sit
+against an account whose only submission was refused for being in a crowded
+field, and I intend to submit other apps from this account.
+
+
+6. WHAT I AM ASKING FOR, AND WHAT I WILL DO
+
+I am not asking for an exception to Guideline 4.3, and I am not disputing that
+Apple may decline an app at its discretion. I accept that there are a great many
+astrology apps and that Apple is entitled to say so.
+
+I am asking to be told what specifically is indistinguishable, so that I can
+change it. I have now asked three times. If the Board's position is that this app
+cannot be accepted in any form, I am asking to be told that in one sentence,
+because I will then stop submitting it and build something else, and I would
+rather learn that from the Board than from a fourth link to a design video.
+
+Thank you for reading this.
+
+Sophia Antonopoulou
