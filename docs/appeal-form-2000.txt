@@ -1,0 +1,15 @@
+Appeal: Shruti's Astrolabe 1.0.0 (8), submission 8a45fcfb-0fda-47c8-a247-11bf367e6d33, rejected 15 Sep 2026 under 4.3(b).
+
+Grounds: both that Apple states. The app's concept was misunderstood, and I was treated unfairly in the course of review. The earlier 2.1 issues were resolved first. Full detail is in the review conversation, posted today.
+
+1. The rejection sets aside the exception in the guideline it cites. 4.3(b) refuses well-established categories "unless they offer a meaningfully different or improved experience". The rejection answers "there are already enough of these apps", having just conceded my app "may include features or characteristics that distinguish it". I was never told what was weighed.
+
+2. It reasons by duplication, which is 4.3(a). Its own test is a comparison to what is widely available already. I asked on 15 and 25 September which apps. Neither reply named one. I cannot change my app to stop resembling apps I have not been shown.
+
+3. The 12 September review reported no defect. The 15 September message states the app "was found to include one or more issues that present significant safety, security, or quality concerns to users". Between those dates the only changes were ones Apple asked for. Both cannot be true.
+
+4. Its primary surface is a practice room where members of a streaming community write readings for one another and get feedback, with reporting and blocking. It is behind a sign-in, so a review that did not use the demo account never saw it. No horoscope feed, no daily sign content, nothing for sale. Astrology is not among the categories 4.3(b) names, and the app tells no fortunes.
+
+I ask for: 4.3(b) applied including its exception; the apps the duplication finding refers to, or the finding set aside; confirmation the demo account was used; and the basis for the safety finding, or a record that there is none.
+
+If it cannot be accepted in any form, I would rather be told plainly.
