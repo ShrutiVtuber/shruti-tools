@@ -15,6 +15,7 @@ import '../widgets/parts.dart';
 import '../widgets/motifs.dart';
 import '../widgets/forms.dart';
 import '../widgets/content.dart';
+import '../widgets/publish_agreement.dart';
 import '../theme/glyph.dart';
 import 'account.dart';
 
@@ -76,7 +77,11 @@ class _WorkScreenState extends State<WorkScreen> {
       _trouble = null;
     });
     try {
-      await _room.say(widget.id, what, sign: _about ?? '');
+      await publishing(
+        context,
+        _room,
+        () => _room.say(widget.id, what, sign: _about ?? ''),
+      );
       _remark.clear();
       setState(() => _work = _room.read(widget.id));
     } on PracticeTrouble catch (e) {

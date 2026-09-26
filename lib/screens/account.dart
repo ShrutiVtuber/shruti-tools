@@ -367,7 +367,9 @@ class _SignedIn extends StatelessWidget {
                 'be brought back.\n\n'
                 'What stays is an anonymous note that you agreed and then '
                 'withdrew, with no birth data in it — that is the record the '
-                'law asks for.\n\n'
+                'law asks for. Anything you made public — a reading, a '
+                'comment — stays up for the people reading it, with your '
+                'name taken off.\n\n'
                 'Type DELETE to confirm.',
                 style: TextStyle(
                   fontFamily: Face.body,

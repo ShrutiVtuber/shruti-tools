@@ -28,6 +28,7 @@ import '../widgets/period_events.dart';
 import '../widgets/period_wheel.dart';
 import '../widgets/wheel.dart';
 import '../widgets/eyebrow.dart';
+import '../widgets/publish_agreement.dart';
 import 'account.dart';
 
 class WriteScreen extends StatefulWidget {
@@ -183,10 +184,10 @@ class _WriteScreenState extends State<WriteScreen> {
     // Keep first: whatever is in the box right now is part of what is sent.
     await _keep();
     final id = _workId;
-    if (id == null) return;
+    if (id == null || !mounted) return;
     setState(() => _sending = true);
     try {
-      await _room.submit(id);
+      await publishing(context, _room, () => _room.submit(id));
       if (mounted) Navigator.of(context).pop(true);
     } on PracticeTrouble catch (e) {
       if (mounted) setState(() => _trouble = e.message);

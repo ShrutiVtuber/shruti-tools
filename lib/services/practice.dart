@@ -188,6 +188,29 @@ class PracticeTrouble implements Exception {
   String toString() => message;
 }
 
+/// The server will not make this public until the person has agreed to what
+/// happens to public work when an account is deleted — it stays up with their
+/// name taken off. Answered with 428; `askToPublish` shows the words and files
+/// the agreement, then the same call is made again.
+class NeedsPublishAgreement extends PracticeTrouble {
+  const NeedsPublishAgreement(super.message);
+}
+
+/// The agreement, in the exact words the server files with it.
+///
+/// ⚠ Read from the server, never kept in the app: what is shown is what is
+/// stored, and a copy here would be a second place for the words to drift.
+class PublishAgreement {
+  const PublishAgreement({
+    required this.label,
+    required this.wording,
+    required this.explanation,
+  });
+  final String label;
+  final String wording;
+  final String explanation;
+}
+
 /// The practice room.
 ///
 /// Takes the [Account] rather than a token, so a screen never has to remember
@@ -227,6 +250,14 @@ class Practice {
       throw const PracticeTrouble(
         'The practice room is not on shrutivtuber.com yet. This app is ahead of '
         'the site; it will appear on its own.',
+      );
+    }
+    if (r.statusCode == 428) {
+      final detail = decoded is Map ? decoded['detail'] : null;
+      throw NeedsPublishAgreement(
+        detail is String
+            ? detail
+            : 'Agree to what happens to public work before posting.',
       );
     }
     if (r.statusCode >= 400) {
@@ -309,6 +340,30 @@ class Practice {
   /// Put it in front of other people.
   Future<void> submit(int workId) async =>
       _send('POST', '/api/practice/$workId/submit');
+
+  /// What the person is asked to agree to before the first thing goes public.
+  Future<PublishAgreement> publishAgreement() async {
+    final body = await _send('GET', '/api/account/consents');
+    final spec = (body as Map<String, dynamic>)['publish'];
+    if (spec is! Map<String, dynamic>) {
+      // ⚠ A site older than this app: it does not ask, so nothing to show.
+      throw const PracticeTrouble(
+        'shrutivtuber.com did not send the words to agree to. Try again later.',
+      );
+    }
+    return PublishAgreement(
+      label: spec['label'] as String? ?? '',
+      wording: spec['wording'] as String? ?? '',
+      explanation: spec['explanation'] as String? ?? '',
+    );
+  }
+
+  /// File the agreement. Asked once; the site keeps it with the words shown.
+  Future<void> agreeToPublish() async => _send(
+    'POST',
+    '/api/account/consents',
+    {'kind': 'publish', 'granted': true, 'source': 'app'},
+  );
 
   /// Vote, or take the vote back. Returns the new count and whether it is mine.
   Future<({int votes, bool voted})> vote(int workId) async {
